@@ -155,13 +155,14 @@ class MagnetSting:
 
 
 class MagnetStingAdvanced:
-    def __init__(self, banner_decorators: str = "-=-", decorator_length: int = 12,
+    def __init__(self, framework_name: str = "MAGNETSTING", banner_decorators: str = "-=-", decorator_length: int = 12,
                  banner_identifiers: tuple = ("MAGNETSTING", "Identifiers here"), cmd_prompt: str = "\n>> ",
                  exit_message: str = "[*] - Exiting", help_spacers: int = 4, help_indent: int = 2,
                  command_hint_spacers: int = 2, confirm_keywords: tuple = ("y", "yes", "confirm"),
                  break_keywords: tuple = ("q", "quit", "exit")):
         """
         Initialize instance of MagnetStingAdvanced
+        :param framework_name: The name of the framework
         :param banner_decorators: The `decorators` of the banner on start-up
         :param decorator_length: The `length` of the banner decorators
         :param banner_identifiers: A `tuple` of the information that will appear in the banner. This can include but is
@@ -194,6 +195,7 @@ class MagnetStingAdvanced:
         # Every possible command for use by readline completion ***IN DEVELOPMENT***
         self._full_commands = []
 
+        self.framework_name = framework_name
         self.banner_decorators = banner_decorators
         self.decorator_length = decorator_length
         self.banner_identifiers = banner_identifiers
@@ -268,7 +270,7 @@ class MagnetStingAdvanced:
     def magnetstingadvanced_mainloop(self):
         # Add the "help" and "quit" commands to the help banner
         self._commands_help["help"] = "print this help banner"
-        self._commands_help[f"{self.break_keywords[0]}"] = "exit MAGNETSTING"
+        self._commands_help[f"{self.break_keywords[0]}"] = f"exit {self.framework_name}"
 
         # Add the "help" command to the commands dict
         self._commands_dict["help"] = self._help_command
