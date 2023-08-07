@@ -156,7 +156,7 @@ class MagnetSting:
 
 class MagnetStingAdvanced:
     def __init__(self, banner_decorators: str = "-=-", decorator_length: int = 12,
-                 banner_identifiers: tuple = ("GALAXYMARKET", "Identifiers here"), cmd_prompt: str = "\n>> ",
+                 banner_identifiers: tuple = ("MAGNETSTING", "Identifiers here"), cmd_prompt: str = "\n>> ",
                  exit_message: str = "[*] - Exiting", help_spacers: int = 4, help_indent: int = 2,
                  command_hint_spacers: int = 2, confirm_keywords: tuple = ("y", "yes", "confirm"),
                  break_keywords: tuple = ("q", "quit", "exit")):
@@ -268,7 +268,7 @@ class MagnetStingAdvanced:
     def magnetstingadvanced_mainloop(self):
         # Add the "help" and "quit" commands to the help banner
         self._commands_help["help"] = "print this help banner"
-        self._commands_help[f"{self.break_keywords[0]}"] = "exit GALAXYMARKET"
+        self._commands_help[f"{self.break_keywords[0]}"] = "exit MAGNETSTING"
 
         # Add the "help" command to the commands dict
         self._commands_dict["help"] = self._help_command
