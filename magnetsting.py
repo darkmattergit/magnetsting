@@ -219,7 +219,7 @@ class MagnetStingAdvanced:
             print(f"{' '*self.help_indent}{commands :{self.help_spacers}} {self._commands_help[commands]}")
 
     def add_command_strict(self, command_name: str = None, command_help: str = None,
-                           command_options: tuple = None, command_function: object = None) -> None:
+                           command_options: tuple | list = None, command_function: object = None) -> None:
         """
         Add a `strict-type` command to the dict of commands. A strict-type command operates with a command prefix and
         an argument. A strict command has preset arguments that it can take. If an argument is not within the tuple,
