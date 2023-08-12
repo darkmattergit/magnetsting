@@ -22,7 +22,7 @@ The `MagnetStingAdvanced` class gives the user to set three types commands:\n
 When assigning functions to specific commands, a certain parameter must be given to the function you wish to execute
 based on the type of command it is attached to:\n
 - `strict-type commands`: any function attached to a strict-type command ***MUST*** have a parameter called
-  `strict_command`. This parameter is for the command argument.
+  `strict_function`. This parameter is for the command argument.
 - `free-type commands`: any function attached to a free-type command ***MUST*** have a parameter called free_function.
   This parameter is for the command argument.
 - `single-type commands`: single-type commands ***DO NOT*** require any specifically named parameter as they take no
@@ -306,7 +306,7 @@ class MagnetStingAdvanced:
                         try:
                             # Run function with command argument
                             if check_command[1] in self._command_options[check_command[0]]:
-                                self._commands_dict[check_command[0]](strict_command=check_command[1])
+                                self._commands_dict[check_command[0]](strict_function=check_command[1])
                             # Print out possible options of command based on user input
                             else:
                                 possible_strict_options = ""
