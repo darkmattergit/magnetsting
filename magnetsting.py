@@ -1,6 +1,6 @@
 """
 MAGNETSTING\n
-v1.0.2\n
+v1.0.3\n
 `MAGNETSTING` is a command line framework used to set up command line interpreters. The `readline` module is also
 imported in order to provide shell behaviour.\n
 The class `MagnetSting` is a simple command line builder, allowing the
@@ -19,14 +19,19 @@ The `MagnetStingAdvanced` class gives the user to set three types commands:\n
 - single: single commands are a single command name, these operate exactly like the commands in the MagnetSting class.
   The command syntax for a `single-type` command would be "`command name`"
 
-When assigning functions to specific commands, a certain parameter must be given to the function you wish to execute
+When assigning functions to specific commands, two certain parameters must be given to the function you wish to execute
 based on the type of command it is attached to:\n
 - `strict-type commands`: any function attached to a strict-type command ***MUST*** have a parameter called
-  `strict_function`. This parameter is for the command argument.
-- `free-type commands`: any function attached to a free-type command ***MUST*** have a parameter called free_function.
-  This parameter is for the command argument.
-- `single-type commands`: single-type commands ***DO NOT*** require any specifically named parameter as they take no
-  argument, they only operate based on commands names.
+  `strict_function` ***AND*** `additional_data`. The `strict_function` parameter is for the command argument while the
+  `additional_data` parameter is to send any additional data to the command's function. The `additional_data` parameter
+  can be set as `None` if nothing extra is needed.
+- `free-type commands`: any function attached to a free-type command ***MUST*** have a parameter called `free_function`
+  ***AND*** `additional_data`. The `free_function` parameter is for the command argument while the `additional_data`
+  parameter is to send any additional data to the command's function. The `additional_data` parameter can be set as
+  `None` if nothing extra is needed.
+- `single-type commands`: single-type commands ***MUST*** only have the `additional_data` parameter,
+  as they only operate based on commands names. The `additional_data` parameter can be set as `None` if nothing extra is
+  needed.
 """
 import readline
 
@@ -194,6 +199,8 @@ class MagnetStingAdvanced:
         self._commands_help = {}
         # Every possible command for use by readline completion ***IN DEVELOPMENT***
         self._full_commands = []
+        # Additional data to be sent over to the command function, can be anything (str, int, float, object, etc.)
+        self._additional_data = {}
 
         self.framework_name = framework_name
         self.banner_decorators = banner_decorators
@@ -219,7 +226,8 @@ class MagnetStingAdvanced:
             print(f"{' '*self.help_indent}{commands :{self.help_spacers}} {self._commands_help[commands]}")
 
     def add_command_strict(self, command_name: str = None, command_help: str = None,
-                           command_options: tuple | list = None, command_function: object = None) -> None:
+                           command_options: tuple | list = None, command_function: object = None,
+                           additional_data: any = None) -> None:
         """
         Add a `strict-type` command to the dict of commands. A strict-type command operates with a command prefix and
         an argument. A strict command has preset arguments that it can take. If an argument is not within the tuple,
@@ -229,15 +237,17 @@ class MagnetStingAdvanced:
         :param command_help: A short `descriptor` about what the command does
         :param command_options: A `tuple` of preset command arguments/options
         :param command_function: The `function` assigned to the command
+        :param additional_data: `Additional data` that gets sent over to the command's function
         :return: None
         """
         self._command_type[command_name] = "strict"
         self._commands_dict[command_name] = command_function
         self._commands_help[command_name] = command_help
         self._command_options[command_name] = command_options
+        self._additional_data[command_name] = additional_data
 
     def add_command_free(self, command_name: str = None, command_help: str = None,
-                         command_function: object = None) -> None:
+                         command_function: object = None, additional_data: any = None) -> None:
         """
         Add a `free-type` command to the dict of commands. A free-type command is similar to a strict-type command. It
         has a command prefix and takes an argument. However, where it differs from a strict-type command is that the
@@ -247,13 +257,16 @@ class MagnetStingAdvanced:
         :param command_name: The `name` of the command
         :param command_help: A short `descriptor` about what the command does
         :param command_function: The `function` assigned to the command
+        :param additional_data: 'Additional data' that gets sent over to the command's function
         :return: None
         """
         self._command_type[command_name] = "free"
         self._commands_dict[command_name] = command_function
         self._commands_help[command_name] = command_help
+        self._additional_data[command_name] = additional_data
 
-    def add_command_single(self, command_name: str = None, command_help: str = None, command_function: object = None):
+    def add_command_single(self, command_name: str = None, command_help: str = None, command_function: object = None,
+                           additional_data: any = None):
         """
         Add a `single-type` command to the dict of commands. A single-type command is just a command name. Whereas the
         strict-type and free-type commands take a command prefix and argument, a single-command is just that, a
@@ -261,11 +274,13 @@ class MagnetStingAdvanced:
         :param command_name: The `name` of the command
         :param command_help: A short `descriptor` about what the command does
         :param command_function: The `function` assigned to the command
+        :param additional_data: 'Additional data' that gets sent over to the command's function
         :return:
         """
         self._command_type[command_name] = "single"
         self._commands_dict[command_name] = command_function
         self._commands_help[command_name] = command_help
+        self._additional_data[command_name] = additional_data
 
     def magnetstingadvanced_mainloop(self):
         # Add the "help" and "quit" commands to the help banner
@@ -328,7 +343,9 @@ class MagnetStingAdvanced:
                         # Check if split input contains two objects, indicating a command and an argument
                         if len(check_command) == 2:
                             if check_command[0] in self._commands_dict:
-                                self._commands_dict[check_command[0]](free_function=check_command[1])
+                                self._commands_dict[check_command[0]](free_function=check_command[1],
+                                                                      additional_data=self._additional_data
+                                                                      [check_command[0]])
                             else:
                                 pass
                         # Print error message if command is missing an argument
