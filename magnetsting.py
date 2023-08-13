@@ -355,7 +355,7 @@ class MagnetStingAdvanced:
                     # -=-=-=- single-type command -=-=-=-
                     elif command_type == "single":
                         if usr_input in self._commands_dict:
-                            self._commands_dict[usr_input]()
+                            self._commands_dict[usr_input](additional_data=self._additional_data[usr_input])
                         else:
                             pass
 
