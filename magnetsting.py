@@ -350,7 +350,7 @@ class MagnetStingAdvanced:
                                 pass
                         # Print error message if command is missing an argument
                         else:
-                            print("[!] - Missing arguement for a 'free'-type command")
+                            print("[!] - Missing argument for a 'free'-type command")
 
                     # -=-=-=- single-type command -=-=-=-
                     elif command_type == "single":
