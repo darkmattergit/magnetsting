@@ -270,11 +270,11 @@ class MagnetStingAdvanced:
         """
         Add a `single-type` command to the dict of commands. A single-type command is just a command name. Whereas the
         strict-type and free-type commands take a command prefix and argument, a single-command is just that, a
-        single-command name with no extra stuff.
+        single-command name with no extra stuff, unless the `additional_data` parameter is used, of course.
         :param command_name: The `name` of the command
         :param command_help: A short `descriptor` about what the command does
         :param command_function: The `function` assigned to the command
-        :param additional_data: 'Additional data' that gets sent over to the command's function
+        :param additional_data: `Additional data` that gets sent over to the command's function
         :return:
         """
         self._command_type[command_name] = "single"
