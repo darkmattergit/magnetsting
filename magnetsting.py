@@ -1,6 +1,6 @@
 """
 MAGNETSTING\n
-v1.0.3\n
+v1.0.4\n
 `MAGNETSTING` is a command line framework used to set up command line interpreters. The `readline` module is also
 imported in order to provide shell behaviour.\n
 The class `MagnetSting` is a simple command line builder, allowing the
@@ -18,6 +18,9 @@ The `MagnetStingAdvanced` class gives the user to set three types commands:\n
   command would be "`command name <any argument>`".
 - single: single commands are a single command name, these operate exactly like the commands in the MagnetSting class.
   The command syntax for a `single-type` command would be "`command name`"
+- parser: parser commands use a command prefix like `strict-type` and `free-type` commands, however, rather than run
+  a function, it runs a python file with `argparse` with the arguments you give it. The command syntax for a parser-type
+  command would be "`command name <arguments>`"
 
 When assigning functions to specific commands, two certain parameters must be given to the function you wish to execute
 based on the type of command it is attached to:\n
@@ -33,6 +36,7 @@ based on the type of command it is attached to:\n
   as they only operate based on commands names. The `additional_data` parameter can be set as `None` if nothing extra is
   needed.
 """
+import subprocess
 import readline
 
 # TODO: Add readline command completion to both MagnetSting and MagnetStingAdvanced classes
@@ -292,12 +296,31 @@ class MagnetStingAdvanced:
         :param command_help: A short `descriptor` about what the command does
         :param command_function: The `function` assigned to the command
         :param additional_data: `Additional data` that gets sent over to the command's function
-        :return:
+        :return: None
         """
         self._command_type[command_name] = "single"
         self._commands_dict[command_name] = command_function
         self._commands_help[command_name] = command_help
         self._additional_data[command_name] = additional_data
+
+    def add_command_parser(self, command_name: str = None, command_help: str = None, command_file: str = None):
+        """
+        Add a 'parser-type' command to the dict of commands. A parser-type command is different from all the other
+        commands. Instead of running a function like the others, a parser-type command runs another python file, as
+        specified in the `command_file` parameter. The python file must be an `argparse` type of script, as this type of
+        command takes the arguments typed after the command name (ex. foo - -bar) and uses the `subprocess` module to
+        run the assigned file with the arguments that were typed. For example, if you typed `foo - -help` with the file
+        `bar.py` being assigned to the command name `foo`, then the subprocess module would run (bar.py - -help),
+        which would print out the help banner. Since a file is being used here, there are ***NO*** specific parameters
+        that need to be added when creating/using the file.
+        :param command_name: The `name` of the command
+        :param command_help: A short `descriptor` about what the command does
+        :param command_file: The `full or relative path` of the file assigned to the command
+        :return: None
+        """
+        self._command_type[command_name] = "parser"
+        self._commands_dict[command_name] = command_file
+        self._commands_help[command_name] = command_help
 
     def magnetstingadvanced_mainloop(self):
         # Add the "help" and "quit" commands to the help banner
@@ -375,6 +398,12 @@ class MagnetStingAdvanced:
                             self._commands_dict[usr_input](additional_data=self._additional_data[usr_input])
                         else:
                             pass
+
+                    # -=-=-=- parser-type command -=-=-=-
+                    elif command_type == "parser":
+                        if check_command[0] in self._commands_dict:
+                            args = usr_input[len(check_command[0]):]
+                            subprocess.run(f"python3 {self._commands_dict[check_command[0]]} {args}", shell=True)
 
                 # A special help command for strict-type commands. By typing "help <command name>", it will display
                 # all the options available to that strict-type command name
