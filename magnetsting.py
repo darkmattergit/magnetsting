@@ -164,7 +164,7 @@ class MagnetStingAdvanced:
                  banner_identifiers: tuple = ("MAGNETSTING", "Identifiers here"), cmd_prompt: str = "\n>> ",
                  exit_message: str = "[*] - Exiting", help_spacers: int = 4, help_indent: int = 2,
                  command_hint_spacers: int = 2, confirm_keywords: tuple = ("y", "yes", "confirm"),
-                 break_keywords: tuple = ("q", "quit", "exit")):
+                 break_keywords: tuple = ("q", "quit", "exit"), verbose: bool = False, type_spacer: int = 12):
         """
         Initialize instance of MagnetStingAdvanced
         :param framework_name: The name of the framework
@@ -181,6 +181,10 @@ class MagnetStingAdvanced:
                                      does not exist
         :param confirm_keywords: A `tuple` of keywords used to confirm something
         :param break_keywords: A `tuple` of keywords used to exit
+        :param verbose: In the help banner, show the command types of the command names. Having the parameter set to
+                        `True` will show the command types while `False` will not
+        :param type_spacer: The `spacing` between the command description and command type, if the verbose help banner
+                            is used
         """
 
         # Command types:
@@ -213,17 +217,30 @@ class MagnetStingAdvanced:
         self.command_hint_spacers = command_hint_spacers
         self.confirm_keywords = confirm_keywords
         self.break_keywords = break_keywords
+        self.verbose = verbose
+        self.type_spacer = type_spacer
 
     def _help_command(self):
         """
         Print out the help banner
         :return: None
         """
-        print()
-        print(f"{' '*self.help_indent}{'Command' :{self.help_spacers}} {'Description' :{self.help_spacers}}")
-        print(f"{' '*self.help_indent}{'-------':{self.help_spacers}} {'-----------' :{self.help_spacers}}")
-        for commands in self._commands_help:
-            print(f"{' '*self.help_indent}{commands :{self.help_spacers}} {self._commands_help[commands]}")
+        if self.verbose is False:
+            print()
+            print(f"{' '*self.help_indent}{'Command' :{self.help_spacers}} {'Description' :{self.help_spacers}}")
+            print(f"{' '*self.help_indent}{'-------':{self.help_spacers}} {'-----------' :{self.help_spacers}}")
+            for commands in self._commands_help:
+                print(f"{' '*self.help_indent}{commands :{self.help_spacers}} {self._commands_help[commands]}")
+        else:
+            print()
+            print(f"{' ' * self.help_indent}{'Command' :{self.help_spacers}} {'Description' :{self.type_spacer}} "
+                  f"{'Type'}")
+            print(f"{' ' * self.help_indent}{'-------':{self.help_spacers}} {'-----------' :{self.type_spacer}} "
+                  f"{'----' :{self.help_spacers}}")
+
+            for commands, types in zip(self._commands_help, self._command_type):
+                print(f"{' '*self.help_indent}{commands :{self.help_spacers}} "
+                      f"{self._commands_help[commands] :{self.type_spacer}} {self._command_type[types]}")
 
     def add_command_strict(self, command_name: str = None, command_help: str = None,
                            command_options: tuple | list = None, command_function: object = None,
