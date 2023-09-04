@@ -2,3 +2,5 @@ magnetsting_dev.py
 .idea
 __pycache__
 magnetsting_args.py
+package
+*.whl
