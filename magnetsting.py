@@ -47,7 +47,7 @@ class MagnetSting:
     def __init__(self, banner_decorators: str = "-=-", decorators_length: int = 12,
                  banner_identifiers: tuple = ("MAGNETSTING", "Identifiers Here",), cmd_prompt: str = "\n>> ",
                  exit_message: str = "[*] - Exiting", help_spacers: int = 4, help_indent: int = 2,
-                 command_hint_spacers: int = 2, confirm_list=None, break_list=None):
+                 command_hint_spacers: int = 2, break_list=None):
         """
         Initialize instance of `MAGNETSTING`
         :param banner_decorators: The `decorators` of the banner on start-up
@@ -61,7 +61,6 @@ class MagnetSting:
         :param help_indent: The `number of spaces` the help banner is indented
         :param command_hint_spacers: The `number of spaces` between command hints when a user enters a command that does
         not exist
-        :param confirm_list: A `list` of keywords that are used to confirm an action
         :param break_list: A `list` of keywords that are used to exit
         """
 
@@ -70,13 +69,6 @@ class MagnetSting:
                 "quit",
                 "exit",
                 "q",
-            ]
-
-        if confirm_list is None:
-            confirm_list = [
-                "confirm",
-                "yes",
-                "y",
             ]
 
         # Initialize dict that will hold command names and their functions
@@ -93,7 +85,6 @@ class MagnetSting:
         self.help_indent = help_indent
         self.command_help_spacers = command_hint_spacers
         self.break_list = break_list
-        self.confirm_list = confirm_list
 
     def _help_command(self):
         """
