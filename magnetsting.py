@@ -322,6 +322,10 @@ class MagnetStingAdvanced:
         self._commands_dict["help"] = self._help_command
         self._commands_dict[f"{self.break_keywords[0]}"] = ""
 
+        # Add "clear" command
+        self._commands_help["clear"] = "clear the command line"
+        self._command_type["clear"] = "built-in"
+
         # Print the start-up banner and all available commands
         print(self.banner_decorators*self.decorator_length)
         for identifiers in self.banner_identifiers:
@@ -338,6 +342,9 @@ class MagnetStingAdvanced:
             # Print out help banner
             elif usr_input == "help":
                 self._help_command()
+
+            elif usr_input == "clear":
+                subprocess.run("clear", shell=True)
 
             else:
                 # Split command to parse and check for command type and args
