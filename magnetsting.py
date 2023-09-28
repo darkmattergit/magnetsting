@@ -312,9 +312,11 @@ class MagnetStingAdvanced:
         self._commands_help[command_name] = command_help
 
     def magnetstingadvanced_mainloop(self):
-        # Add the "help" and "quit" commands to the help banner
+        # Add the "help" and "quit" commands to the help banner and command type dict
         self._commands_help["help"] = "print this help banner"
         self._commands_help[f"{self.break_keywords[0]}"] = f"exit {self.framework_name}"
+        self._command_type["help"] = "built-in"
+        self._command_type[f"{self.break_keywords[0]}"] = "built-in"
 
         # Add the "help" command to the commands dict
         self._commands_dict["help"] = self._help_command
