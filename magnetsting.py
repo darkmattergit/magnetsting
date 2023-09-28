@@ -167,8 +167,8 @@ class MagnetStingAdvanced:
     def __init__(self, framework_name: str = "MAGNETSTING", banner_decorators: str = "-=-", decorator_length: int = 12,
                  banner_identifiers: tuple = ("MAGNETSTING", "Identifiers here"), cmd_prompt: str = "\n>> ",
                  exit_message: str = "[*] - Exiting", help_spacers: int = 4, help_indent: int = 2,
-                 command_hint_spacers: int = 2, confirm_keywords: tuple = ("y", "yes", "confirm"),
-                 break_keywords: tuple = ("q", "quit", "exit"), verbose: bool = False, type_spacer: int = 12):
+                 command_hint_spacers: int = 2, break_keywords: tuple = ("q", "quit", "exit"),
+                 verbose: bool = False, type_spacer: int = 12):
         """
         Initialize instance of MagnetStingAdvanced
         :param framework_name: The name of the framework
@@ -183,7 +183,6 @@ class MagnetStingAdvanced:
         :param help_indent: The `number of spaces` the help banner is indented
         :param command_hint_spacers: The `number of spaces` between command hints when the user enters a command that
                                      does not exist
-        :param confirm_keywords: A `tuple` of keywords used to confirm something
         :param break_keywords: A `tuple` of keywords used to exit
         :param verbose: In the help banner, show the command types of the command names. Having the parameter set to
                         `True` will show the command types while `False` will not
@@ -219,7 +218,6 @@ class MagnetStingAdvanced:
         self.help_spacers = help_spacers
         self.help_indent = help_indent
         self.command_hint_spacers = command_hint_spacers
-        self.confirm_keywords = confirm_keywords
         self.break_keywords = break_keywords
         self.verbose = verbose
         self.type_spacer = type_spacer
