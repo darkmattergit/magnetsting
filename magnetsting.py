@@ -328,13 +328,14 @@ class MagnetStingAdvanced:
         self._commands_help["clear"] = "clear the command line"
         self._command_type["clear"] = "built-in"
 
-        # Print the start-up banner and all available commands
+        # Print the class-generated opening banner and command help banner
         if self.custom_banner is None:
             print(self.banner_decorators*self.decorator_length)
             for identifiers in self.banner_identifiers:
                 print(identifiers)
             print(self.banner_decorators*self.decorator_length)
             self._help_command()
+        # Print custom banner and command help banner
         else:
             print(self.custom_banner)
             self._help_command()
