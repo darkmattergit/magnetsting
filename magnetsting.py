@@ -1,6 +1,6 @@
 """
 MAGNETSTING\n
-v1.0.4\n
+v1.0.5\n
 `MAGNETSTING` is a command line framework used to set up command line interpreters. The `readline` module is also
 imported in order to provide shell behaviour.\n
 The class `MagnetSting` is a simple command line builder, allowing the
