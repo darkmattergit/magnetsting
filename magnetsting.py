@@ -409,17 +409,17 @@ class MagnetStingAdvanced:
                             args = usr_input[len(check_command[0]):]
                             subprocess.run(f"python3 {self._commands_dict[check_command[0]]} {args}", shell=True)
 
-                # A special help command for strict-type commands. By typing "help <command name>", it will display
-                # all the options available to that strict-type command name
-                elif len(check_command) == 2 and check_command[0] == "help":
-                    if check_command[1] in self._command_type:
-                        get_help_command = self._command_type[check_command[1]]
-                        if get_help_command == "strict":
-                            print(f"[*] - Options for {check_command[1]}\n")
-                            for help_options in self._command_options[check_command[1]]:
-                                print(f"[+] - {help_options}")
-                        else:
-                            pass
+                    # A special help command for strict-type commands. By typing "help <command name>", it will display
+                    # all the options available to that strict-type command name
+                    elif len(check_command) == 2 and check_command[0] == "help":
+                        if check_command[1] in self._command_type:
+                            get_help_command = self._command_type[check_command[1]]
+                            if get_help_command == "strict":
+                                print(f"\n[*] - Options for {check_command[1]}:")
+                                for help_options in self._command_options[check_command[1]]:
+                                    print(f"   [>] - {help_options}")
+                            else:
+                                pass
 
                 # Give the user possible command suggestions based on the input
                 else:
