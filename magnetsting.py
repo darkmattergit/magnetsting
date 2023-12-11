@@ -326,6 +326,7 @@ class MagnetStingAdvanced:
         # Add the "help" command to the commands dict
         self._commands_dict["help"] = self._help_command
         self._commands_dict[f"{self.break_keywords[0]}"] = ""
+        self._commands_dict["clear"] = ""
 
         # Print the class-generated opening banner and command help banner
         if self.custom_banner is None:
