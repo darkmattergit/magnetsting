@@ -188,18 +188,8 @@ class MagnetStingAdvanced:
         #     - free: command prefix with any arg allowed
         #     - single: just a regular command
 
-        # strict, free or single
-        self._command_type = {}
-        # strict command options
-        self._command_options = {}
-        # command names and their functions
-        self._commands_dict = {}
-        # command help context
-        self._commands_help = {}
-        # Every possible command for use by readline completion ***IN DEVELOPMENT***
-        self._full_commands = []
-        # Additional data to be sent over to the command function, can be anything (str, int, float, object, etc.)
-        self._additional_data = {}
+        # Initialize dict that will hold command names and their information
+        self._commands_info = {}
 
         self.framework_name = framework_name
         self.banner_decorators = banner_decorators
@@ -237,27 +227,6 @@ class MagnetStingAdvanced:
                 print(f"{' '*self.help_indent}{commands :{self.help_spacers}} "
                       f"{self._commands_help[commands] :{self.type_spacer}} {self._command_type[types]}")
 
-    def add_command_strict(self, command_name: str = None, command_help: str = None,
-                           command_options: tuple | list = None, command_function: object = None,
-                           additional_data: any = None) -> None:
-        """
-        Add a `strict-type` command to the dict of commands. A strict-type command operates with a command prefix and
-        an argument. A strict command has preset arguments that it can take. If an argument is not within the tuple,
-        it will not run the command. All functions attached to a strict-type command ***MUST*** have a parameter called
-        `strict_command`, which is a command argument that is passed to the assigned function.
-        :param command_name: The `name` of the command
-        :param command_help: A short `descriptor` about what the command does
-        :param command_options: A `tuple` of preset command arguments/options
-        :param command_function: The `function` assigned to the command
-        :param additional_data: `Additional data` that gets sent over to the command's function
-        :return: None
-        """
-        self._command_type[command_name] = "strict"
-        self._commands_dict[command_name] = command_function
-        self._commands_help[command_name] = command_help
-        self._command_options[command_name] = command_options
-        self._additional_data[command_name] = additional_data
-
     def add_command_free(self, command_name: str = None, command_help: str = None,
                          command_function: object = None, additional_data: any = None) -> None:
         """
@@ -272,10 +241,11 @@ class MagnetStingAdvanced:
         :param additional_data: 'Additional data' that gets sent over to the command's function
         :return: None
         """
-        self._command_type[command_name] = "free"
-        self._commands_dict[command_name] = command_function
-        self._commands_help[command_name] = command_help
-        self._additional_data[command_name] = additional_data
+
+        self._commands_info[command_name]["type"] = "free"
+        self._commands_info[command_name]["function"] = command_function
+        self._commands_info[command_name]["help"] = command_help
+        self._commands_info[command_name]["additional"] = additional_data
 
     def add_command_single(self, command_name: str = None, command_help: str = None, command_function: object = None,
                            additional_data: any = None):
@@ -289,10 +259,11 @@ class MagnetStingAdvanced:
         :param additional_data: `Additional data` that gets sent over to the command's function
         :return: None
         """
-        self._command_type[command_name] = "single"
-        self._commands_dict[command_name] = command_function
-        self._commands_help[command_name] = command_help
-        self._additional_data[command_name] = additional_data
+
+        self._commands_info[command_name]["type"] = "single"
+        self._commands_info[command_name]["function"] = command_function
+        self._commands_info[command_name]["help"] = command_help
+        self._commands_info[command_name]["additional"] = additional_data
 
     def add_command_parser(self, command_name: str = None, command_help: str = None, command_file: str = None):
         """
@@ -309,9 +280,10 @@ class MagnetStingAdvanced:
         :param command_file: The `full or relative path` of the file assigned to the command
         :return: None
         """
-        self._command_type[command_name] = "parser"
-        self._commands_dict[command_name] = command_file
-        self._commands_help[command_name] = command_help
+
+        self._commands_info[command_name]["type"] = "parser"
+        self._commands_info[command_name]["file"] = command_file
+        self._commands_info[command_name]["help"] = command_help
 
     def magnetstingadvanced_mainloop(self):
 
@@ -360,31 +332,8 @@ class MagnetStingAdvanced:
                 if check_command[0] in self._command_type:
                     command_type = self._command_type[check_command[0]]
 
-                    # -=-=-=- strict-type command -=-=-=-
-                    if command_type == "strict":
-                        # Try to check if the command argument is in the command's specified tuple
-                        try:
-                            # Run function with command argument
-                            if check_command[1] in self._command_options[check_command[0]]:
-                                self._commands_dict[check_command[0]](strict_function=check_command[1])
-                            # Print out possible options of command based on user input
-                            else:
-                                possible_strict_options = ""
-                                for options in self._command_options[check_command[0]]:
-                                    if options.startswith(check_command[1]):
-                                        possible_strict_options += f"{options}  "
-                                    else:
-                                        pass
-                                print(f"[*] - Possible options for `{check_command[0]}`")
-                                print(possible_strict_options)
-                        # IndexError exception if command is missing an argument
-                        except IndexError:
-                            print("[!] - Index error, missing argument for a 'strict'-type command")
-                        else:
-                            pass
-
                     # -=-=-=- free-type command -=-=-=-
-                    elif command_type == "free":
+                    if command_type == "free":
                         # Check if split input contains two objects, indicating a command and an argument
                         if len(check_command) == 2:
                             if check_command[0] in self._commands_dict:
