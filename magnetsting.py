@@ -292,22 +292,21 @@ class MagnetStingAdvanced:
         }
 
     def magnetstingadvanced_mainloop(self):
-
-        # # Add the "clear", "help" and "quit" commands to the help banner and command type dict
-        # self._commands_help["clear"] = "clear the command line"
-        # self._command_type["clear"] = "built-in"
-        # self._commands_help["help"] = "print this help banner"
-        # self._commands_help[f"{self.break_keywords[0]}"] = f"exit {self.framework_name}"
-        # self._command_type["help"] = "built-in"
-        # self._command_type[f"{self.break_keywords[0]}"] = "built-in"
-        #
-        # # Add the "help" command to the commands dict
-        # self._commands_dict["help"] = self._help_command
-        # self._commands_dict[f"{self.break_keywords[0]}"] = ""
-        # self._commands_dict["clear"] = ""
-
         # Add built-in commands to commands dict
+        self._commands_info["help"] = {
+            "type": "built-in",
+            "help": "print this help banner",
+        }
 
+        self._commands_info["clear"] = {
+            "type": "built-in",
+            "help": "clear the screen",
+        }
+
+        self._commands_info[self.break_keywords[0]] = {
+            "type": "built-in",
+            "help": f"exit {self.framework_name}",
+        }
 
         # Print the class-generated opening banner and command help banner
         if self.custom_banner is None:
