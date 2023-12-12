@@ -242,10 +242,12 @@ class MagnetStingAdvanced:
         :return: None
         """
 
-        self._commands_info[command_name]["type"] = "free"
-        self._commands_info[command_name]["function"] = command_function
-        self._commands_info[command_name]["help"] = command_help
-        self._commands_info[command_name]["additional"] = additional_data
+        self._commands_info[command_name] = {
+            "type": "free",
+            "function": command_function,
+            "help": command_help,
+            "additional": additional_data,
+        }
 
     def add_command_single(self, command_name: str = None, command_help: str = None, command_function: object = None,
                            additional_data: any = None):
@@ -260,10 +262,12 @@ class MagnetStingAdvanced:
         :return: None
         """
 
-        self._commands_info[command_name]["type"] = "single"
-        self._commands_info[command_name]["function"] = command_function
-        self._commands_info[command_name]["help"] = command_help
-        self._commands_info[command_name]["additional"] = additional_data
+        self._commands_info[command_name] = {
+            "type": "single",
+            "function": command_function,
+            "help": command_help,
+            "additional": additional_data,
+        }
 
     def add_command_parser(self, command_name: str = None, command_help: str = None, command_file: str = None):
         """
@@ -281,24 +285,29 @@ class MagnetStingAdvanced:
         :return: None
         """
 
-        self._commands_info[command_name]["type"] = "parser"
-        self._commands_info[command_name]["file"] = command_file
-        self._commands_info[command_name]["help"] = command_help
+        self._commands_info[command_name] = {
+            "type": "parser",
+            "file": command_file,
+            "help": command_help,
+        }
 
     def magnetstingadvanced_mainloop(self):
 
-        # Add the "clear", "help" and "quit" commands to the help banner and command type dict
-        self._commands_help["clear"] = "clear the command line"
-        self._command_type["clear"] = "built-in"
-        self._commands_help["help"] = "print this help banner"
-        self._commands_help[f"{self.break_keywords[0]}"] = f"exit {self.framework_name}"
-        self._command_type["help"] = "built-in"
-        self._command_type[f"{self.break_keywords[0]}"] = "built-in"
+        # # Add the "clear", "help" and "quit" commands to the help banner and command type dict
+        # self._commands_help["clear"] = "clear the command line"
+        # self._command_type["clear"] = "built-in"
+        # self._commands_help["help"] = "print this help banner"
+        # self._commands_help[f"{self.break_keywords[0]}"] = f"exit {self.framework_name}"
+        # self._command_type["help"] = "built-in"
+        # self._command_type[f"{self.break_keywords[0]}"] = "built-in"
+        #
+        # # Add the "help" command to the commands dict
+        # self._commands_dict["help"] = self._help_command
+        # self._commands_dict[f"{self.break_keywords[0]}"] = ""
+        # self._commands_dict["clear"] = ""
 
-        # Add the "help" command to the commands dict
-        self._commands_dict["help"] = self._help_command
-        self._commands_dict[f"{self.break_keywords[0]}"] = ""
-        self._commands_dict["clear"] = ""
+        # Add built-in commands to commands dict
+
 
         # Print the class-generated opening banner and command help banner
         if self.custom_banner is None:
