@@ -214,8 +214,8 @@ class MagnetStingAdvanced:
             print()
             print(f"{' '*self.help_indent}{'Command' :{self.help_spacers}} {'Description' :{self.help_spacers}}")
             print(f"{' '*self.help_indent}{'-------':{self.help_spacers}} {'-----------' :{self.help_spacers}}")
-            for commands in self._commands_help:
-                print(f"{' '*self.help_indent}{commands :{self.help_spacers}} {self._commands_help[commands]}")
+            for commands in self._commands_info:
+                print(f"{' '*self.help_indent}{commands :{self.help_spacers}} {self._commands_info[commands]['help']}")
         else:
             print()
             print(f"{' ' * self.help_indent}{'Command' :{self.help_spacers}} {'Description' :{self.type_spacer}} "
@@ -223,9 +223,10 @@ class MagnetStingAdvanced:
             print(f"{' ' * self.help_indent}{'-------':{self.help_spacers}} {'-----------' :{self.type_spacer}} "
                   f"{'----' :{self.help_spacers}}")
 
-            for commands, types in zip(self._commands_help, self._command_type):
+            for commands in self._commands_info:
                 print(f"{' '*self.help_indent}{commands :{self.help_spacers}} "
-                      f"{self._commands_help[commands] :{self.type_spacer}} {self._command_type[types]}")
+                      f"{self._commands_info[commands]['help'] :{self.type_spacer}} "
+                      f"{self._commands_info[commands]['type']}")
 
     def add_command_free(self, command_name: str = None, command_help: str = None,
                          command_function: object = None, additional_data: any = None) -> None:
@@ -333,47 +334,47 @@ class MagnetStingAdvanced:
             elif usr_input == "clear":
                 subprocess.run("clear", shell=True)
 
-            else:
-                # Split command to parse and check for command type and args
-                check_command = usr_input.split(" ")
-                # Check the type of command (strict, free, single)
-                if check_command[0] in self._command_type:
-                    command_type = self._command_type[check_command[0]]
-
-                    # -=-=-=- free-type command -=-=-=-
-                    if command_type == "free":
-                        # Check if split input contains two objects, indicating a command and an argument
-                        if len(check_command) == 2:
-                            if check_command[0] in self._commands_dict:
-                                self._commands_dict[check_command[0]](free_function=check_command[1],
-                                                                      additional_data=self._additional_data
-                                                                      [check_command[0]])
-                            else:
-                                pass
-                        # Print error message if command is missing an argument
-                        else:
-                            print("[!] - Missing argument for a 'free'-type command")
-
-                    # -=-=-=- single-type command -=-=-=-
-                    elif command_type == "single":
-                        if usr_input in self._commands_dict:
-                            self._commands_dict[usr_input](additional_data=self._additional_data[usr_input])
-                        else:
-                            pass
-
-                    # -=-=-=- parser-type command -=-=-=-
-                    elif command_type == "parser":
-                        if check_command[0] in self._commands_dict:
-                            args = usr_input[len(check_command[0]):]
-                            subprocess.run(f"python3 {self._commands_dict[check_command[0]]} {args}", shell=True)
-
-                # Give the user possible command suggestions based on the input
-                else:
-                    possible_commands = ""
-                    for commands in self._commands_dict:
-                        if commands.startswith(check_command[0]):
-                            possible_commands += f"{commands}  "
-                        else:
-                            pass
-                    print("[*] - Possible command(s): ")
-                    print(possible_commands)
+            # else:
+            #     # Split command to parse and check for command type and args
+            #     check_command = usr_input.split(" ")
+            #     # Check the type of command (strict, free, single)
+            #     if check_command[0] in self._command_type:
+            #         command_type = self._command_type[check_command[0]]
+            #
+            #         # -=-=-=- free-type command -=-=-=-
+            #         if command_type == "free":
+            #             # Check if split input contains two objects, indicating a command and an argument
+            #             if len(check_command) == 2:
+            #                 if check_command[0] in self._commands_dict:
+            #                     self._commands_dict[check_command[0]](free_function=check_command[1],
+            #                                                           additional_data=self._additional_data
+            #                                                           [check_command[0]])
+            #                 else:
+            #                     pass
+            #             # Print error message if command is missing an argument
+            #             else:
+            #                 print("[!] - Missing argument for a 'free'-type command")
+            #
+            #         # -=-=-=- single-type command -=-=-=-
+            #         elif command_type == "single":
+            #             if usr_input in self._commands_dict:
+            #                 self._commands_dict[usr_input](additional_data=self._additional_data[usr_input])
+            #             else:
+            #                 pass
+            #
+            #         # -=-=-=- parser-type command -=-=-=-
+            #         elif command_type == "parser":
+            #             if check_command[0] in self._commands_dict:
+            #                 args = usr_input[len(check_command[0]):]
+            #                 subprocess.run(f"python3 {self._commands_dict[check_command[0]]} {args}", shell=True)
+            #
+            #     # Give the user possible command suggestions based on the input
+            #     else:
+            #         possible_commands = ""
+            #         for commands in self._commands_dict:
+            #             if commands.startswith(check_command[0]):
+            #                 possible_commands += f"{commands}  "
+            #             else:
+            #                 pass
+            #         print("[*] - Possible command(s): ")
+            #         print(possible_commands)
