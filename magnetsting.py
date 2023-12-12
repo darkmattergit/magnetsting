@@ -334,47 +334,43 @@ class MagnetStingAdvanced:
             elif usr_input == "clear":
                 subprocess.run("clear", shell=True)
 
-            # else:
-            #     # Split command to parse and check for command type and args
-            #     check_command = usr_input.split(" ")
-            #     # Check the type of command (strict, free, single)
-            #     if check_command[0] in self._command_type:
-            #         command_type = self._command_type[check_command[0]]
-            #
-            #         # -=-=-=- free-type command -=-=-=-
-            #         if command_type == "free":
-            #             # Check if split input contains two objects, indicating a command and an argument
-            #             if len(check_command) == 2:
-            #                 if check_command[0] in self._commands_dict:
-            #                     self._commands_dict[check_command[0]](free_function=check_command[1],
-            #                                                           additional_data=self._additional_data
-            #                                                           [check_command[0]])
-            #                 else:
-            #                     pass
-            #             # Print error message if command is missing an argument
-            #             else:
-            #                 print("[!] - Missing argument for a 'free'-type command")
-            #
-            #         # -=-=-=- single-type command -=-=-=-
-            #         elif command_type == "single":
-            #             if usr_input in self._commands_dict:
-            #                 self._commands_dict[usr_input](additional_data=self._additional_data[usr_input])
-            #             else:
-            #                 pass
-            #
-            #         # -=-=-=- parser-type command -=-=-=-
-            #         elif command_type == "parser":
-            #             if check_command[0] in self._commands_dict:
-            #                 args = usr_input[len(check_command[0]):]
-            #                 subprocess.run(f"python3 {self._commands_dict[check_command[0]]} {args}", shell=True)
-            #
-            #     # Give the user possible command suggestions based on the input
-            #     else:
-            #         possible_commands = ""
-            #         for commands in self._commands_dict:
-            #             if commands.startswith(check_command[0]):
-            #                 possible_commands += f"{commands}  "
-            #             else:
-            #                 pass
-            #         print("[*] - Possible command(s): ")
-            #         print(possible_commands)
+            else:
+                split_command = usr_input.split(" ")
+
+                # Get the name of the command
+                get_name = split_command[0]
+
+                if get_name in self._commands_info:
+                    # === Free Commands ===
+                    if self._commands_info[get_name]["type"] == "free":
+                        if len(split_command) == 1 or split_command[1].isspace() or split_command[1] == "":
+                            print("[!] Argument required")
+
+                        else:
+                            get_arg = split_command[1]
+                            self._commands_info[get_name]["function"](free_function=get_arg,
+                                                                      additional_data=self._commands_info[get_name]
+                                                                      ["additional"])
+
+                    # === Single Commands ===
+                    elif self._commands_info[get_name]["type"] == "single":
+                        self._commands_info[get_name]["function"](additional_data=self._commands_info[get_name]
+                                                                  ["additional"])
+
+                    # === Parser Commands ===
+                    elif self._commands_info[get_name]["type"] == "parser":
+                        parser_args = usr_input[len(get_name):]
+                        subprocess.run(f"python3 {self._commands_info[get_name]['file']} {parser_args}", shell=True)
+                else:
+                    # Initialize string that will hold command suggestions based on the user input
+                    possible_commands = ""
+
+                    # Loop through command dict and find any commands that start with the user input
+                    for commands in self._commands_info:
+                        if commands.startswith(get_name):
+                            possible_commands += f"{commands}  "
+                        else:
+                            pass
+
+                    print("Possible command(s): ")
+                    print(possible_commands)
