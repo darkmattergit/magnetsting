@@ -294,14 +294,14 @@ class MagnetStingAdvanced:
 
     def magnetstingadvanced_mainloop(self):
         # Add built-in commands to commands dict
-        self._commands_info["help"] = {
-            "type": "built-in",
-            "help": "print this help banner",
-        }
-
         self._commands_info["clear"] = {
             "type": "built-in",
             "help": "clear the screen",
+        }
+
+        self._commands_info["help"] = {
+            "type": "built-in",
+            "help": "print this help banner",
         }
 
         self._commands_info[self.break_keywords[0]] = {
