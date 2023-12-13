@@ -210,12 +210,15 @@ class MagnetStingAdvanced:
         Print out the help banner
         :return: None
         """
+        # Print commands and their help descriptions
         if self.verbose is False:
             print()
             print(f"{' '*self.help_indent}{'Command' :{self.help_spacers}} {'Description' :{self.help_spacers}}")
             print(f"{' '*self.help_indent}{'-------':{self.help_spacers}} {'-----------' :{self.help_spacers}}")
             for commands in self._commands_info:
                 print(f"{' '*self.help_indent}{commands :{self.help_spacers}} {self._commands_info[commands]['help']}")
+
+        # Print commands, their help descriptions and the commands types
         else:
             print()
             print(f"{' ' * self.help_indent}{'Command' :{self.help_spacers}} {'Description' :{self.type_spacer}} "
@@ -251,7 +254,7 @@ class MagnetStingAdvanced:
         }
 
     def add_command_single(self, command_name: str = None, command_help: str = None, command_function: object = None,
-                           additional_data: any = None):
+                           additional_data: any = None) -> None:
         """
         Add a `single-type` command to the dict of commands. A single-type command is just a command name. Whereas the
         strict-type and free-type commands take a command prefix and argument, a single-command is just that, a
@@ -270,7 +273,7 @@ class MagnetStingAdvanced:
             "additional": additional_data,
         }
 
-    def add_command_parser(self, command_name: str = None, command_help: str = None, command_file: str = None):
+    def add_command_parser(self, command_name: str = None, command_help: str = None, command_file: str = None) -> None:
         """
         Add a 'parser-type' command to the dict of commands. A parser-type command is different from all the other
         commands. Instead of running a function like the others, a parser-type command runs another python file, as
@@ -316,6 +319,7 @@ class MagnetStingAdvanced:
                 print(identifiers)
             print(self.banner_decorators*self.decorator_length)
             self._help_command()
+
         # Print custom banner and command help banner
         else:
             print(self.custom_banner)
@@ -331,6 +335,7 @@ class MagnetStingAdvanced:
             elif usr_input == "help":
                 self._help_command()
 
+            # Clear the command line
             elif usr_input == "clear":
                 subprocess.run("clear", shell=True)
 
@@ -361,6 +366,7 @@ class MagnetStingAdvanced:
                     elif self._commands_info[get_name]["type"] == "parser":
                         parser_args = usr_input[len(get_name):]
                         subprocess.run(f"python3 {self._commands_info[get_name]['file']} {parser_args}", shell=True)
+
                 else:
                     # Initialize string that will hold command suggestions based on the user input
                     possible_commands = ""
@@ -372,5 +378,6 @@ class MagnetStingAdvanced:
                         else:
                             pass
 
+                    # Print out string of possible commands
                     print("Possible command(s): ")
                     print(possible_commands)
