@@ -348,7 +348,7 @@ class MagnetStingAdvanced:
                             print("[!] Argument required")
 
                         else:
-                            get_arg = split_command[1]
+                            get_arg = usr_input[len(get_name)+1:]
                             self._commands_info[get_name]["function"](free_function=get_arg,
                                                                       additional_data=self._commands_info[get_name]
                                                                       ["additional"])
