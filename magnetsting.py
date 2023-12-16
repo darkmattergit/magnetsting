@@ -360,7 +360,7 @@ class MagnetStingAdvanced:
 
                     # === Parser Commands ===
                     elif self._commands_info[get_name]["type"] == "parser":
-                        parser_args = usr_input[len(get_name):]
+                        parser_args = usr_input[len(get_name)+1:]
                         subprocess.run(f"python3 {self._commands_info[get_name]['file']} {parser_args}", shell=True)
 
                 else:
