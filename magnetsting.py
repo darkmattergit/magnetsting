@@ -1,40 +1,7 @@
 """
-MAGNETSTING\n
+**MAGNETSTING**\n
 v1.0.6\n
-`MAGNETSTING` is a command line framework used to set up command line interpreters. The `readline` module is also
-imported in order to provide shell behaviour.\n
-The class `MagnetSting` is a simple command line builder, allowing the
-user to construct a command line tool/program, with a start-up banner, a help banner, and adding command names that
-run functions. It also provides command hints, incase the user does not know/mistypes the command.\n
-The class `MagnetStingAdvanced` offers a wider range of capabilities compared to the `MagnetSting` class.
-The `MagnetStingAdvanced` class gives the user to set three types commands:\n
-- strict: strict commands have a command prefix and a tuple of accepted arguments. The command syntax for a strict-type
-  command would be "`command name <argument>`" where the argument is one that is specified in the preset tuple. Any
-  arguments outside the tuple will result in an error message informing the user that the argument does not exist in the
-  tuple.\n
-  A special `help` command exists for strict commands. The user can type "`help <command name>`" and it will list `all
-  the available options` for that strict-type command.
-- free: free commands also use a command prefix, however, it can take any argument. The command syntax for a `free-type`
-  command would be "`command name <any argument>`".
-- single: single commands are a single command name, these operate exactly like the commands in the MagnetSting class.
-  The command syntax for a `single-type` command would be "`command name`"
-- parser: parser commands use a command prefix like `strict-type` and `free-type` commands, however, rather than run
-  a function, it runs a python file with `argparse` with the arguments you give it. The command syntax for a parser-type
-  command would be "`command name <arguments>`"
-
-When assigning functions to specific commands, two certain parameters must be given to the function you wish to execute
-based on the type of command it is attached to:\n
-- `strict-type commands`: any function attached to a strict-type command ***MUST*** have a parameter called
-  `strict_function` ***AND*** `additional_data`. The `strict_function` parameter is for the command argument while the
-  `additional_data` parameter is to send any additional data to the command's function. The `additional_data` parameter
-  can be set as `None` if nothing extra is needed.
-- `free-type commands`: any function attached to a free-type command ***MUST*** have a parameter called `free_function`
-  ***AND*** `additional_data`. The `free_function` parameter is for the command argument while the `additional_data`
-  parameter is to send any additional data to the command's function. The `additional_data` parameter can be set as
-  `None` if nothing extra is needed.
-- `single-type commands`: single-type commands ***MUST*** only have the `additional_data` parameter,
-  as they only operate based on commands names. The `additional_data` parameter can be set as `None` if nothing extra is
-  needed.
+Create command-line-based projects with ease.
 """
 import subprocess
 import readline
@@ -43,7 +10,14 @@ import readline
 
 
 class MagnetSting:
-
+    """
+    `MagnetSting` is a framework that can be used to build projects in the command line. MagnetSting allows you to
+    create various commands and handles their execution, freeing you from the need of countless `if`, `elif` and `else`
+    statements. The framework also handles creating an opening banner that displays everytime the project is run and
+    also generates a handy command help banner, showing all the available commands and a short description of what they
+    do. In case an unknown command is entered, MagnetSting helpfully suggests possible commands based on what was
+    entered and checking if there are any commands that have a similar name. MagnetSting takes care of it all.
+    """
     def __init__(self, banner_decorators: str = "-=-", decorators_length: int = 12,
                  banner_identifiers: tuple = ("MAGNETSTING", "Identifiers Here",), cmd_prompt: str = "\n>> ",
                  exit_message: str = "[*] - Exiting", help_spacers: int = 4, help_indent: int = 2,
@@ -155,6 +129,34 @@ class MagnetSting:
 
 
 class MagnetStingAdvanced:
+    """
+    `MagnetStingAdvanced` is an improved framework based on `MagnetSting`. It allows for a wider range of customization
+    and expands the types of commands that can be created. In this framework, the three types of commands that can be
+    created are: `single`, `free` and `parser`.\n
+    - `single`-type commands are the same as those in `MagnetSting`. Just type in the command name and the function
+      associated with the command will be executed. Anything typed after the command name will not be passed to the
+      function.
+    - `free`-type commands allow for the use of an argument. For example, if the command name is `"foo"`, then you can
+      call it by adding an argument (in this case "bar") to the command: `">> foo bar"`. This would then pass `"bar"`
+      to the function associated with the command `"foo"`.
+    - `parser`-type commands, rather than executing functions associated to command names like `single-` and `free-type`
+      commands, instead executes Python files associated with the command name, specifically, Python files using the
+      `argparse` module. For example, the command name `"foo"` has the file `"bar.py"` associated with it. You can then
+      call the file by typing `"foo - -help"`. The `"- -help"` is then passed to the `"bar.py"` file, which takes the
+      arguments and executes them, and in this case, would display the "help" output.
+    **NOTE**\n
+    Functions used by the `single`- and `free-type` commands **MUST** be created in a specific way inorder for
+    `MagnetSting` to execute them.\n
+    - `single-type`: The functions for `single-type` commands **MUST** have the following parameter:
+      `additional_data: any`. The function cannot have any other parameters. The `additional_data` parameter allows
+      you to pass other data such as strings, ints, objects, etc. to the function, it can be anything else the
+      function may need.
+    - `free-type`: The functions for `free-type` commands **MUST** have the following parameters:
+      `free_function: str` **AND** `additional_data: any`. The function cannot have any other parameters. The
+      `free_function` parameter is for the argument used with the command (recall from the `free-type` example above,
+      this would be "bar"), while the `additional_data` parameter allows you to pass other data such as strings, ints,
+      objects, etc. to the function, it can be anything else the function may need.
+    """
     def __init__(self, framework_name: str = "MAGNETSTING", banner_decorators: str = "-=-", decorator_length: int = 12,
                  banner_identifiers: tuple = ("MAGNETSTING", "Identifiers here"), cmd_prompt: str = "\n>> ",
                  exit_message: str = "[*] - Exiting", help_spacers: int = 4, help_indent: int = 2,
@@ -181,12 +183,6 @@ class MagnetStingAdvanced:
                             is used
         :param custom_banner: Use a custom banner rather than the one that is generated by the class
         """
-
-        # Command types:
-        #     - strict: command prefix with an arg specified in a list (ex. "use arg1" works only if arg1 is
-        #               in the tuple of accepted args)
-        #     - free: command prefix with any arg allowed
-        #     - single: just a regular command
 
         # Initialize dict that will hold command names and their information
         self._commands_info = {}
