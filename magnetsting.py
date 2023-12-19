@@ -136,7 +136,7 @@ class MagnetStingAdvanced:
     - `single`-type commands are the same as those in `MagnetSting`. Just type in the command name and the function
       associated with the command will be executed. Anything typed after the command name will not be passed to the
       function.
-    - `free`-type commands allow for the use of an argument. For example, if the command name is `"foo"`, then you can
+    - `free`-type commands allow for the use of arguments. For example, if the command name is `"foo"`, then you can
       call it by adding an argument (in this case "bar") to the command: `">> foo bar"`. This would then pass `"bar"`
       to the function associated with the command `"foo"`.
     - `parser`-type commands, rather than executing functions associated to command names like `single-` and `free-type`
@@ -146,7 +146,7 @@ class MagnetStingAdvanced:
       arguments and executes them, and in this case, would display the "help" output.
     **NOTE**\n
     Functions used by the `single`- and `free-type` commands **MUST** be created in a specific way inorder for
-    `MagnetSting` to execute them.\n
+    `MagnetStingAdvanced` to execute them.\n
     - `single-type`: The functions for `single-type` commands **MUST** have the following parameter:
       `additional_data: any`. The function cannot have any other parameters. The `additional_data` parameter allows
       you to pass other data such as strings, ints, objects, etc. to the function, it can be anything else the
@@ -230,11 +230,13 @@ class MagnetStingAdvanced:
     def add_command_free(self, command_name: str = None, command_help: str = None,
                          command_function: object = None, additional_data: any = None) -> None:
         """
-        Add a `free-type` command to the dict of commands. A free-type command is similar to a strict-type command. It
-        has a command prefix and takes an argument. However, where it differs from a strict-type command is that the
-        argument can be anything, whereas with a strict-type command, it will only accept a predefined set of arguments.
-        Additionally, all functions attached to a free-type command ***MUST*** have a parameter called `free_function`,
-        which is a command argument that is passed to the assigned function.
+        Add a `free-type` command to the dictionary of commands. A free-type command differs from a `single-type`
+        command by being able to take arguments after the command name. For example, if the command name is `foo`,
+        then you can do: "foo bar baz", with "bar baz" being the argument(s). There are no limits on how long the
+        arguments can be, they can be as long and as many as you would like. If you do not provide an argument to a
+        free-type command, a message will be printed telling you that some form of an argument is required. Functions
+        used in free-type commands **MUST** have the following function parameters: `free_function: str` **AND**
+        `additional_data: any`.
         :param command_name: The `name` of the command
         :param command_help: A short `descriptor` about what the command does
         :param command_function: The `function` assigned to the command
@@ -252,9 +254,10 @@ class MagnetStingAdvanced:
     def add_command_single(self, command_name: str = None, command_help: str = None, command_function: object = None,
                            additional_data: any = None) -> None:
         """
-        Add a `single-type` command to the dict of commands. A single-type command is just a command name. Whereas the
-        strict-type and free-type commands take a command prefix and argument, a single-command is just that, a
-        single-command name with no extra stuff, unless the `additional_data` parameter is used, of course.
+        Add a `single-type` command to the dict of commands. A single-type command consists only of a command name that
+        when called, executes the function assigned to it. Anything typed after the command name is not passed onto the
+        function assigned to the command. Functions used in single-type commands **MUST** have the following parameter:
+        `additional_data: any`.
         :param command_name: The `name` of the command
         :param command_help: A short `descriptor` about what the command does
         :param command_function: The `function` assigned to the command
@@ -271,7 +274,7 @@ class MagnetStingAdvanced:
 
     def add_command_parser(self, command_name: str = None, command_help: str = None, command_file: str = None) -> None:
         """
-        Add a 'parser-type' command to the dict of commands. A parser-type command is different from all the other
+        Add a 'parser-type' command to the dict of commands. A parser-type command is different from the other
         commands. Instead of running a function like the others, a parser-type command runs another python file, as
         specified in the `command_file` parameter. The python file must be an `argparse` type of script, as this type of
         command takes the arguments typed after the command name (ex. foo - -bar) and uses the `subprocess` module to
