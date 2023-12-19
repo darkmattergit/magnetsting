@@ -159,7 +159,7 @@ class MagnetStingAdvanced:
     """
     def __init__(self, framework_name: str = "MAGNETSTING", banner_decorators: str = "-=-", decorator_length: int = 12,
                  banner_identifiers: tuple = ("MAGNETSTING", "Identifiers here"), cmd_prompt: str = "\n>> ",
-                 exit_message: str = "[*] - Exiting", help_spacers: int = 4, help_indent: int = 2,
+                 exit_message: str = "[*] Exiting", help_spacers: int = 4, help_indent: int = 2,
                  command_hint_spacers: int = 2, break_keywords: tuple = ("q", "quit", "exit"),
                  verbose: bool = False, type_spacer: int = 12, custom_banner: str = None):
         """
