@@ -6,8 +6,6 @@ Create command-line-based projects with ease.
 import subprocess
 import readline
 
-# TODO: Add readline command completion to both MagnetSting and MagnetStingAdvanced classes
-
 
 class MagnetSting:
     """
