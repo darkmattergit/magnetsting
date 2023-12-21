@@ -45,11 +45,6 @@ class MagnetSting:
                 "q",
             ]
 
-        # Initialize dict that will hold command names and their functions
-        self._commands_dict = {}
-        # Initialize dict that will hold command names and some help context about them
-        self._commands_help = {}
-
         self.banner_decorators = banner_decorators
         self.decorators_length = decorators_length
         self.banner_identifiers = banner_identifiers
@@ -60,6 +55,9 @@ class MagnetSting:
         self.command_help_spacers = command_hint_spacers
         self.break_list = break_list
 
+        # Initialize dict that will hold commands and their information
+        self._commands_dict = {}
+
     def _help_command(self):
         """
         Print out the help banner
@@ -68,8 +66,8 @@ class MagnetSting:
         print()
         print(f"{' '*self.help_indent}{'Command' :{self.help_spacers}} {'Description' :{self.help_spacers}}")
         print(f"{' '*self.help_indent}{'-------':{self.help_spacers}} {'-----------' :{self.help_spacers}}")
-        for commands in self._commands_help:
-            print(f"{' '*self.help_indent}{commands :{self.help_spacers}} {self._commands_help[commands]}")
+        for commands in self._commands_dict:
+            print(f"{' '*self.help_indent}{commands :{self.help_spacers}} {self._commands_dict[commands]['help']}")
 
     def add_command(self, command_name: str = None, command_help: str = None, command_function: object = None):
         """
@@ -81,23 +79,25 @@ class MagnetSting:
         """
 
         # Add command name and command help to command dict
-        self._commands_help[command_name] = command_help
-        self._commands_dict[command_name] = command_function
+        self._commands_dict[command_name] = {
+            "help": command_help,
+            "function": command_function
+        }
 
     def magnetsting_mainloop(self):
         """
         `MAGNETSTING` mainloop
         :return: None
         """
-        # Add "help" command to the help banner
-        self._commands_help["help"] = "print this help banner"
-        # Add the first break keyword in the break list to the end of the help banner
-        self._commands_help[self.break_list[0]] = "exit MAGNETSTING"
 
-        # Add "help" command to commands dict
-        self._commands_dict["help"] = self._help_command
-        # Add the first break keyword in break_list so that it shows up in the command hints
-        self._commands_dict[self.break_list[0]] = ""
+        # Add "help" command to the help banner
+        self._commands_dict["help"] = {
+            "help": "print this help banner"
+        }
+        # Add the first break keyword in the break list to the end of the help banner
+        self._commands_dict[self.break_list[0]] = {
+            "help": "exit MAGNETSTING"
+        }
 
         # Print out start-up banner
         print(self.banner_decorators*self.decorators_length)
