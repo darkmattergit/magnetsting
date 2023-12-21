@@ -20,7 +20,7 @@ class MagnetSting:
     """
     def __init__(self, banner_decorators: str = "-=-", decorators_length: int = 12,
                  banner_identifiers: tuple = ("MAGNETSTING", "Identifiers Here",), cmd_prompt: str = "\n>> ",
-                 exit_message: str = "[*] - Exiting", help_spacers: int = 4, help_indent: int = 2,
+                 exit_message: str = "[*] Exiting", help_spacers: int = 4, help_indent: int = 2,
                  command_hint_spacers: int = 2, break_keywords: tuple = ("q", "quit", "exit")):
         """
         Initialize instance of `MAGNETSTING`
@@ -117,7 +117,7 @@ class MagnetSting:
                 for commands in self._commands_dict:
                     if commands.startswith(usr_input):
                         possible_commands += f"{commands}{' '*self.command_help_spacers}"
-                print("[*] - Possible command(s): ")
+                print("Possible command(s): ")
                 print(possible_commands)
 
 
