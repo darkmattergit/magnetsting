@@ -21,7 +21,7 @@ class MagnetSting:
     def __init__(self, banner_decorators: str = "-=-", decorators_length: int = 12,
                  banner_identifiers: tuple = ("MAGNETSTING", "Identifiers Here",), cmd_prompt: str = "\n>> ",
                  exit_message: str = "[*] - Exiting", help_spacers: int = 4, help_indent: int = 2,
-                 command_hint_spacers: int = 2, break_list=None):
+                 command_hint_spacers: int = 2, break_keywords: tuple = ("q", "quit", "exit")):
         """
         Initialize instance of `MAGNETSTING`
         :param banner_decorators: The `decorators` of the banner on start-up
@@ -35,15 +35,8 @@ class MagnetSting:
         :param help_indent: The `number of spaces` the help banner is indented
         :param command_hint_spacers: The `number of spaces` between command hints when a user enters a command that does
         not exist
-        :param break_list: A `list` of keywords that are used to exit
+        :param break_keywords: A `tuple` of keywords that are used to exit
         """
-
-        if break_list is None:
-            break_list = [
-                "quit",
-                "exit",
-                "q",
-            ]
 
         self.banner_decorators = banner_decorators
         self.decorators_length = decorators_length
@@ -53,7 +46,7 @@ class MagnetSting:
         self.help_spacers = help_spacers
         self.help_indent = help_indent
         self.command_help_spacers = command_hint_spacers
-        self.break_list = break_list
+        self.break_keywords = break_keywords
 
         # Initialize dict that will hold commands and their information
         self._commands_dict = {}
@@ -95,7 +88,7 @@ class MagnetSting:
             "help": "print this help banner"
         }
         # Add the first break keyword in the break list to the end of the help banner
-        self._commands_dict[self.break_list[0]] = {
+        self._commands_dict[self.break_keywords[0]] = {
             "help": "exit MAGNETSTING"
         }
 
@@ -110,7 +103,7 @@ class MagnetSting:
 
         while True:
             usr_input = str(input(self.cmd_prompt)).lower()
-            if usr_input in self.break_list:
+            if usr_input in self.break_keywords:
                 print(self.exit_message)
                 break
 
