@@ -19,14 +19,14 @@ class MagnetSting:
     entered and checking if there are any commands that have a similar name. MagnetSting takes care of it all.
     """
     def __init__(self, banner_decorators: str = "-=-", decorators_length: int = 12,
-                 banner_identifiers: tuple = ("MAGNETSTING", "Identifiers Here",), cmd_prompt: str = "\n>> ",
+                 banner_data: tuple = ("MAGNETSTING", "Data Here",), cmd_prompt: str = "\n>> ",
                  exit_message: str = "[*] Exiting", help_spacers: int = 4, help_indent: int = 2,
                  command_hint_spacers: int = 2, break_keywords: tuple = ("q", "quit", "exit")):
         """
         Initialize instance of `MAGNETSTING`
         :param banner_decorators: The `decorators` of the banner on start-up
         :param decorators_length: The `length` of the banner decorators
-        :param banner_identifiers: A `tuple` of the information that will appear in the banner. This can include but is
+        :param banner_data: A `tuple` of the information that will appear in the banner. This can include but is
         not limited to: name, version number, etc.
         :param cmd_prompt: The prompt of the input
         :param exit_message: The `message` that will be printed out upon exiting
@@ -40,7 +40,7 @@ class MagnetSting:
 
         self.banner_decorators = banner_decorators
         self.decorators_length = decorators_length
-        self.banner_identifiers = banner_identifiers
+        self.banner_data = banner_data
         self.cmd_prompt = cmd_prompt
         self.exit_message = exit_message
         self.help_spacers = help_spacers
@@ -94,8 +94,8 @@ class MagnetSting:
 
         # Print out start-up banner
         print(self.banner_decorators*self.decorators_length)
-        for identifiers in self.banner_identifiers:
-            print(identifiers)
+        for data in self.banner_data:
+            print(data)
         print(self.banner_decorators*self.decorators_length)
 
         # Print out help banner on start
@@ -151,7 +151,7 @@ class MagnetStingAdvanced:
       objects, etc. to the function. It can be anything else the function may need to work the way you want it to.
     """
     def __init__(self, framework_name: str = "MAGNETSTING", banner_decorators: str = "-=-", decorator_length: int = 12,
-                 banner_identifiers: tuple = ("MAGNETSTING", "Identifiers here"), cmd_prompt: str = "\n>> ",
+                 banner_data: tuple = ("MAGNETSTING", "Data here"), cmd_prompt: str = "\n>> ",
                  exit_message: str = "[*] Exiting", help_spacers: int = 4, help_indent: int = 2,
                  command_hint_spacers: int = 2, break_keywords: tuple = ("q", "quit", "exit"),
                  verbose: bool = False, type_spacer: int = 12, custom_banner: str = None):
@@ -160,7 +160,7 @@ class MagnetStingAdvanced:
         :param framework_name: The name of the framework
         :param banner_decorators: The `decorators` of the banner on start-up
         :param decorator_length: The `length` of the banner decorators
-        :param banner_identifiers: A `tuple` of the information that will appear in the banner. This can include but is
+        :param banner_data: A `tuple` of the information that will appear in the banner. This can include but is
                                    not limited to: name, version number, etc.
         :param cmd_prompt: The `prompt` of the input
         :param exit_message: The `message` that will be printed out upon exiting
@@ -183,7 +183,7 @@ class MagnetStingAdvanced:
         self.framework_name = framework_name
         self.banner_decorators = banner_decorators
         self.decorator_length = decorator_length
-        self.banner_identifiers = banner_identifiers
+        self.banner_data = banner_data
         self.cmd_prompt = cmd_prompt
         self.exit_message = exit_message
         self.help_spacers = help_spacers
@@ -307,8 +307,8 @@ class MagnetStingAdvanced:
         # Print the class-generated opening banner and command help banner
         if self.custom_banner is None:
             print(self.banner_decorators*self.decorator_length)
-            for identifiers in self.banner_identifiers:
-                print(identifiers)
+            for data in self.banner_data:
+                print(data)
             print(self.banner_decorators*self.decorator_length)
             self._help_command()
 
