@@ -155,7 +155,7 @@ class MagnetStingAdvanced:
       `free_function: str` **AND** `additional_data: any`. The function cannot have any other parameters. The
       `free_function` parameter is for the argument used with the command (recall from the `free-type` example above,
       this would be "bar"), while the `additional_data` parameter allows you to pass other data such as strings, ints,
-      objects, etc. to the function, it can be anything else the function may need.
+      objects, etc. to the function. It can be anything else the function may need to work the way you want it to.
     """
     def __init__(self, framework_name: str = "MAGNETSTING", banner_decorators: str = "-=-", decorator_length: int = 12,
                  banner_identifiers: tuple = ("MAGNETSTING", "Identifiers here"), cmd_prompt: str = "\n>> ",
