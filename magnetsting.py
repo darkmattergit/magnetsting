@@ -151,8 +151,8 @@ class MagnetStingAdvanced:
     def __init__(self, framework_name: str = "MAGNETSTING", banner_decorators: str = "-=-", decorator_length: int = 12,
                  banner_data: tuple = ("MAGNETSTING", "Data here"), cmd_prompt: str = "\n>> ",
                  exit_message: str = "[*] Exiting", help_spacers: int = 4, help_indent: int = 2,
-                 command_hint_spacers: int = 2, break_keywords: tuple = ("q", "quit", "exit"),
-                 verbose: bool = False, type_spacer: int = 12, custom_banner: str = None):
+                 break_keywords: tuple = ("q", "quit", "exit"), verbose: bool = False, type_spacer: int = 12,
+                 custom_banner: str = None):
         """
         Initialize instance of MagnetStingAdvanced
         :param framework_name: The name of the framework
@@ -165,8 +165,6 @@ class MagnetStingAdvanced:
         :param help_spacers: The `alignment spacers` between the command name and the command description of the help
                              banner
         :param help_indent: The `number of spaces` the help banner is indented
-        :param command_hint_spacers: The `number of spaces` between command hints when the user enters a command that
-                                     does not exist
         :param break_keywords: A `tuple` of keywords used to exit
         :param verbose: In the help banner, show the command types of the command names. Having the parameter set to
                         `True` will show the command types while `False` will not
@@ -186,7 +184,6 @@ class MagnetStingAdvanced:
         self.exit_message = exit_message
         self.help_spacers = help_spacers
         self.help_indent = help_indent
-        self.command_hint_spacers = command_hint_spacers
         self.break_keywords = break_keywords
         self.verbose = verbose
         self.type_spacer = type_spacer
@@ -217,6 +214,51 @@ class MagnetStingAdvanced:
                 print(f"{' '*self.help_indent}{commands :{self.help_spacers}} "
                       f"{self._commands_info[commands]['help'] :{self.type_spacer}} "
                       f"{self._commands_info[commands]['type']}")
+
+    def _possible_commands(self, command_name: str = None) -> None:
+        """
+        Pretty print possible command names that start with the user input should the input not be in the commands_info
+        dict. The output is displayed in columns, similar to how it would look if using the 'column' tool on UNIX/Linux
+        systems.
+        :param command_name: The input from the user
+        :return: None
+        """
+
+        # Initialize list that will hold the commands that start with the user input
+        possible_commands_list = [commands for commands in self._commands_info if commands.startswith(command_name)]
+
+        # Get the length of the longest command name
+        longest_command = 0
+        for commands in possible_commands_list:
+            if len(commands) > longest_command:
+                longest_command = len(commands)
+            else:
+                pass
+
+        # Add extra spacing to the length of the longest command to be able to better see the commands
+        block_spacers = longest_command + 12
+
+        # Add blank padding if the number of commands in the list is not a multiple of 4
+        if len(possible_commands_list) % 4 != 0:
+            for _ in range(4 - (len(possible_commands_list) % 4)):
+                possible_commands_list.append("")
+        else:
+            pass
+
+        # Create a list that holds lists of 4 commands each
+        start_counter = 0
+        end_counter = 4
+        command_blocks = []
+        for _ in range(len(possible_commands_list) // 4):
+            command_blocks.append(possible_commands_list[start_counter:end_counter])
+            start_counter += 4
+            end_counter += 4
+
+        # Pretty print possible commands in 4 columns
+        print("possible command(s):")
+        for blocks in command_blocks:
+            print(f"{blocks[0] :{block_spacers}}{blocks[1] :{block_spacers}}{blocks[2] :{block_spacers}}"
+                  f"{blocks[3] :{block_spacers}}")
 
     def add_command_free(self, command_name: str = None, command_help: str = None,
                          command_function: object = None, additional_data: any = None) -> None:
@@ -358,16 +400,4 @@ class MagnetStingAdvanced:
                         subprocess.run(f"python3 {self._commands_info[get_name]['file']} {parser_args}", shell=True)
 
                 else:
-                    # Initialize string that will hold command suggestions based on the user input
-                    possible_commands = ""
-
-                    # Loop through command dict and find any commands that start with the user input
-                    for commands in self._commands_info:
-                        if commands.startswith(get_name):
-                            possible_commands += f"{commands}  "
-                        else:
-                            pass
-
-                    # Print out string of possible commands
-                    print("Possible command(s): ")
-                    print(possible_commands)
+                    self._possible_commands(command_name=get_name)
