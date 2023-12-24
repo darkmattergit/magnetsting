@@ -150,8 +150,8 @@ class MagnetStingAdvanced:
     """
     def __init__(self, framework_name: str = "MAGNETSTING",
                  banner: tuple | str = ("=" * 35, "MAGNETSTING", "Data here", "=" * 35), cmd_prompt: str = "\n>> ",
-                 exit_message: str = "[*] Exiting", help_spacers: int = 4, help_indent: int = 2,
-                 break_keywords: tuple = ("q", "quit", "exit"), verbose: bool = False, type_spacer: int = 12):
+                 exit_message: str = "[*] Exiting", help_indent: int = 2, break_keywords: tuple = ("q", "quit", "exit"),
+                 verbose: bool = False):
         """
         Initialize instance of MagnetStingAdvanced
         :param framework_name: The name of the framework
@@ -160,14 +160,10 @@ class MagnetStingAdvanced:
                        one that the class creates using the tuple, use a string instead.
         :param cmd_prompt: The `prompt` of the input
         :param exit_message: The `message` that will be printed out upon exiting
-        :param help_spacers: The `alignment spacers` between the command name and the command description of the help
-                             banner
         :param help_indent: The `number of spaces` the help banner is indented
         :param break_keywords: A `tuple` of keywords used to exit
         :param verbose: In the help banner, show the command types of the command names. Having the parameter set to
                         `True` will show the command types while `False` will not
-        :param type_spacer: The `spacing` between the command description and command type, if the verbose help banner
-                            is used
         """
 
         # Initialize dict that will hold command names and their information
@@ -176,11 +172,9 @@ class MagnetStingAdvanced:
         self.banner_data = banner
         self.cmd_prompt = cmd_prompt
         self.exit_message = exit_message
-        self.help_spacers = help_spacers
         self.help_indent = help_indent
         self.break_keywords = break_keywords
         self.verbose = verbose
-        self.type_spacer = type_spacer
 
     def _help_command(self):
         """
@@ -188,24 +182,43 @@ class MagnetStingAdvanced:
         :return: None
         """
         # Print commands and their help descriptions
+
+        spacing = 0
+        for commands in self._commands_info:
+            if len(commands) > spacing:
+                spacing = len(commands)
+            else:
+                pass
+
+        spacing = spacing + 5
+
         if self.verbose is False:
             print()
-            print(f"{' '*self.help_indent}{'Command' :{self.help_spacers}} {'Description' :{self.help_spacers}}")
-            print(f"{' '*self.help_indent}{'-------':{self.help_spacers}} {'-----------' :{self.help_spacers}}")
+            print(f"{' '*self.help_indent}{'Command' :{spacing}} {'Description' :{spacing}}")
+            print(f"{' '*self.help_indent}{'-------':{spacing}} {'-----------' :{spacing}}")
             for commands in self._commands_info:
-                print(f"{' '*self.help_indent}{commands :{self.help_spacers}} {self._commands_info[commands]['help']}")
+                print(f"{' '*self.help_indent}{commands :{spacing}} {self._commands_info[commands]['help']}")
 
         # Print commands, their help descriptions and the commands types
         else:
+            type_spacing = 0
+            for command_types in self._commands_info:
+                if len(self._commands_info[command_types]["help"]) > type_spacing:
+                    type_spacing = len(self._commands_info[command_types]["help"])
+                else:
+                    pass
+
+            type_spacing = type_spacing + 5
+
             print()
-            print(f"{' ' * self.help_indent}{'Command' :{self.help_spacers}} {'Description' :{self.type_spacer}} "
+            print(f"{' ' * self.help_indent}{'Command' :{spacing}} {'Description' :{type_spacing}} "
                   f"{'Type'}")
-            print(f"{' ' * self.help_indent}{'-------':{self.help_spacers}} {'-----------' :{self.type_spacer}} "
-                  f"{'----' :{self.help_spacers}}")
+            print(f"{' ' * self.help_indent}{'-------':{spacing}} {'-----------' :{type_spacing}} "
+                  f"{'----' :{spacing}}")
 
             for commands in self._commands_info:
-                print(f"{' '*self.help_indent}{commands :{self.help_spacers}} "
-                      f"{self._commands_info[commands]['help'] :{self.type_spacer}} "
+                print(f"{' '*self.help_indent}{commands :{spacing}} "
+                      f"{self._commands_info[commands]['help'] :{type_spacing}} "
                       f"{self._commands_info[commands]['type']}")
 
     def _possible_commands(self, command_name: str = None) -> None:
