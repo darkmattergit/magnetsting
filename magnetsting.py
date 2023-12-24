@@ -181,8 +181,7 @@ class MagnetStingAdvanced:
         Print out the help banner
         :return: None
         """
-        # Print commands and their help descriptions
-
+        # Calculate the amount of spacing needed between the commands and their help descriptions
         spacing = 0
         for commands in self._commands_info:
             if len(commands) > spacing:
@@ -190,8 +189,10 @@ class MagnetStingAdvanced:
             else:
                 pass
 
+        # Add additional spacing to the len of the longest command name to make the columns more distinct and readable
         spacing = spacing + 5
 
+        # Print commands and their help descriptions
         if self.verbose is False:
             print()
             print(f"{' '*self.help_indent}{'Command' :{spacing}} {'Description' :{spacing}}")
@@ -201,6 +202,7 @@ class MagnetStingAdvanced:
 
         # Print commands, their help descriptions and the commands types
         else:
+            # Calculate the amount of spacing needed between the command help descriptions and the types
             type_spacing = 0
             for command_types in self._commands_info:
                 if len(self._commands_info[command_types]["help"]) > type_spacing:
@@ -208,6 +210,8 @@ class MagnetStingAdvanced:
                 else:
                     pass
 
+            # Add additional spacing to the len of the longest command description to make the columns more distinct
+            # and readable
             type_spacing = type_spacing + 5
 
             print()
