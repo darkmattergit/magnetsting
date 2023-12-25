@@ -60,6 +60,51 @@ class MagnetSting:
         for commands in self._commands_dict:
             print(f"{' '*self.help_indent}{commands :{self.help_spacers}} {self._commands_dict[commands]['help']}")
 
+    def _possible_commands(self, command_name: str = None) -> None:
+        """
+        Pretty print possible command names that start with the user input should the input not be in the commands_info
+        dict. The output is displayed in columns, similar to how it would look if using the 'column' tool on UNIX/Linux
+        systems.
+        :param command_name: The input from the user
+        :return: None
+        """
+
+        # Initialize list that will hold the commands that start with the user input
+        possible_commands_list = [commands for commands in self._commands_dict if commands.startswith(command_name)]
+
+        # Get the length of the longest command name
+        longest_command = 0
+        for commands in possible_commands_list:
+            if len(commands) > longest_command:
+                longest_command = len(commands)
+            else:
+                pass
+
+        # Add extra spacing to the length of the longest command to be able to better see the commands
+        block_spacers = longest_command + 12
+
+        # Add blank padding if the number of commands in the list is not a multiple of 4
+        if len(possible_commands_list) % 4 != 0:
+            for _ in range(4 - (len(possible_commands_list) % 4)):
+                possible_commands_list.append("")
+        else:
+            pass
+
+        # Create a list that holds lists of 4 commands each
+        start_counter = 0
+        end_counter = 4
+        command_blocks = []
+        for _ in range(len(possible_commands_list) // 4):
+            command_blocks.append(possible_commands_list[start_counter:end_counter])
+            start_counter += 4
+            end_counter += 4
+
+        # Pretty print possible commands in 4 columns
+        print("possible command(s):")
+        for blocks in command_blocks:
+            print(f"{blocks[0] :{block_spacers}}{blocks[1] :{block_spacers}}{blocks[2] :{block_spacers}}"
+                  f"{blocks[3] :{block_spacers}}")
+
     def add_command(self, command_name: str = None, command_help: str = None, command_function: object = None):
         """
         Add a new command to the instance of MAGNETSTING
@@ -110,13 +155,7 @@ class MagnetSting:
 
             # Print out all possible commands that start with what the user entered
             else:
-                possible_commands = ""
-                print()
-                for commands in self._commands_dict:
-                    if commands.startswith(usr_input):
-                        possible_commands += f"{commands}{' '*self.command_help_spacers}"
-                print("Possible command(s): ")
-                print(possible_commands)
+                self._possible_commands(command_name=usr_input)
 
 
 class MagnetStingAdvanced:
