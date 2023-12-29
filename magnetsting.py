@@ -1,7 +1,7 @@
 """
 **MAGNETSTING**\n
 v1.0.6\n
-Create command-line-based projects with ease.
+Create command-line projects with ease.
 """
 import subprocess
 import readline
