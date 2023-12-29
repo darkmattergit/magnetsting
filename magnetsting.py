@@ -310,7 +310,7 @@ class MagnetStingAdvanced:
                   f"{blocks[3] :{block_spacers}}")
 
     def add_command_free(self, command_name: str = None, command_help: str = None,
-                         command_function: object = None, additional_data: any = None) -> None:
+                         command_function: object = None, additional_data: tuple = None) -> None:
         """
         Add a `free-type` command to the dictionary of commands. A free-type command differs from a `single-type`
         command by being able to take arguments after the command name. For example, if the command name is `foo`,
@@ -334,7 +334,7 @@ class MagnetStingAdvanced:
         }
 
     def add_command_single(self, command_name: str = None, command_help: str = None, command_function: object = None,
-                           additional_data: any = None) -> None:
+                           additional_data: tuple = None) -> None:
         """
         Add a `single-type` command to the dict of commands. A single-type command consists only of a command name that
         when called, executes the function assigned to it. Anything typed after the command name is not passed onto the
