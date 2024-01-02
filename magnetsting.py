@@ -193,16 +193,16 @@ class MagnetStingAdvanced:
                  verbose: bool = False):
         """
         Initialize instance of MagnetStingAdvanced
-        :param framework_name: The name of the framework
+        :param framework_name: The name of the framework.
         :param banner: A `tuple` of the information that will appear in the banner. This can include but is
                        not limited to: name, version number, etc. If you want to use a custom banner rather than the
                        one that the class creates using the tuple, use a string instead.
-        :param cmd_prompt: The `prompt` of the input
-        :param exit_message: The `message` that will be printed out upon exiting
-        :param help_indent: The `number of spaces` the help banner is indented
-        :param break_keywords: A `tuple` of keywords used to exit
-        :param verbose: In the help banner, show the command types of the command names. Having the parameter set to
-                        `True` will show the command types while `False` will not
+        :param cmd_prompt: The `prompt` of the input.
+        :param exit_message: The `message` that will be printed out upon exiting.
+        :param help_indent: The `number of spaces` the help banner is indented.
+        :param break_keywords: A `tuple` of keywords used to exit.
+        :param verbose: In the help banner, show command types next to the command descriptions. Having the parameter
+                        set to `True` will show the command types while `False` will not.
         """
 
         # Initialize dict that will hold command names and their information
