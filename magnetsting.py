@@ -303,7 +303,7 @@ class MagnetStingAdvanced:
             start_counter += 4
             end_counter += 4
 
-        # Pretty print possible commands in 4 columns
+        # Pretty print possible commands in rows of 4
         print("possible command(s):")
         for blocks in command_blocks:
             print(f"{blocks[0] :{block_spacers}}{blocks[1] :{block_spacers}}{blocks[2] :{block_spacers}}"
