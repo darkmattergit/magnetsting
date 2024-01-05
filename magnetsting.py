@@ -1,6 +1,6 @@
 """
 **MAGNETSTING**\n
-v1.0.6\n
+v1.0.7\n
 Create command-line projects with ease.
 """
 import subprocess
