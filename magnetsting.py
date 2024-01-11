@@ -447,4 +447,7 @@ class MagnetStingAdvanced:
                         subprocess.run(f"python3 {self._commands_info[get_name]['file']} {parser_args}", shell=True)
 
                 else:
-                    self._possible_commands(command_name=get_name)
+                    if usr_input == "" or usr_input.isspace():
+                        pass
+                    else:
+                        self._possible_commands(command_name=get_name)
