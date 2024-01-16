@@ -234,7 +234,7 @@ class MagnetStingAdvanced:
         # Print commands and their help descriptions
         if self.verbose is False:
             print()
-            print(f"{' '*self.help_indent}{'Command' :{spacing}} {'Description' :{spacing}}")
+            print(f"{' '*self.help_indent}{'Command':{spacing}} {'Description' :{spacing}}")
             print(f"{' '*self.help_indent}{'-------':{spacing}} {'-----------' :{spacing}}")
             for commands in self._commands_info:
                 print(f"{' '*self.help_indent}{commands :{spacing}} {self._commands_info[commands]['help']}")
@@ -263,6 +263,62 @@ class MagnetStingAdvanced:
                 print(f"{' '*self.help_indent}{commands :{spacing}} "
                       f"{self._commands_info[commands]['help'] :{type_spacing}} "
                       f"{self._commands_info[commands]['type']}")
+
+    def _specific_commands_help(self, command_name: str = None) -> None:
+        # Initialize dict to hold command names and their descriptions
+        command_help_dict = {}
+        # Initialize ints for calculating spacing
+        command_spacer = 0
+        type_spacer = 0
+
+        for commands in self._commands_info:
+            if commands.startswith(command_name):
+                command_help_dict[commands] = self._commands_info[commands]["help"]
+
+                # Calculate base spacing between commands names and descriptions
+                if len(commands) > command_spacer:
+                    command_spacer = len(commands)
+
+                else:
+                    pass
+
+                # Calculate base spacing between command descriptions and types
+                if len(self._commands_info[commands]['help']) > type_spacer:
+                    type_spacer = len(self._commands_info[commands]['help'])
+
+                else:
+                    pass
+
+            else:
+                pass
+
+        # Add additional spacing
+        command_spacer = command_spacer + 5
+        type_spacer = type_spacer + 5
+
+        if len(command_help_dict) == 0:
+            print("[!] No command(s) found")
+
+        else:
+            if self.verbose is False:
+                print()
+                print(f"{' '*self.help_indent}{'Command':{command_spacer}} Description")
+                print(f"{' '*self.help_indent}{'-------':{command_spacer}} -----------")
+                for command_help in command_help_dict:
+                    print(f"{' '*self.help_indent}{command_help:{command_spacer}} "
+                          f"{self._commands_info[command_help]['help']}")
+
+            else:
+                print()
+                print(f"{' ' * self.help_indent}{'Command' :{command_spacer}} {'Description' :{type_spacer}} "
+                      f"{'Type'}")
+                print(f"{' ' * self.help_indent}{'-------':{command_spacer}} {'-----------' :{type_spacer}} "
+                      f"{'----' :{command_spacer}}")
+
+                for commands in command_help_dict:
+                    print(f"{' ' * self.help_indent}{commands :{command_spacer}} "
+                          f"{self._commands_info[commands]['help'] :{type_spacer}} "
+                          f"{self._commands_info[commands]['type']}")
 
     def _possible_commands(self, command_name: str = None) -> None:
         """
@@ -406,21 +462,25 @@ class MagnetStingAdvanced:
 
         while True:
             usr_input = str(input(self.cmd_prompt))
+            split_command = usr_input.split(" ")
+
             if usr_input in self.break_keywords:
                 print(self.exit_message)
                 break
 
-            # Print out help banner
+            # Print help banner
             elif usr_input == "help":
                 self._help_command()
+
+            # Print help banner containing specific commands
+            elif len(split_command) > 1 and split_command[0] == "help":
+                self._specific_commands_help(command_name=split_command[1])
 
             # Clear the command line
             elif usr_input == "clear":
                 subprocess.run("clear", shell=True)
 
             else:
-                split_command = usr_input.split(" ")
-
                 # Get the name of the command
                 get_name = split_command[0]
 
