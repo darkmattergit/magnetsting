@@ -464,12 +464,12 @@ class MagnetStingAdvanced:
             usr_input = str(input(self.cmd_prompt))
             split_command = usr_input.split(" ")
 
-            if usr_input in self.break_keywords:
+            if split_command[0] in self.break_keywords:
                 print(self.exit_message)
                 break
 
             # Print help banner
-            elif usr_input == "help":
+            elif split_command[0] == "help":
                 self._help_command()
 
             # Print help banner containing specific commands
@@ -477,7 +477,7 @@ class MagnetStingAdvanced:
                 self._specific_commands_help(command_name=split_command[1])
 
             # Clear the command line
-            elif usr_input == "clear":
+            elif split_command[0] == "clear":
                 subprocess.run("clear", shell=True)
 
             else:
