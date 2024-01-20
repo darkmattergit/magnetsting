@@ -5,6 +5,7 @@ Create command-line projects with ease.
 """
 import subprocess
 import readline
+import json
 
 
 class MagnetSting:
@@ -207,6 +208,7 @@ class MagnetStingAdvanced:
 
         # Initialize dict that will hold command names and their information
         self._commands_info = {}
+        self._alias_dict = {}
         self.framework_name = framework_name
         self.banner_data = banner
         self.cmd_prompt = cmd_prompt
@@ -365,6 +367,56 @@ class MagnetStingAdvanced:
             print(f"{blocks[0] :{block_spacers}}{blocks[1] :{block_spacers}}{blocks[2] :{block_spacers}}"
                   f"{blocks[3] :{block_spacers}}")
 
+    def _alias_command(self, alias_list: list = None):
+        if len(alias_list) < 2:
+            print("[!] Use 'add <alias name> <command>', 'remove <alias name>' or 'view'")
+
+        else:
+            # Add a command alias
+            if alias_list[1] == "add" and len(alias_list) >= 4:
+
+                if alias_list[2] in self._commands_info:
+                    print(f"[!] Cannot create alias, '{alias_list[2]}' is already in use as a command name")
+
+                elif alias_list[3] not in self._commands_info:
+                    print(f"[!] Cannot create alias, the command '{alias_list[3]}' does not exist")
+
+                else:
+                    command_str = " ".join(alias_list[3:])
+                    self._alias_dict[alias_list[2]] = command_str
+                    print(f"[+] Added alias '{alias_list[2]}'")
+
+            # View all set aliases
+            elif alias_list[1] == "view":
+                spacer = 0
+                for aliases in self._alias_dict:
+                    if len(aliases) > spacer:
+                        spacer = len(aliases)
+
+                    else:
+                        pass
+
+                spacer = spacer + 5
+                print()
+                print(f"  {'Alias':{spacer}} Full Command")
+                print(f"  {'-----':{spacer}} ------------")
+                for commands in self._alias_dict:
+                    print(f"  {commands:{spacer}} {self._alias_dict[commands]}")
+
+            # Remove a command alias
+            elif alias_list[1] == "remove" and len(alias_list) == 3:
+                try:
+                    del(self._alias_dict[alias_list[2]])
+
+                except KeyError:
+                    print(f"[*] Alias '{alias_list[2]}' does not exist")
+
+                else:
+                    print(f"[-] Removed alias '{alias_list[2]}'")
+
+            else:
+                print("[!] Invalid alias command")
+
     def add_command_free(self, command_name: str = None, command_help: str = None,
                          command_function: object = None, additional_data: tuple = None) -> None:
         """
@@ -434,6 +486,11 @@ class MagnetStingAdvanced:
 
     def magnetstingadvanced_mainloop(self):
         # Add built-in commands to commands dict
+        self._commands_info["alias"] = {
+            "type": "built-in",
+            "help": "add, remove and view aliases",
+        }
+
         self._commands_info["clear"] = {
             "type": "built-in",
             "help": "clear the screen",
@@ -480,34 +537,51 @@ class MagnetStingAdvanced:
             elif split_command[0] == "clear":
                 subprocess.run("clear", shell=True)
 
+            # Add command aliases
+            elif split_command[0] == "alias":
+                self._alias_command(alias_list=split_command)
+
             else:
                 # Get the name of the command
-                get_name = split_command[0]
+                check_name = split_command[0]
 
-                if get_name in self._commands_info:
+                if check_name in self._commands_info or check_name in self._alias_dict:
+                    # Initialize list to hold full command after determining if it is an alias or an actual command name
+                    full_command_list = None
+
+                    # Check if command is a command name
+                    if check_name in self._commands_info:
+                        full_command_list = split_command
+
+                    # Check if command is an alias
+                    elif check_name in self._alias_dict:
+                        full_command_list = f"{self._alias_dict[check_name]} {' '.join(split_command[1:])}".split()
+
                     # === Free Commands ===
-                    if self._commands_info[get_name]["type"] == "free":
+                    if self._commands_info[full_command_list[0]]["type"] == "free":
                         if len(split_command) == 1 or split_command[1].isspace() or split_command[1] == "":
                             print("[!] Argument required")
 
                         else:
-                            get_arg = usr_input[len(get_name)+1:]
-                            self._commands_info[get_name]["function"](free_function=get_arg,
-                                                                      additional_data=self._commands_info[get_name]
-                                                                      ["additional"])
+                            get_arg = full_command_list[1:]
+                            self._commands_info[full_command_list[0]]["function"](free_function=get_arg,
+                                                                                  additional_data=self._commands_info
+                                                                                  [full_command_list[0]]["additional"])
 
                     # === Single Commands ===
-                    elif self._commands_info[get_name]["type"] == "single":
-                        self._commands_info[get_name]["function"](additional_data=self._commands_info[get_name]
-                                                                  ["additional"])
+                    elif self._commands_info[full_command_list[0]]["type"] == "single":
+                        self._commands_info[full_command_list[0]]["function"](additional_data=self._commands_info
+                                                                              [full_command_list[0]]["additional"])
 
                     # === Parser Commands ===
-                    elif self._commands_info[get_name]["type"] == "parser":
-                        parser_args = usr_input[len(get_name)+1:]
-                        subprocess.run(f"python3 {self._commands_info[get_name]['file']} {parser_args}", shell=True)
+                    elif self._commands_info[full_command_list[0]]["type"] == "parser":
+                        parser_args = " ".join(full_command_list[1:])
+                        subprocess.run(f"python3 {self._commands_info[full_command_list[0]]['file']} "
+                                       f"{parser_args}",
+                                       shell=True)
 
                 else:
                     if usr_input == "" or usr_input.isspace():
                         pass
                     else:
-                        self._possible_commands(command_name=get_name)
+                        self._possible_commands(command_name=check_name)
