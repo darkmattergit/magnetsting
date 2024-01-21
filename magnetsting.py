@@ -538,13 +538,13 @@ class MagnetStingAdvanced:
                 print(self.exit_message)
                 break
 
-            # Print help banner
-            elif split_command[0] == "help":
-                self._help_command()
-
             # Print help banner containing specific commands
             elif len(split_command) > 1 and split_command[0] == "help":
                 self._specific_commands_help(command_name=split_command[1])
+
+            # Print help banner
+            elif split_command[0] == "help":
+                self._help_command()
 
             # Clear the command line
             elif split_command[0] == "clear":
