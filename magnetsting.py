@@ -517,11 +517,24 @@ class MagnetStingAdvanced:
                 print(data)
             self._help_command()
 
+        try:
+            # Open json file and load aliases into dict
+            with open(".alias.json", "r") as jr:
+                json_alias = json.load(jr)
+                self._alias_dict = json_alias
+
+        except FileNotFoundError:
+            pass
+
         while True:
             usr_input = str(input(self.cmd_prompt))
             split_command = usr_input.split(" ")
 
             if split_command[0] in self.break_keywords:
+                # Write aliases to json file
+                with open(".alias.json", "w") as jw:
+                    json.dump(self._alias_dict, jw)
+
                 print(self.exit_message)
                 break
 
