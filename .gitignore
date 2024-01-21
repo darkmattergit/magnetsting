@@ -4,3 +4,4 @@ __pycache__
 magnetsting_args.py
 package
 *.whl
+*.json
