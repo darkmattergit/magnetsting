@@ -267,6 +267,11 @@ class MagnetStingAdvanced:
                       f"{self._commands_info[commands]['type']}")
 
     def _specific_commands_help(self, command_name: str = None) -> None:
+        """
+        Print a help banner containing specific commands
+        :param command_name: The name or partial name of the command(s) to look for
+        :return: None
+        """
         # Initialize dict to hold command names and their descriptions
         command_help_dict = {}
         # Initialize ints for calculating spacing
