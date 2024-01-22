@@ -300,7 +300,11 @@ class MagnetStingAdvanced:
                 pass
 
         # Add additional spacing
-        command_spacer = command_spacer + 5
+        if command_spacer < 5:
+            command_spacer = command_spacer + 12
+        else:
+            command_spacer = command_spacer + 5
+
         type_spacer = type_spacer + 5
 
         if len(command_help_dict) == 0:
