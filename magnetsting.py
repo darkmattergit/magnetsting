@@ -577,7 +577,7 @@ class MagnetStingAdvanced:
 
                     # === Free Commands ===
                     if self._commands_info[full_command_list[0]]["type"] == "free":
-                        if len(split_command) == 1 or split_command[1].isspace() or split_command[1] == "":
+                        if len(full_command_list) == 1 or full_command_list[1].isspace() or full_command_list[1] == "":
                             print("[!] Argument required")
 
                         else:
