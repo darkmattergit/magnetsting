@@ -6,6 +6,7 @@ Create command-line projects with ease.
 import subprocess
 import readline
 import json
+import os
 
 
 class MagnetSting:
@@ -191,7 +192,7 @@ class MagnetStingAdvanced:
     def __init__(self, framework_name: str = "MAGNETSTING",
                  banner: tuple | str = ("=" * 35, "MAGNETSTING", "Data here", "=" * 35), cmd_prompt: str = "\n>> ",
                  exit_message: str = "[*] Exiting", help_indent: int = 2, break_keywords: tuple = ("q", "quit", "exit"),
-                 verbose: bool = False):
+                 alias_file: str = ".alias.json", verbose: bool = False):
         """
         Initialize instance of MagnetStingAdvanced
         :param framework_name: The name of the framework.
@@ -202,6 +203,7 @@ class MagnetStingAdvanced:
         :param exit_message: The `message` that will be printed out upon exiting.
         :param help_indent: The `number of spaces` the help banner is indented.
         :param break_keywords: A `tuple` of keywords used to exit.
+        :param alias_file: A JSON file that holds `command aliases`
         :param verbose: In the help banner, show command types next to the command descriptions. Having the parameter
                         set to `True` will show the command types while `False` will not.
         """
@@ -215,7 +217,14 @@ class MagnetStingAdvanced:
         self.exit_message = exit_message
         self.help_indent = help_indent
         self.break_keywords = break_keywords
+        self.alias_file = alias_file
         self.verbose = verbose
+
+        # Check if file is a JSON file
+        if os.path.splitext(self.alias_file)[len(os.path.splitext(self.alias_file))-1] != ".json":
+            raise ValueError("File is not a JSON file")
+        else:
+            pass
 
     def _help_command(self):
         """
@@ -528,7 +537,7 @@ class MagnetStingAdvanced:
 
         try:
             # Open json file and load aliases into dict
-            with open(".alias.json", "r") as jr:
+            with open(self.alias_file, "r") as jr:
                 json_alias = json.load(jr)
                 self._alias_dict = json_alias
 
@@ -541,7 +550,7 @@ class MagnetStingAdvanced:
 
             if split_command[0] in self.break_keywords:
                 # Write aliases to json file
-                with open(".alias.json", "w") as jw:
+                with open(self.alias_file, "w") as jw:
                     json.dump(self._alias_dict, jw)
 
                 print(self.exit_message)
