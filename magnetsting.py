@@ -208,8 +208,9 @@ class MagnetStingAdvanced:
                         set to `True` will show the command types while `False` will not.
         """
 
-        # Initialize dict that will hold command names and their information
+        # Initialize dicts for commands, command groups and command aliases
         self._commands_info = {}
+        self._groups_dict = {}
         self._alias_dict = {}
         self.framework_name = framework_name
         self.banner_data = banner
@@ -340,6 +341,56 @@ class MagnetStingAdvanced:
                           f"{self._commands_info[commands]['help'] :{type_spacer}} "
                           f"{self._commands_info[commands]['type']}")
 
+    def _help_command_group(self, group_name: str = None) -> None:
+        """
+        Print a help banner for a specific command group
+        :param group_name: The name of the group
+        :return: None
+        """
+        # Calculate the amount of spacing needed between the commands and their help descriptions
+        spacing = 0
+        for commands in self._groups_dict[group_name]:
+            if len(commands) > spacing:
+                spacing = len(commands)
+            else:
+                pass
+
+        # Add additional spacing to the len of the longest command name to make the columns more distinct and readable
+        spacing = spacing + 5
+
+        # Print commands and their help descriptions
+        if self.verbose is False:
+            print()
+            print(f"{' '*self.help_indent}{'Command':{spacing}} {'Description' :{spacing}}")
+            print(f"{' '*self.help_indent}{'-------':{spacing}} {'-----------' :{spacing}}")
+            for commands in self._groups_dict[group_name]:
+                print(f"{' '*self.help_indent}{commands :{spacing}} {self._groups_dict[group_name][commands]['help']}")
+
+        # Print commands, their help descriptions and the commands types
+        else:
+            # Calculate the amount of spacing needed between the command help descriptions and the types
+            type_spacing = 0
+            for command_types in self._groups_dict[group_name]:
+                if len(self._groups_dict[group_name][command_types]["help"]) > type_spacing:
+                    type_spacing = len(self._groups_dict[group_name][command_types]["help"])
+                else:
+                    pass
+
+            # Add additional spacing to the len of the longest command description to make the columns more distinct
+            # and readable
+            type_spacing = type_spacing + 5
+
+            print()
+            print(f"{' ' * self.help_indent}{'Command' :{spacing}} {'Description' :{type_spacing}} "
+                  f"{'Type'}")
+            print(f"{' ' * self.help_indent}{'-------':{spacing}} {'-----------' :{type_spacing}} "
+                  f"{'----' :{spacing}}")
+
+            for commands in self._groups_dict[group_name]:
+                print(f"{' '*self.help_indent}{commands :{spacing}} "
+                      f"{self._groups_dict[group_name][commands]['help'] :{type_spacing}} "
+                      f"{self._groups_dict[group_name][commands]['type']}")
+
     def _possible_commands(self, command_name: str = None) -> None:
         """
         Pretty print possible command names that start with the user input should the input not be in the commands_info
@@ -435,7 +486,7 @@ class MagnetStingAdvanced:
             else:
                 print("[!] Invalid alias command")
 
-    def add_command_free(self, command_name: str = None, command_help: str = None,
+    def add_command_free(self, command_name: str = None, command_help: str = None, command_group: str = None,
                          command_function: object = None, additional_data: tuple = None) -> None:
         """
         Add a `free-type` command to the dictionary of commands. A free-type command differs from a `single-type`
@@ -447,20 +498,33 @@ class MagnetStingAdvanced:
         `additional_data: any`.
         :param command_name: The `name` of the command
         :param command_help: A short `descriptor` about what the command does
+        :param command_group: The `group` the command belongs to. Can be left as None if it does not belong to any group
         :param command_function: The `function` assigned to the command
         :param additional_data: 'Additional data' that gets sent over to the command's function
         :return: None
         """
+        if command_group is None:
+            self._commands_info[command_name] = {
+                "type": "free",
+                "function": command_function,
+                "help": command_help,
+                "additional": additional_data,
+            }
 
-        self._commands_info[command_name] = {
-            "type": "free",
-            "function": command_function,
-            "help": command_help,
-            "additional": additional_data,
-        }
+        else:
+            if command_group in self._groups_dict:
+                self._groups_dict[command_group][command_name] = {
+                    "type": "free",
+                    "function": command_function,
+                    "help": command_help,
+                    "additional": additional_data,
+                }
 
-    def add_command_single(self, command_name: str = None, command_help: str = None, command_function: object = None,
-                           additional_data: tuple = None) -> None:
+            else:
+                raise NotImplementedError(f"Group '{command_group}' does not exist")
+
+    def add_command_single(self, command_name: str = None, command_help: str = None, command_group: str = None,
+                           command_function: object = None, additional_data: tuple = None) -> None:
         """
         Add a `single-type` command to the dict of commands. A single-type command consists only of a command name that
         when called, executes the function assigned to it. Anything typed after the command name is not passed onto the
@@ -468,19 +532,33 @@ class MagnetStingAdvanced:
         `additional_data: any`.
         :param command_name: The `name` of the command
         :param command_help: A short `descriptor` about what the command does
+        :param command_group: The `group` the command belongs to. Can be left as None if it does not belong to any group
         :param command_function: The `function` assigned to the command
         :param additional_data: `Additional data` that gets sent over to the command's function
         :return: None
         """
+        if command_group is None:
+            self._commands_info[command_name] = {
+                "type": "single",
+                "function": command_function,
+                "help": command_help,
+                "additional": additional_data,
+            }
 
-        self._commands_info[command_name] = {
-            "type": "single",
-            "function": command_function,
-            "help": command_help,
-            "additional": additional_data,
-        }
+        else:
+            if command_group in self._groups_dict:
+                self._groups_dict[command_group][command_name] = {
+                    "type": "single",
+                    "function": command_function,
+                    "help": command_help,
+                    "additional": additional_data,
+                }
 
-    def add_command_parser(self, command_name: str = None, command_help: str = None, command_file: str = None) -> None:
+            else:
+                raise NotImplementedError(f"Group '{command_group}' does not exist")
+
+    def add_command_parser(self, command_name: str = None, command_help: str = None, command_group: str = None,
+                           command_file: str = None) -> None:
         """
         Add a 'parser-type' command to the dict of commands. A parser-type command is different from the other
         commands. Instead of running a function like the others, a parser-type command runs another python file, as
@@ -492,14 +570,33 @@ class MagnetStingAdvanced:
         that need to be added when creating/using the file.
         :param command_name: The `name` of the command
         :param command_help: A short `descriptor` about what the command does
+        :param command_group: The `group` the command belongs to. Can be left as None if it does not belong to any group
         :param command_file: The `full or relative path` of the file assigned to the command
         :return: None
         """
+        if command_group is None:
+            self._commands_info[command_name] = {
+                "type": "parser",
+                "file": command_file,
+                "help": command_help,
+            }
 
-        self._commands_info[command_name] = {
-            "type": "parser",
-            "file": command_file,
-            "help": command_help,
+        else:
+            if command_group in self._groups_dict:
+                self._groups_dict[command_group][command_name] = {
+                    "type": "parser",
+                    "file": command_file,
+                    "help": command_help,
+                }
+
+            else:
+                raise NotImplementedError(f"Group '{command_group}' does not exist")
+
+    def add_command_group(self, group_name: str = None, group_help: str = None):
+        self._groups_dict[group_name] = {}
+        self._commands_info[group_name] = {
+            "type": "group",
+            "help": group_help,
         }
 
     def magnetstingadvanced_mainloop(self):
@@ -572,32 +669,52 @@ class MagnetStingAdvanced:
             elif split_command[0] == "alias":
                 self._alias_command(alias_list=split_command)
 
+            elif len(split_command) == 1 and split_command[0] in self._groups_dict:
+                self._help_command_group(group_name=split_command[0])
+
             else:
                 # Get the name of the command
                 check_name = split_command[0]
 
-                if check_name in self._commands_info or check_name in self._alias_dict:
+                if check_name in self._commands_info or check_name in self._alias_dict or check_name in \
+                        self._groups_dict:
                     # Initialize list to hold full command after determining if it is an alias or an actual command name
                     full_command_list = None
+                    # Initialize dict to hold specific command info
+                    command_dict = {}
 
-                    # Check if command is a command name
-                    if check_name in self._commands_info:
+                    # Check if command is a command name or if it is a group name
+                    if check_name in self._commands_info and self._commands_info[check_name]["type"] != "group":
                         full_command_list = split_command
+                        command_dict[check_name] = self._commands_info[check_name]
+
+                    elif check_name in self._commands_info and self._commands_info[check_name]["type"] == "group":
+                        full_command_list = split_command[1:]
+                        command_dict[split_command[1]] = self._groups_dict[check_name][split_command[1]]
 
                     # Check if command is an alias
                     elif check_name in self._alias_dict:
-                        full_command_list = f"{self._alias_dict[check_name]} {' '.join(split_command[1:])}".split()
+                        alias_list = f"{self._alias_dict[check_name]} {' '.join(split_command[1:])}".split()
+
+                        # Check if name is a group name
+                        if self._commands_info[alias_list[0]]["type"] == "group":
+                            command_dict[alias_list[1]] = self._groups_dict[alias_list[0]][alias_list[1]]
+                            full_command_list = alias_list[1:]
+
+                        else:
+                            full_command_list = f"{self._alias_dict[check_name]} {' '.join(split_command[1:])}".split()
+                            command_dict[alias_list[0]] = self._commands_info[alias_list[0]]
 
                     # === Free Commands ===
-                    if self._commands_info[full_command_list[0]]["type"] == "free":
+                    if command_dict[full_command_list[0]]["type"] == "free":
                         if len(full_command_list) == 1 or full_command_list[1].isspace() or full_command_list[1] == "":
                             print("[!] Argument required")
 
                         else:
                             get_arg = full_command_list[1:]
-                            self._commands_info[full_command_list[0]]["function"](free_function=get_arg,
-                                                                                  additional_data=self._commands_info
-                                                                                  [full_command_list[0]]["additional"])
+                            command_dict[full_command_list[0]]["function"](free_function=get_arg,
+                                                                           additional_data=command_dict
+                                                                           [full_command_list[0]]["additional"])
 
                     # === Single Commands ===
                     elif self._commands_info[full_command_list[0]]["type"] == "single":
@@ -607,8 +724,7 @@ class MagnetStingAdvanced:
                     # === Parser Commands ===
                     elif self._commands_info[full_command_list[0]]["type"] == "parser":
                         parser_args = " ".join(full_command_list[1:])
-                        subprocess.run(f"python3 {self._commands_info[full_command_list[0]]['file']} "
-                                       f"{parser_args}",
+                        subprocess.run(f"python3 {command_dict[full_command_list[0]]['file']} {parser_args}",
                                        shell=True)
 
                 else:
