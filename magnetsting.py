@@ -592,8 +592,22 @@ class MagnetStingAdvanced:
             else:
                 raise NotImplementedError(f"Group '{command_group}' does not exist")
 
-    def add_command_group(self, group_name: str = None, group_help: str = None):
+    def add_command_group(self, group_name: str = None, group_help: str = None) -> None:
+        """
+        Create a command group. A command group is, as the name suggests, a group of commands. Groups can be used to
+        organize commands and to keep the main help banner from becoming too long and overwhelming. Any command can be
+        assigned to a command group and commands within a group can also be aliased. Commands assigned to a group do not
+        show up in the main help banner, rather, only the command group is shown. To see all commands assigned to a
+        group, enter the group name and a  help banner containing only the commands in the group will be shown. The
+        syntax to call a command in a command group is: <command group name> <command name>
+        <args (if free or parser type)>.
+        :param group_name: The `name` of the group
+        :param group_help: A short `description` of the group
+        :return: None
+        """
+        # Add group to groups dict
         self._groups_dict[group_name] = {}
+        # Add group info to commands dict
         self._commands_info[group_name] = {
             "type": "group",
             "help": group_help,
