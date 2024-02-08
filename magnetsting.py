@@ -617,7 +617,12 @@ class MagnetStingAdvanced:
             "help": group_help,
         }
 
-    def magnetstingadvanced_mainloop(self):
+    def magnetstingadvanced_mainloop(self) -> None:
+        """
+        This method handles all `MagnetStingAdvanced` operations. Call this method once all the command and command
+        groups have been created.
+        :return: None
+        """
         # Add built-in commands to commands dict
         self._commands_info["alias"] = {
             "type": "built-in",
