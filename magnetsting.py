@@ -176,18 +176,22 @@ class MagnetStingAdvanced:
       `argparse` module. For example, the command name `"foo"` has the file `"bar.py"` associated with it. You can then
       call the file by typing `"foo - -help"`. The `"- -help"` is then passed to the `"bar.py"` file, which takes the
       arguments and executes them, and in this case, would display the "help" output.
+    - Additionally, commands can be grouped together using `command groups`. Command groups are, as the name suggests,
+      a way to organize commands into a specific group. Commands assigned to a command group do not show up in the
+      help banner, rather, the command group name does instead. To view all commands within a group, call the command
+      group's name. The syntax to call a command within a command group is `<command group name> <command name>
+      <args (if free- or parser-type command)>`.
     **NOTE**\n
     Functions used by the `single`- and `free-type` commands **MUST** be created in a specific way inorder for
     `MagnetStingAdvanced` to execute them.\n
     - `single-type`: The functions for `single-type` commands **MUST** have the following parameter:
       `additional_data: any`. The function cannot have any other parameters. The `additional_data` parameter allows
-      you to pass other data such as strings, ints, objects, etc. to the function, it can be anything else the
-      function may need.
+      you to pass other data such as strings, ints, objects, etc. to the function through a tuple.
     - `free-type`: The functions for `free-type` commands **MUST** have the following parameters:
       `free_function: str` **AND** `additional_data: any`. The function cannot have any other parameters. The
       `free_function` parameter is for the argument used with the command (recall from the `free-type` example above,
       this would be "bar"), while the `additional_data` parameter allows you to pass other data such as strings, ints,
-      objects, etc. to the function. It can be anything else the function may need to work the way you want it to.
+      objects, etc. to the function through a tuple.
     """
     def __init__(self, framework_name: str = "MAGNETSTING",
                  banner: tuple | str = ("=" * 35, "MAGNETSTING", "Data here", "=" * 35), cmd_prompt: str = "\n>> ",
