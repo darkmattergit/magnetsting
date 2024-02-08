@@ -619,7 +619,7 @@ class MagnetStingAdvanced:
 
     def magnetstingadvanced_mainloop(self) -> None:
         """
-        This method handles all `MagnetStingAdvanced` operations. Call this method once all the command and command
+        This method handles all `MagnetStingAdvanced` operations. Call this method once all the commands and command
         groups have been created.
         :return: None
         """
