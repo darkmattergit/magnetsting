@@ -395,17 +395,23 @@ class MagnetStingAdvanced:
                       f"{self._groups_dict[group_name][commands]['help'] :{type_spacing}} "
                       f"{self._groups_dict[group_name][commands]['type']}")
 
-    def _possible_commands(self, command_name: str = None) -> None:
+    def _possible_commands(self, command_name: str = None, command_group: str = None) -> None:
         """
         Pretty print possible command names that start with the user input should the input not be in the commands_info
         dict. The output is displayed in columns, similar to how it would look if using the 'column' tool on UNIX/Linux
         systems.
         :param command_name: The input from the user
+        :param command_group: The name of the command group if checking commands in a group. If left as None, it will
+                              look through the "self._commands_info" dict instead.
         :return: None
         """
 
         # Initialize list that will hold the commands that start with the user input
-        possible_commands_list = [commands for commands in self._commands_info if commands.startswith(command_name)]
+        if command_group is None:
+            possible_commands_list = [commands for commands in self._commands_info if commands.startswith(command_name)]
+        else:
+            possible_commands_list = [commands for commands in self._groups_dict[command_group] if
+                                      commands.startswith(command_name)]
 
         # Get the length of the longest command name
         longest_command = 0
@@ -665,7 +671,7 @@ class MagnetStingAdvanced:
             pass
 
         while True:
-            usr_input = str(input(self.cmd_prompt))
+            usr_input = str(input(self.cmd_prompt)).strip()
             split_command = usr_input.split(" ")
 
             if split_command[0] in self.break_keywords:
@@ -706,14 +712,19 @@ class MagnetStingAdvanced:
                     # Initialize dict to hold specific command info
                     command_dict = {}
 
-                    # Check if command is a command name or if it is a group name
+                    # Check if command is a command name or a group name
                     if check_name in self._commands_info and self._commands_info[check_name]["type"] != "group":
                         full_command_list = split_command
                         command_dict[check_name] = self._commands_info[check_name]
 
                     elif check_name in self._commands_info and self._commands_info[check_name]["type"] == "group":
-                        full_command_list = split_command[1:]
-                        command_dict[split_command[1]] = self._groups_dict[check_name][split_command[1]]
+                        try:
+                            full_command_list = split_command[1:]
+                            command_dict[split_command[1]] = self._groups_dict[check_name][split_command[1]]
+
+                        except KeyError:
+                            self._possible_commands(command_name=split_command[1], command_group=check_name)
+                            continue
 
                     # Check if command is an alias
                     elif check_name in self._alias_dict:
