@@ -193,13 +193,13 @@ class MagnetStingAdvanced:
       this would be "bar"), while the `additional_data` parameter allows you to pass other data such as strings, ints,
       objects, etc. to the function through a tuple.
     """
-    def __init__(self, framework_name: str = "MAGNETSTING",
+    def __init__(self, exit_description: str = "exit MAGNETSTING",
                  banner: tuple | str = ("=" * 35, "MAGNETSTING", "Data here", "=" * 35), cmd_prompt: str = "\n>> ",
                  exit_message: str = "[*] Exiting", help_indent: int = 2, break_keywords: tuple = ("q", "quit", "exit"),
                  alias_file: str = ".alias.json", verbose: bool = False):
         """
         Initialize instance of MagnetStingAdvanced
-        :param framework_name: The name of the framework.
+        :param exit_description: The description of the exit command
         :param banner: A `tuple` of the information that will appear in the banner. This can include but is
                        not limited to: name, version number, etc. If you want to use a custom banner rather than the
                        one that the class creates using the tuple, use a string instead.
@@ -216,7 +216,7 @@ class MagnetStingAdvanced:
         self._commands_info = {}
         self._groups_dict = {}
         self._alias_dict = {}
-        self.framework_name = framework_name
+        self.exit_description = exit_description
         self.banner_data = banner
         self.cmd_prompt = cmd_prompt
         self.exit_message = exit_message
@@ -647,7 +647,7 @@ class MagnetStingAdvanced:
 
         self._commands_info[self.break_keywords[0]] = {
             "type": "built-in",
-            "help": f"exit {self.framework_name}",
+            "help": self.exit_description,
         }
 
         # Print custom banner
