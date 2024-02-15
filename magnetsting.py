@@ -195,7 +195,7 @@ class MagnetStingAdvanced:
     """
     def __init__(self, exit_description: str = "exit MAGNETSTING",
                  banner: tuple | str = ("=" * 35, "MAGNETSTING", "Data here", "=" * 35), cmd_prompt: str = "\n>> ",
-                 exit_message: str = "[*] Exiting", help_indent: int = 2, break_keywords: tuple = ("q", "quit", "exit"),
+                 exit_message: str = "[*] Exiting", break_keywords: tuple = ("q", "quit", "exit"),
                  alias_file: str = ".alias.json", verbose: bool = False):
         """
         Initialize instance of MagnetStingAdvanced
@@ -205,7 +205,6 @@ class MagnetStingAdvanced:
                        one that the class creates using the tuple, use a string instead.
         :param cmd_prompt: The `prompt` of the input.
         :param exit_message: The `message` that will be printed out upon exiting.
-        :param help_indent: The `number of spaces` the help banner is indented.
         :param break_keywords: A `tuple` of keywords used to exit.
         :param alias_file: A JSON file that holds `command aliases`
         :param verbose: In the help banner, show command types next to the command descriptions. Having the parameter
@@ -220,7 +219,6 @@ class MagnetStingAdvanced:
         self.banner_data = banner
         self.cmd_prompt = cmd_prompt
         self.exit_message = exit_message
-        self.help_indent = help_indent
         self.break_keywords = break_keywords
         self.alias_file = alias_file
         self.verbose = verbose
@@ -250,10 +248,10 @@ class MagnetStingAdvanced:
         # Print commands and their help descriptions
         if self.verbose is False:
             print()
-            print(f"{' '*self.help_indent}{'Command':{spacing}} {'Description' :{spacing}}")
-            print(f"{' '*self.help_indent}{'-------':{spacing}} {'-----------' :{spacing}}")
+            print(f"{' '*2}{'Command':{spacing}} {'Description' :{spacing}}")
+            print(f"{' '*2}{'-------':{spacing}} {'-----------' :{spacing}}")
             for commands in self._commands_info:
-                print(f"{' '*self.help_indent}{commands :{spacing}} {self._commands_info[commands]['help']}")
+                print(f"{' '*2}{commands :{spacing}} {self._commands_info[commands]['help']}")
 
         # Print commands, their help descriptions and the commands types
         else:
@@ -270,13 +268,13 @@ class MagnetStingAdvanced:
             type_spacing = type_spacing + 5
 
             print()
-            print(f"{' ' * self.help_indent}{'Command' :{spacing}} {'Description' :{type_spacing}} "
+            print(f"{' '*2}{'Command' :{spacing}} {'Description' :{type_spacing}} "
                   f"{'Type'}")
-            print(f"{' ' * self.help_indent}{'-------':{spacing}} {'-----------' :{type_spacing}} "
+            print(f"{' '*2}{'-------':{spacing}} {'-----------' :{type_spacing}} "
                   f"{'----' :{spacing}}")
 
             for commands in self._commands_info:
-                print(f"{' '*self.help_indent}{commands :{spacing}} "
+                print(f"{' '*2}{commands :{spacing}} "
                       f"{self._commands_info[commands]['help'] :{type_spacing}} "
                       f"{self._commands_info[commands]['type']}")
 
@@ -327,21 +325,21 @@ class MagnetStingAdvanced:
         else:
             if self.verbose is False:
                 print()
-                print(f"{' '*self.help_indent}{'Command':{command_spacer}} Description")
-                print(f"{' '*self.help_indent}{'-------':{command_spacer}} -----------")
+                print(f"{' '*2}{'Command':{command_spacer}} Description")
+                print(f"{' '*2}{'-------':{command_spacer}} -----------")
                 for command_help in command_help_dict:
-                    print(f"{' '*self.help_indent}{command_help:{command_spacer}} "
+                    print(f"{' '*2}{command_help:{command_spacer}} "
                           f"{self._commands_info[command_help]['help']}")
 
             else:
                 print()
-                print(f"{' ' * self.help_indent}{'Command' :{command_spacer}} {'Description' :{type_spacer}} "
+                print(f"{' '*2}{'Command' :{command_spacer}} {'Description' :{type_spacer}} "
                       f"{'Type'}")
-                print(f"{' ' * self.help_indent}{'-------':{command_spacer}} {'-----------' :{type_spacer}} "
+                print(f"{' '*2}{'-------':{command_spacer}} {'-----------' :{type_spacer}} "
                       f"{'----' :{command_spacer}}")
 
                 for commands in command_help_dict:
-                    print(f"{' ' * self.help_indent}{commands :{command_spacer}} "
+                    print(f"{' '*2}{commands :{command_spacer}} "
                           f"{self._commands_info[commands]['help'] :{type_spacer}} "
                           f"{self._commands_info[commands]['type']}")
 
@@ -365,10 +363,10 @@ class MagnetStingAdvanced:
         # Print commands and their help descriptions
         if self.verbose is False:
             print()
-            print(f"{' '*self.help_indent}{'Command':{spacing}} {'Description' :{spacing}}")
-            print(f"{' '*self.help_indent}{'-------':{spacing}} {'-----------' :{spacing}}")
+            print(f"{' '*2}{'Command':{spacing}} {'Description' :{spacing}}")
+            print(f"{' '*2}{'-------':{spacing}} {'-----------' :{spacing}}")
             for commands in self._groups_dict[group_name]:
-                print(f"{' '*self.help_indent}{commands :{spacing}} {self._groups_dict[group_name][commands]['help']}")
+                print(f"{' '*2}{commands :{spacing}} {self._groups_dict[group_name][commands]['help']}")
 
         # Print commands, their help descriptions and the commands types
         else:
@@ -385,13 +383,13 @@ class MagnetStingAdvanced:
             type_spacing = type_spacing + 5
 
             print()
-            print(f"{' ' * self.help_indent}{'Command' :{spacing}} {'Description' :{type_spacing}} "
+            print(f"{' '*2}{'Command' :{spacing}} {'Description' :{type_spacing}} "
                   f"{'Type'}")
-            print(f"{' ' * self.help_indent}{'-------':{spacing}} {'-----------' :{type_spacing}} "
+            print(f"{' '*2}{'-------':{spacing}} {'-----------' :{type_spacing}} "
                   f"{'----' :{spacing}}")
 
             for commands in self._groups_dict[group_name]:
-                print(f"{' '*self.help_indent}{commands :{spacing}} "
+                print(f"{' '*2}{commands :{spacing}} "
                       f"{self._groups_dict[group_name][commands]['help'] :{type_spacing}} "
                       f"{self._groups_dict[group_name][commands]['type']}")
 
