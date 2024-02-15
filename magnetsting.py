@@ -446,9 +446,34 @@ class MagnetStingAdvanced:
             print(f"{blocks[0] :{block_spacers}}{blocks[1] :{block_spacers}}{blocks[2] :{block_spacers}}"
                   f"{blocks[3] :{block_spacers}}")
 
-    def _alias_command(self, alias_list: list = None):
+    def _alias_command(self, alias_list: list = None) -> None:
+        """
+        Method to create and edit, remove and view command aliases
+        :param alias_list: The contents of the JSON file that have been decoded into a Python dict
+        :return: None
+        """
         if len(alias_list) < 2:
-            print("[!] Use 'add <alias name> <command>', 'remove <alias name>' or 'view'")
+            print("[*] Use 'alias add <alias name> <command>' to add/edit aliases or 'alias remove <alias name>' to "
+                  "remove aliases")
+            spacer = 0
+            for aliases in self._alias_dict:
+                if len(aliases) > spacer:
+                    spacer = len(aliases)
+
+                else:
+                    pass
+
+            # Add different amount of additional spacing depending on the value of "spacer" to avoid misaligned columns
+            if spacer <= 5:
+                spacer = spacer + 12
+            else:
+                spacer = spacer + 5
+
+            print()
+            print(f"  {'Alias':{spacer}} Full Command")
+            print(f"  {'-----':{spacer}} ------------")
+            for commands in self._alias_dict:
+                print(f"  {commands:{spacer}} {self._alias_dict[commands]}")
 
         else:
             # Add a command alias
@@ -464,23 +489,6 @@ class MagnetStingAdvanced:
                     command_str = " ".join(alias_list[3:])
                     self._alias_dict[alias_list[2]] = command_str
                     print(f"[+] Added alias '{alias_list[2]}'")
-
-            # View all set aliases
-            elif alias_list[1] == "view":
-                spacer = 0
-                for aliases in self._alias_dict:
-                    if len(aliases) > spacer:
-                        spacer = len(aliases)
-
-                    else:
-                        pass
-
-                spacer = spacer + 5
-                print()
-                print(f"  {'Alias':{spacer}} Full Command")
-                print(f"  {'-----':{spacer}} ------------")
-                for commands in self._alias_dict:
-                    print(f"  {commands:{spacer}} {self._alias_dict[commands]}")
 
             # Remove a command alias
             elif alias_list[1] == "remove" and len(alias_list) == 3:
