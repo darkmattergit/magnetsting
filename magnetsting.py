@@ -11,163 +11,11 @@ import os
 
 class MagnetSting:
     """
-    `MagnetSting` is a framework that can be used to build projects in the command line. MagnetSting allows you to
-    create various commands and handles their execution, freeing you from the need of countless `if`, `elif` and `else`
-    statements. The framework also handles creating an opening banner that displays everytime the project is run and
-    also generates a handy command help banner, showing all the available commands and a short description of what they
-    do. In case an unknown command is entered, MagnetSting helpfully suggests possible commands based on what was
-    entered and checking if there are any commands that have a similar name. MagnetSting takes care of it all.
-    """
-    def __init__(self, banner_decorators: str = "-=-", decorators_length: int = 12,
-                 banner_data: tuple = ("MAGNETSTING", "Data Here",), cmd_prompt: str = "\n>> ",
-                 exit_message: str = "[*] Exiting", help_spacers: int = 4, help_indent: int = 2,
-                 command_hint_spacers: int = 2, break_keywords: tuple = ("q", "quit", "exit")):
-        """
-        Initialize instance of `MAGNETSTING`
-        :param banner_decorators: The `decorators` of the banner on start-up
-        :param decorators_length: The `length` of the banner decorators
-        :param banner_data: A `tuple` of the information that will appear in the banner. This can include but is
-        not limited to: name, version number, etc.
-        :param cmd_prompt: The prompt of the input
-        :param exit_message: The `message` that will be printed out upon exiting
-        :param help_spacers: The `alignment spacers` between the command name and the command description of the help
-        banner
-        :param help_indent: The `number of spaces` the help banner is indented
-        :param command_hint_spacers: The `number of spaces` between command hints when a user enters a command that does
-        not exist
-        :param break_keywords: A `tuple` of keywords that are used to exit
-        """
-
-        self.banner_decorators = banner_decorators
-        self.decorators_length = decorators_length
-        self.banner_data = banner_data
-        self.cmd_prompt = cmd_prompt
-        self.exit_message = exit_message
-        self.help_spacers = help_spacers
-        self.help_indent = help_indent
-        self.command_help_spacers = command_hint_spacers
-        self.break_keywords = break_keywords
-
-        # Initialize dict that will hold commands and their information
-        self._commands_dict = {}
-
-    def _help_command(self):
-        """
-        Print out the help banner
-        :return: None
-        """
-        print()
-        print(f"{' '*self.help_indent}{'Command' :{self.help_spacers}} {'Description' :{self.help_spacers}}")
-        print(f"{' '*self.help_indent}{'-------':{self.help_spacers}} {'-----------' :{self.help_spacers}}")
-        for commands in self._commands_dict:
-            print(f"{' '*self.help_indent}{commands :{self.help_spacers}} {self._commands_dict[commands]['help']}")
-
-    def _possible_commands(self, command_name: str = None) -> None:
-        """
-        Pretty print possible command names that start with the user input should the input not be in the commands_info
-        dict. The output is displayed in columns, similar to how it would look if using the 'column' tool on UNIX/Linux
-        systems.
-        :param command_name: The input from the user
-        :return: None
-        """
-
-        # Initialize list that will hold the commands that start with the user input
-        possible_commands_list = [commands for commands in self._commands_dict if commands.startswith(command_name)]
-
-        # Get the length of the longest command name
-        longest_command = 0
-        for commands in possible_commands_list:
-            if len(commands) > longest_command:
-                longest_command = len(commands)
-            else:
-                pass
-
-        # Add extra spacing to the length of the longest command to be able to better see the commands
-        block_spacers = longest_command + 12
-
-        # Add blank padding if the number of commands in the list is not a multiple of 4
-        if len(possible_commands_list) % 4 != 0:
-            for _ in range(4 - (len(possible_commands_list) % 4)):
-                possible_commands_list.append("")
-        else:
-            pass
-
-        # Create a list that holds lists of 4 commands each
-        start_counter = 0
-        end_counter = 4
-        command_blocks = []
-        for _ in range(len(possible_commands_list) // 4):
-            command_blocks.append(possible_commands_list[start_counter:end_counter])
-            start_counter += 4
-            end_counter += 4
-
-        # Pretty print possible commands in 4 columns
-        print("possible command(s):")
-        for blocks in command_blocks:
-            print(f"{blocks[0] :{block_spacers}}{blocks[1] :{block_spacers}}{blocks[2] :{block_spacers}}"
-                  f"{blocks[3] :{block_spacers}}")
-
-    def add_command(self, command_name: str = None, command_help: str = None, command_function: object = None):
-        """
-        Add a new command to the instance of MAGNETSTING
-        :param command_name: The `name` of the command
-        :param command_help: A short `descriptor` about what the command does
-        :param command_function: The `function object` of the command
-        :return: None
-        """
-
-        # Add command name and command help to command dict
-        self._commands_dict[command_name] = {
-            "help": command_help,
-            "function": command_function
-        }
-
-    def magnetsting_mainloop(self):
-        """
-        `MAGNETSTING` mainloop
-        :return: None
-        """
-
-        # Add "help" command to the help banner
-        self._commands_dict["help"] = {
-            "help": "print this help banner"
-        }
-        # Add the first break keyword in the break list to the end of the help banner
-        self._commands_dict[self.break_keywords[0]] = {
-            "help": "exit MAGNETSTING"
-        }
-
-        # Print out start-up banner
-        print(self.banner_decorators*self.decorators_length)
-        for data in self.banner_data:
-            print(data)
-        print(self.banner_decorators*self.decorators_length)
-
-        # Print out help banner on start
-        self._help_command()
-
-        while True:
-            usr_input = str(input(self.cmd_prompt)).lower()
-            if usr_input in self.break_keywords:
-                print(self.exit_message)
-                break
-
-            elif usr_input in self._commands_dict:
-                self._commands_dict[usr_input]()
-
-            # Print out all possible commands that start with what the user entered
-            else:
-                self._possible_commands(command_name=usr_input)
-
-
-class MagnetStingAdvanced:
-    """
-    `MagnetStingAdvanced` is an improved framework based on `MagnetSting`. It allows for a wider range of customization
-    and expands the types of commands that can be created. In this framework, the three types of commands that can be
-    created are: `single`, `free` and `parser`.\n
-    - `single`-type commands are the same as those in `MagnetSting`. Just type in the command name and the function
-      associated with the command will be executed. Anything typed after the command name will not be passed to the
-      function.
+    `MagnetSting` is a framework that simplifies the creation of command-line projects. `MagnetSting` comes with many
+    capabilities built into it, such as help banner creation, command suggestions, command aliasing and more.
+    The framework allows you to create three types of commands: `single`, `free` and `parser`.\n
+    - `single`-type commands are commands that consist only of the command name. Anything typed after the command name
+      will not be passed onto the function assigned to the command.
     - `free`-type commands allow for the use of arguments. For example, if the command name is `"foo"`, then you can
       call it by adding an argument (in this case "bar") to the command: `">> foo bar"`. This would then pass `"bar"`
       to the function associated with the command `"foo"`.
@@ -183,7 +31,7 @@ class MagnetStingAdvanced:
       <args (if free- or parser-type command)>`.
     **NOTE**\n
     Functions used by the `single`- and `free-type` commands **MUST** be created in a specific way inorder for
-    `MagnetStingAdvanced` to execute them.\n
+    `MagnetSting` to execute them.\n
     - `single-type`: The functions for `single-type` commands **MUST** have the following parameter:
       `additional_data: any`. The function cannot have any other parameters. The `additional_data` parameter allows
       you to pass other data such as strings, ints, objects, etc. to the function through a tuple.
@@ -191,18 +39,21 @@ class MagnetStingAdvanced:
       `free_function: str` **AND** `additional_data: any`. The function cannot have any other parameters. The
       `free_function` parameter is for the argument used with the command (recall from the `free-type` example above,
       this would be "bar"), while the `additional_data` parameter allows you to pass other data such as strings, ints,
-      objects, etc. to the function through a tuple.
+      objects, etc. to the function using a tuple.
+    **NOTE**\n
+    The order in which the commands and command groups are created determines the order in which they appear in the help
+    banner. The same applies for commands in command groups.
     """
     def __init__(self, exit_description: str = "exit MAGNETSTING",
                  banner: tuple | str = ("=" * 35, "MAGNETSTING", "Data here", "=" * 35), cmd_prompt: str = "\n>> ",
                  exit_message: str = "[*] Exiting", break_keywords: tuple = ("q", "quit", "exit"),
                  alias_file: str = ".alias.json", verbose: bool = False):
         """
-        Initialize instance of MagnetStingAdvanced
+        Initialize instance of MagnetSting
         :param exit_description: The description of the exit command
         :param banner: A `tuple` of the information that will appear in the banner. This can include but is
                        not limited to: name, version number, etc. If you want to use a custom banner rather than the
-                       one that the class creates using the tuple, use a string instead.
+                       one that the class creates using the tuple, use a `string` instead.
         :param cmd_prompt: The `prompt` of the input.
         :param exit_message: The `message` that will be printed out upon exiting.
         :param break_keywords: A `tuple` of keywords used to exit.
@@ -543,7 +394,7 @@ class MagnetStingAdvanced:
                            command_function: object = None, additional_data: tuple = None) -> None:
         """
         Add a `single-type` command to the dict of commands. A single-type command consists only of a command name that
-        when called, executes the function assigned to it. Anything typed after the command name is not passed onto the
+        when called, executes the function assigned to it. Anything typed after the command name is not passed to the
         function assigned to the command. Functions used in single-type commands **MUST** have the following parameter:
         `additional_data: any`.
         :param command_name: The `name` of the command
@@ -629,9 +480,9 @@ class MagnetStingAdvanced:
             "help": group_help,
         }
 
-    def magnetstingadvanced_mainloop(self) -> None:
+    def magnetsting_mainloop(self) -> None:
         """
-        This method handles all `MagnetStingAdvanced` operations. Call this method once all the commands and command
+        This method handles all `MagnetSting` operations. Call this method once all the commands and command
         groups have been created.
         :return: None
         """
