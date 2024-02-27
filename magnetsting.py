@@ -6,7 +6,6 @@ Create command-line projects with ease.
 import subprocess
 import readline
 import json
-import os
 
 
 class MagnetSting:
@@ -75,7 +74,7 @@ class MagnetSting:
         self.verbose = verbose
 
         # Check if file is a JSON file
-        if os.path.splitext(self.alias_file)[len(os.path.splitext(self.alias_file))-1] != ".json":
+        if self.alias_file[-5:] != ".json":
             raise ValueError("File is not a JSON file")
         else:
             pass
