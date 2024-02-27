@@ -93,7 +93,7 @@ class MagnetSting:
                 pass
 
         # Add additional spacing to the len of the longest command name to make the columns more distinct and readable
-        spacing = spacing + 5
+        spacing += 5
 
         # Print commands and their help descriptions
         if self.verbose is False:
@@ -115,7 +115,7 @@ class MagnetSting:
 
             # Add additional spacing to the len of the longest command description to make the columns more distinct
             # and readable
-            type_spacing = type_spacing + 5
+            type_spacing += 5
 
             print()
             print(f"{' '*2}{'Command' :{spacing}} {'Description' :{type_spacing}} "
@@ -163,11 +163,11 @@ class MagnetSting:
 
         # Add additional spacing
         if command_spacer < 5:
-            command_spacer = command_spacer + 12
+            command_spacer += 12
         else:
-            command_spacer = command_spacer + 5
+            command_spacer += 5
 
-        type_spacer = type_spacer + 5
+        type_spacer += 5
 
         if len(command_help_dict) == 0:
             print("[!] No command(s) found")
@@ -208,7 +208,7 @@ class MagnetSting:
                 pass
 
         # Add additional spacing to the len of the longest command name to make the columns more distinct and readable
-        spacing = spacing + 5
+        spacing += 5
 
         # Print commands and their help descriptions
         if self.verbose is False:
@@ -230,7 +230,7 @@ class MagnetSting:
 
             # Add additional spacing to the len of the longest command description to make the columns more distinct
             # and readable
-            type_spacing = type_spacing + 5
+            type_spacing += 5
 
             print()
             print(f"{' '*2}{'Command' :{spacing}} {'Description' :{type_spacing}} "
@@ -313,9 +313,9 @@ class MagnetSting:
 
             # Add different amount of additional spacing depending on the value of "spacer" to avoid misaligned columns
             if spacer <= 5:
-                spacer = spacer + 12
+                spacer += 12
             else:
-                spacer = spacer + 5
+                spacer += 5
 
             print()
             print(f"  {'Alias':{spacer}} Full Command")
