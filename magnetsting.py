@@ -98,8 +98,8 @@ class MagnetSting:
         # Print commands and their help descriptions
         if self.verbose is False:
             print()
-            print(f"{' '*2}{'Command':{spacing}} {'Description' :{spacing}}")
-            print(f"{' '*2}{'-------':{spacing}} {'-----------' :{spacing}}")
+            print(f"{' '*2}{'Command' :{spacing}} {'Description' :{spacing}}")
+            print(f"{' '*2}{'-------' :{spacing}} {'-----------' :{spacing}}")
             for commands in self._commands_info:
                 print(f"{' '*2}{commands :{spacing}} {self._commands_info[commands]['help']}")
 
@@ -120,7 +120,7 @@ class MagnetSting:
             print()
             print(f"{' '*2}{'Command' :{spacing}} {'Description' :{type_spacing}} "
                   f"{'Type'}")
-            print(f"{' '*2}{'-------':{spacing}} {'-----------' :{type_spacing}} "
+            print(f"{' '*2}{'-------' :{spacing}} {'-----------' :{type_spacing}} "
                   f"{'----' :{spacing}}")
 
             for commands in self._commands_info:
@@ -175,8 +175,8 @@ class MagnetSting:
         else:
             if self.verbose is False:
                 print()
-                print(f"{' '*2}{'Command':{command_spacer}} Description")
-                print(f"{' '*2}{'-------':{command_spacer}} -----------")
+                print(f"{' '*2}{'Command' :{command_spacer}} Description")
+                print(f"{' '*2}{'-------' :{command_spacer}} -----------")
                 for command_help in command_help_dict:
                     print(f"{' '*2}{command_help:{command_spacer}} "
                           f"{self._commands_info[command_help]['help']}")
@@ -185,7 +185,7 @@ class MagnetSting:
                 print()
                 print(f"{' '*2}{'Command' :{command_spacer}} {'Description' :{type_spacer}} "
                       f"{'Type'}")
-                print(f"{' '*2}{'-------':{command_spacer}} {'-----------' :{type_spacer}} "
+                print(f"{' '*2}{'-------' :{command_spacer}} {'-----------' :{type_spacer}} "
                       f"{'----' :{command_spacer}}")
 
                 for commands in command_help_dict:
@@ -213,8 +213,8 @@ class MagnetSting:
         # Print commands and their help descriptions
         if self.verbose is False:
             print()
-            print(f"{' '*2}{'Command':{spacing}} {'Description' :{spacing}}")
-            print(f"{' '*2}{'-------':{spacing}} {'-----------' :{spacing}}")
+            print(f"{' '*2}{'Command' :{spacing}} {'Description' :{spacing}}")
+            print(f"{' '*2}{'-------' :{spacing}} {'-----------' :{spacing}}")
             for commands in self._groups_dict[group_name]:
                 print(f"{' '*2}{commands :{spacing}} {self._groups_dict[group_name][commands]['help']}")
 
@@ -235,7 +235,7 @@ class MagnetSting:
             print()
             print(f"{' '*2}{'Command' :{spacing}} {'Description' :{type_spacing}} "
                   f"{'Type'}")
-            print(f"{' '*2}{'-------':{spacing}} {'-----------' :{type_spacing}} "
+            print(f"{' '*2}{'-------' :{spacing}} {'-----------' :{type_spacing}} "
                   f"{'----' :{spacing}}")
 
             for commands in self._groups_dict[group_name]:
@@ -318,8 +318,8 @@ class MagnetSting:
                 spacer += 5
 
             print()
-            print(f"  {'Alias':{spacer}} Full Command")
-            print(f"  {'-----':{spacer}} ------------")
+            print(f"  {'Alias' :{spacer}} Full Command")
+            print(f"  {'-----' :{spacer}} ------------")
             for commands in self._alias_dict:
                 print(f"  {commands:{spacer}} {self._alias_dict[commands]}")
 
