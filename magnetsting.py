@@ -49,15 +49,15 @@ class MagnetSting:
                  exit_message: str = "[*] Exiting", break_keywords: tuple = ("q", "quit", "exit"),
                  alias_file: str = ".alias.json", verbose: bool = False):
         """
-        Initialize instance of MagnetSting
-        :param exit_description: The description of the exit command
+        Initialize instance of MagnetSting.
+        :param exit_description: The description of the exit command.
         :param banner: A `tuple` of the information that will appear in the banner. This can include but is
                        not limited to: name, version number, etc. If you want to use a custom banner rather than the
                        one that the class creates using the tuple, use a `string` instead.
         :param cmd_prompt: The `prompt` of the input.
         :param exit_message: The `message` that will be printed out upon exiting.
         :param break_keywords: A `tuple` of keywords used to exit.
-        :param alias_file: A JSON file that holds `command aliases`
+        :param alias_file: A JSON file that holds `command aliases`.
         :param verbose: In the help banner, show command types next to the command descriptions. Having the parameter
                         set to `True` will show the command types while `False` will not.
         """
@@ -82,7 +82,7 @@ class MagnetSting:
 
     def _help_command(self):
         """
-        Print out the help banner
+        Print the help banner.
         :return: None
         """
         # Calculate the amount of spacing needed between the commands and their help descriptions
@@ -131,8 +131,8 @@ class MagnetSting:
 
     def _specific_commands_help(self, command_name: str = None) -> None:
         """
-        Print a help banner containing specific commands
-        :param command_name: The name or partial name of the command(s) to look for
+        Print a help banner containing specific commands.
+        :param command_name: The name or partial name of the command(s) to look for.
         :return: None
         """
         # Initialize dict to hold command names and their descriptions
@@ -196,8 +196,8 @@ class MagnetSting:
 
     def _help_command_group(self, group_name: str = None) -> None:
         """
-        Print a help banner for a specific command group
-        :param group_name: The name of the group
+        Print a help banner for a specific command group.
+        :param group_name: The name of the group.
         :return: None
         """
         # Calculate the amount of spacing needed between the commands and their help descriptions
@@ -249,7 +249,7 @@ class MagnetSting:
         Pretty print possible command names that start with the user input should the input not be in the commands_info
         dict. The output is displayed in columns, similar to how it would look if using the 'column' tool on UNIX/Linux
         systems.
-        :param command_name: The input from the user
+        :param command_name: The input from the user.
         :param command_group: The name of the command group if checking commands in a group. If left as None, it will
                               look through the "self._commands_info" dict instead.
         :return: None
@@ -363,11 +363,12 @@ class MagnetSting:
         free-type command, a message will be printed telling you that some form of an argument is required. Functions
         used in free-type commands **MUST** have the following function parameters: `free_function: str` **AND**
         `additional_data: any`.
-        :param command_name: The `name` of the command
-        :param command_help: A short `descriptor` about what the command does
-        :param command_group: The `group` the command belongs to. Can be left as None if it does not belong to any group
-        :param command_function: The `function` assigned to the command
-        :param additional_data: 'Additional data' that gets sent over to the command's function
+        :param command_name: The `name` of the command.
+        :param command_help: A short `descriptor` about what the command does.
+        :param command_group: The `group` the command belongs to. Can be left as None if it does not belong to any
+                              group.
+        :param command_function: The `function` assigned to the command.
+        :param additional_data: 'Additional data' that gets sent over to the command's function.
         :return: None
         """
         if command_group is None:
@@ -397,11 +398,12 @@ class MagnetSting:
         when called, executes the function assigned to it. Anything typed after the command name is not passed to the
         function assigned to the command. Functions used in single-type commands **MUST** have the following parameter:
         `additional_data: any`.
-        :param command_name: The `name` of the command
-        :param command_help: A short `descriptor` about what the command does
-        :param command_group: The `group` the command belongs to. Can be left as None if it does not belong to any group
-        :param command_function: The `function` assigned to the command
-        :param additional_data: `Additional data` that gets sent over to the command's function
+        :param command_name: The `name` of the command.
+        :param command_help: A short `descriptor` about what the command does.
+        :param command_group: The `group` the command belongs to. Can be left as None if it does not belong to any
+                              group.
+        :param command_function: The `function` assigned to the command.
+        :param additional_data: `Additional data` that gets sent over to the command's function.
         :return: None
         """
         if command_group is None:
@@ -435,10 +437,11 @@ class MagnetSting:
         `bar.py` being assigned to the command name `foo`, then the subprocess module would run (bar.py - -help),
         which would print out the help banner. Since a file is being used here, there are ***NO*** specific parameters
         that need to be added when creating/using the file.
-        :param command_name: The `name` of the command
-        :param command_help: A short `descriptor` about what the command does
-        :param command_group: The `group` the command belongs to. Can be left as None if it does not belong to any group
-        :param command_file: The `full or relative path` of the file assigned to the command
+        :param command_name: The `name` of the command.
+        :param command_help: A short `descriptor` about what the command does.
+        :param command_group: The `group` the command belongs to. Can be left as None if it does not belong to any
+                              group.
+        :param command_file: The `full or relative path` of the file assigned to the command.
         :return: None
         """
         if command_group is None:
@@ -468,8 +471,8 @@ class MagnetSting:
         group, enter the group name and a  help banner containing only the commands in the group will be shown. The
         syntax to call a command in a command group is: <command group name> <command name>
         <args (if free or parser type)>.
-        :param group_name: The `name` of the group
-        :param group_help: A short `description` of the group
+        :param group_name: The `name` of the group.
+        :param group_help: A short `description` of the group.
         :return: None
         """
         # Add group to groups dict
