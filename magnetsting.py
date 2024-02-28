@@ -35,8 +35,8 @@ class MagnetSting:
       `additional_data: any`. The function cannot have any other parameters. The `additional_data` parameter allows
       you to pass other data such as strings, ints, objects, etc. to the function through a tuple.
     - `free-type`: The functions for `free-type` commands **MUST** have the following parameters:
-      `free_function: str` **AND** `additional_data: any`. The function cannot have any other parameters. The
-      `free_function` parameter is for the argument used with the command (recall from the `free-type` example above,
+      `command_args: str` **AND** `additional_data: any`. The function cannot have any other parameters. The
+      `command_args` parameter is for the argument(s) used with the command (recall from the `free-type` example above,
       this would be "bar"), while the `additional_data` parameter allows you to pass other data such as strings, ints,
       objects, etc. to the function using a tuple.
     **NOTE**\n
@@ -360,7 +360,7 @@ class MagnetSting:
         then you can do: "foo bar baz", with "bar baz" being the argument(s). There are no limits on how long the
         arguments can be, they can be as long and as many as you would like. If you do not provide an argument to a
         free-type command, a message will be printed telling you that some form of an argument is required. Functions
-        used in free-type commands **MUST** have the following function parameters: `free_function: str` **AND**
+        used in free-type commands **MUST** have the following function parameters: `command_args: str` **AND**
         `additional_data: any`.
         :param command_name: The `name` of the command.
         :param command_help: A short `descriptor` about what the command does.
@@ -605,7 +605,7 @@ class MagnetSting:
 
                         else:
                             get_arg = full_command_list[1:]
-                            command_dict[full_command_list[0]]["function"](free_function=get_arg,
+                            command_dict[full_command_list[0]]["function"](command_args=get_arg,
                                                                            additional_data=command_dict
                                                                            [full_command_list[0]]["additional"])
 
