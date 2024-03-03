@@ -44,7 +44,7 @@ class MagnetSting:
     banner. The same applies for commands in command groups.
     """
     def __init__(self, exit_description: str = "exit MAGNETSTING",
-                 banner: tuple | str = ("=" * 35, "MAGNETSTING", "Data here", "=" * 35), cmd_prompt: str = "\n>> ",
+                 banner: tuple | str = ("=" * 35, "MAGNETSTING", "Data here", "=" * 35), cmd_prompt: str = ">> ",
                  exit_message: str = "[*] Exiting", break_keywords: tuple = ("q", "quit", "exit"),
                  alias_file: str = ".alias.json", verbose: bool = False):
         """
@@ -102,6 +102,7 @@ class MagnetSting:
             print(f"{' '*2}{'-------' :{spacing}} {'-----------' :{spacing}}")
             for commands in self._commands_info:
                 print(f"{' '*2}{commands :{spacing}} {self._commands_info[commands]['help']}")
+            print()
 
         # Print commands, their help descriptions and the commands types
         else:
@@ -127,6 +128,7 @@ class MagnetSting:
                 print(f"{' '*2}{commands :{spacing}} "
                       f"{self._commands_info[commands]['help'] :{type_spacing}} "
                       f"{self._commands_info[commands]['type']}")
+            print()
 
     def _specific_commands_help(self, command_name: str = None) -> None:
         """
@@ -180,6 +182,7 @@ class MagnetSting:
                 for command_help in command_help_dict:
                     print(f"{' '*2}{command_help:{command_spacer}} "
                           f"{self._commands_info[command_help]['help']}")
+                print()
 
             else:
                 print()
@@ -192,6 +195,7 @@ class MagnetSting:
                     print(f"{' '*2}{commands :{command_spacer}} "
                           f"{self._commands_info[commands]['help'] :{type_spacer}} "
                           f"{self._commands_info[commands]['type']}")
+                print()
 
     def _help_command_group(self, group_name: str = None) -> None:
         """
@@ -217,6 +221,7 @@ class MagnetSting:
             print(f"{' '*2}{'-------' :{spacing}} {'-----------' :{spacing}}")
             for commands in self._groups_dict[group_name]:
                 print(f"{' '*2}{commands :{spacing}} {self._groups_dict[group_name][commands]['help']}")
+            print()
 
         # Print commands, their help descriptions and the commands types
         else:
@@ -242,6 +247,7 @@ class MagnetSting:
                 print(f"{' '*2}{commands :{spacing}} "
                       f"{self._groups_dict[group_name][commands]['help'] :{type_spacing}} "
                       f"{self._groups_dict[group_name][commands]['type']}")
+            print()
 
     def _possible_commands(self, command_name: str = None, command_group: str = None) -> None:
         """
@@ -293,6 +299,7 @@ class MagnetSting:
         for blocks in command_blocks:
             print(f"{blocks[0] :{block_spacers}}{blocks[1] :{block_spacers}}{blocks[2] :{block_spacers}}"
                   f"{blocks[3] :{block_spacers}}")
+        print()
 
     def _alias_command(self, alias_list: list = None) -> None:
         """
@@ -322,21 +329,22 @@ class MagnetSting:
             print(f"  {'-----' :{spacer}} ------------")
             for commands in self._alias_dict:
                 print(f"  {commands:{spacer}} {self._alias_dict[commands]}")
+            print()
 
         else:
             # Add a command alias
             if alias_list[1] == "add" and len(alias_list) >= 4:
 
                 if alias_list[2] in self._commands_info:
-                    print(f"[!] Cannot create alias, '{alias_list[2]}' is already in use as a command name")
+                    print(f"[!] Cannot create alias, '{alias_list[2]}' is already in use as a command name\n")
 
                 elif alias_list[3] not in self._commands_info:
-                    print(f"[!] Cannot create alias, the command '{alias_list[3]}' does not exist")
+                    print(f"[!] Cannot create alias, the command '{alias_list[3]}' does not exist\n")
 
                 else:
                     command_str = " ".join(alias_list[3:])
                     self._alias_dict[alias_list[2]] = command_str
-                    print(f"[+] Added alias '{alias_list[2]}'")
+                    print(f"[+] Added alias '{alias_list[2]}'\n")
 
             # Remove a command alias
             elif alias_list[1] == "remove" and len(alias_list) == 3:
@@ -344,13 +352,13 @@ class MagnetSting:
                     del (self._alias_dict[alias_list[2]])
 
                 except KeyError:
-                    print(f"[*] Alias '{alias_list[2]}' does not exist")
+                    print(f"[*] Alias '{alias_list[2]}' does not exist\n")
 
                 else:
-                    print(f"[-] Removed alias '{alias_list[2]}'")
+                    print(f"[-] Removed alias '{alias_list[2]}'\n")
 
             else:
-                print("[!] Invalid alias command")
+                print("[!] Invalid alias command\n")
 
     def add_command_free(self, command_name: str = None, command_help: str = None, command_group: str = None,
                          command_function: object = None, additional_data: tuple = None) -> None:
