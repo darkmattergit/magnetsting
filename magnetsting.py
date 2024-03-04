@@ -268,15 +268,15 @@ class MagnetSting:
                                       commands.startswith(command_name)]
 
         # Get the length of the longest command name
-        longest_command = 0
+        block_spacers = 0
         for commands in possible_commands_list:
-            if len(commands) > longest_command:
-                longest_command = len(commands)
+            if len(commands) > block_spacers:
+                block_spacers = len(commands)
             else:
                 pass
 
         # Add extra spacing to the length of the longest command to be able to better see the commands
-        block_spacers = longest_command + 12
+        block_spacers += 12
 
         # Add blank padding if the number of commands in the list is not a multiple of 4
         if len(possible_commands_list) % 4 != 0:
