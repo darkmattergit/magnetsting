@@ -172,7 +172,7 @@ class MagnetSting:
         type_spacer += 5
 
         if len(command_help_dict) == 0:
-            print("[!] No command(s) found")
+            print("[!] No command(s) found\n")
 
         else:
             if self.verbose is False:
