@@ -609,7 +609,7 @@ class MagnetSting:
                     # === Free Commands ===
                     if command_dict[full_command_list[0]]["type"] == "free":
                         if len(full_command_list) == 1 or full_command_list[1].isspace() or full_command_list[1] == "":
-                            print("[!] Argument required")
+                            print("[!] Argument required\n")
 
                         else:
                             get_arg = full_command_list[1:]
