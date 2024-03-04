@@ -79,7 +79,7 @@ class MagnetSting:
         else:
             pass
 
-    def _help_command(self):
+    def _help_command(self) -> None:
         """
         Print the help banner.
         :return: None
