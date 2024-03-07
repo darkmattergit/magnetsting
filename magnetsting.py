@@ -46,7 +46,7 @@ class MagnetSting:
     def __init__(self, exit_description: str = "exit MAGNETSTING",
                  banner: tuple | str = ("=" * 35, "MAGNETSTING", "Data here", "=" * 35), cmd_prompt: str = ">> ",
                  exit_message: str = "[*] Exiting", break_keywords: tuple = ("q", "quit", "exit"),
-                 alias_file: str = ".alias.json", verbose: bool = False):
+                 alias_file: str = ".alias.json", verbose: bool = False, help_on_start: bool = True):
         """
         Initialize instance of MagnetSting.
         :param exit_description: The description of the exit command.
@@ -59,6 +59,9 @@ class MagnetSting:
         :param alias_file: A JSON file that holds `command aliases`.
         :param verbose: In the help banner, show command types next to the command descriptions. Having the parameter
                         set to `True` will show the command types while `False` will not.
+        :param help_on_start: Show the help banner on start or not. Setting it to `True` will show the help banner on
+                              start while setting it to `False` will not. Even when set to `False`, the help banner
+                              and help functionality can still be called using the "help" command.
         """
 
         # Initialize dicts for commands, command groups and command aliases
@@ -72,6 +75,7 @@ class MagnetSting:
         self.break_keywords = break_keywords
         self.alias_file = alias_file
         self.verbose = verbose
+        self.help_on_start = help_on_start
 
         # Check if file is a JSON file
         if self.alias_file[-5:] != ".json":
@@ -520,13 +524,23 @@ class MagnetSting:
         # Print custom banner
         if type(self.banner_data) is str:
             print(self.banner_data)
-            self._help_command()
+
+            if self.help_on_start is True:
+                self._help_command()
+
+            else:
+                pass
 
         # Print values from tuple
         else:
             for data in self.banner_data:
                 print(data)
-            self._help_command()
+
+            if self.help_on_start is True:
+                self._help_command()
+
+            else:
+                pass
 
         try:
             # Open json file and load aliases into dict
