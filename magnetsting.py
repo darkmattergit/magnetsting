@@ -10,7 +10,7 @@ import json
 
 class MagnetSting:
     """
-    `MagnetSting` is a framework that simplifies the creation of command-line projects. `MagnetSting` comes with many
+    `MagnetSting` is a framework that simplifies the creation of command-line projects. It comes with many
     capabilities built into it, such as help banner creation, command suggestions, command aliasing and more.
     The framework allows you to create three types of commands: `single`, `free` and `parser`.\n
     - `single`-type commands are commands that consist only of the command name. Anything typed after the command name
@@ -28,7 +28,7 @@ class MagnetSting:
       help banner, rather, the command group name does instead. To view all commands within a group, call the command
       group's name. The syntax to call a command within a command group is `<command group name> <command name>
       <args (if free- or parser-type command)>`.
-    **NOTE**\n
+    **NOTE:**\n
     Functions used by the `single`- and `free-type` commands **MUST** be created in a specific way inorder for
     `MagnetSting` to execute them.\n
     - `single-type`: The functions for `single-type` commands **MUST** have the following parameter:
@@ -39,7 +39,7 @@ class MagnetSting:
       `command_args` parameter is for the argument(s) used with the command (recall from the `free-type` example above,
       this would be "bar"), while the `additional_data` parameter allows you to pass other data such as strings, ints,
       objects, etc. to the function using a tuple.
-    **NOTE**\n
+    **NOTE:**\n
     The order in which the commands and command groups are created determines the order in which they appear in the help
     banner. The same applies for commands in command groups.
     """
@@ -256,8 +256,7 @@ class MagnetSting:
     def _possible_commands(self, command_name: str = None, command_group: str = None) -> None:
         """
         Pretty print possible command names that start with the user input should the input not be in the commands_info
-        dict. The output is displayed in columns, similar to how it would look if using the 'column' tool on UNIX/Linux
-        systems.
+        dict. The output is displayed in columns, similar to how it would look if using the GNU "column" tool.
         :param command_name: The input from the user.
         :param command_group: The name of the command group if checking commands in a group. If left as None, it will
                               look through the "self._commands_info" dict instead.
