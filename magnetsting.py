@@ -15,14 +15,20 @@ class MagnetSting:
     The framework allows you to create three types of commands: `single`, `free` and `parser`.\n
     - `single`-type commands are commands that consist only of the command name. Anything typed after the command name
       will not be passed onto the function assigned to the command.
-    - `free`-type commands allow for the use of arguments. For example, if the command name is `"foo"`, then you can
-      call it by adding an argument (in this case "bar") to the command: `">> foo bar"`. This would then pass `"bar"`
-      to the function associated with the command `"foo"`.
+    - `free`-type commands allow for the use of arguments. Anything typed after the command name is passed to the
+      function assigned to the command. For example, if the command name is `"foo"`, then you can call it by adding an
+      argument (in this case "bar") to the command: `">> foo bar"`. This would then pass `"bar"` to the function
+      associated with the command `"foo"`.
     - `parser`-type commands, rather than executing functions associated to command names like `single-` and `free-type`
-      commands, instead executes Python files associated with the command name, specifically, Python files using the
-      `argparse` module. For example, the command name `"foo"` has the file `"bar.py"` associated with it. You can then
-      call the file by typing `"foo - -help"`. The `"- -help"` is then passed to the `"bar.py"` file, which takes the
-      arguments and executes them, and in this case, would display the "help" output.
+      commands, instead executes Python files associated with the command name. This command is more geared towards
+      files that can take arguments in the command-line, such as those that use the "argparse" or "click" modules,
+      but there is no restriction that would prohibit one from assigning a Python file that does not take arguments.
+      Arguments can be passed by typing them after the command name, just like with `free-type` commands. For example,
+      assume that command name "mycommand" has the file "myfile.py" assigned to it. Assuming it was created using
+      "argparse", you could call the help banner by typing "mycommand - -help". A file assigned to a parser-type command
+      does not need to be in the same project directory, it can be anywhere on a system. If the file is located
+      somewhere other than the project directory, make sure to add the full or relative path to the name of the file
+      when creating the command.
     - Additionally, commands can be grouped together using `command groups`. Command groups are, as the name suggests,
       a way to organize commands into a specific group. Commands assigned to a command group do not show up in the
       help banner, rather, the command group name does instead. To view all commands within a group, call the command
@@ -32,10 +38,10 @@ class MagnetSting:
     Functions used by the `single`- and `free-type` commands **MUST** be created in a specific way inorder for
     `MagnetSting` to execute them.\n
     - `single-type`: The functions for `single-type` commands **MUST** have the following parameter:
-      `additional_data: any`. The function cannot have any other parameters. The `additional_data` parameter allows
+      `additional_data: tuple`. The function cannot have any other parameters. The `additional_data` parameter allows
       you to pass other data such as strings, ints, objects, etc. to the function through a tuple.
     - `free-type`: The functions for `free-type` commands **MUST** have the following parameters:
-      `command_args: str` **AND** `additional_data: any`. The function cannot have any other parameters. The
+      `command_args: str` **AND** `additional_data: tuple`. The function cannot have any other parameters. The
       `command_args` parameter is for the argument(s) used with the command (recall from the `free-type` example above,
       this would be "bar"), while the `additional_data` parameter allows you to pass other data such as strings, ints,
       objects, etc. to the function using a tuple.
@@ -366,13 +372,12 @@ class MagnetSting:
     def add_command_free(self, command_name: str = None, command_help: str = None, command_group: str = None,
                          command_function: object = None, additional_data: tuple = None) -> None:
         """
-        Add a `free-type` command to the dictionary of commands. A free-type command differs from a `single-type`
-        command by being able to take arguments after the command name. For example, if the command name is `foo`,
-        then you can do: "foo bar baz", with "bar baz" being the argument(s). There are no limits on how long the
-        arguments can be, they can be as long and as many as you would like. If you do not provide an argument to a
-        free-type command, a message will be printed telling you that some form of an argument is required. Functions
-        used in free-type commands **MUST** have the following function parameters: `command_args: str` **AND**
-        `additional_data: any`.
+        Create a `free-type` command. A free-type command differs from a `single-type` command by being able to take
+        arguments after the command name. For example, if the command name is `foo`, then you can do: "foo bar baz",
+        with "bar baz" being the argument(s). There are no limits on how many arguments there can be, they can be as
+        long and as many as you would like. If you do not provide an argument to a free-type command, a message will be
+        printed telling you that some form of an argument is required. Functions used in free-type commands **MUST**
+        have the following function parameters: `command_args: str` **AND** `additional_data: tuple`.
         :param command_name: The `name` of the command.
         :param command_help: A short `descriptor` about what the command does.
         :param command_group: The `group` the command belongs to. Can be left as None if it does not belong to any
@@ -404,10 +409,10 @@ class MagnetSting:
     def add_command_single(self, command_name: str = None, command_help: str = None, command_group: str = None,
                            command_function: object = None, additional_data: tuple = None) -> None:
         """
-        Add a `single-type` command to the dict of commands. A single-type command consists only of a command name that
-        when called, executes the function assigned to it. Anything typed after the command name is not passed to the
-        function assigned to the command. Functions used in single-type commands **MUST** have the following parameter:
-        `additional_data: any`.
+        Create a `single-type` command. A single-type command consists only of a command name that when called,
+        executes the function assigned to it. Anything typed after the command name is not passed to the function
+        assigned to the command. Functions used in single-type commands **MUST** have the following parameter:
+        `additional_data: tuple`.
         :param command_name: The `name` of the command.
         :param command_help: A short `descriptor` about what the command does.
         :param command_group: The `group` the command belongs to. Can be left as None if it does not belong to any
@@ -439,19 +444,21 @@ class MagnetSting:
     def add_command_parser(self, command_name: str = None, command_help: str = None, command_group: str = None,
                            command_file: str = None) -> None:
         """
-        Add a 'parser-type' command to the dict of commands. A parser-type command is different from the other
-        commands. Instead of running a function like the others, a parser-type command runs another python file, as
-        specified in the `command_file` parameter. The python file must be an `argparse` type of script, as this type of
-        command takes the arguments typed after the command name (ex. foo - -bar) and uses the `subprocess` module to
-        run the assigned file with the arguments that were typed. For example, if you typed `foo - -help` with the file
-        `bar.py` being assigned to the command name `foo`, then the subprocess module would run (bar.py - -help),
-        which would print out the help banner. Since a file is being used here, there are ***NO*** specific parameters
-        that need to be added when creating/using the file.
+        Create a `parser-type` command. A parser-type command is different from the other commands. Rather than
+        executing functions associated to command names like `single-` and `free-type` commands, instead executes
+        Python files associated with the command name. This command is more geared towards files that can take arguments
+        in the command-line, such as those that use the "argparse" or "click" modules, but there is no restriction that
+        would prohibit one from assigning a Python file that does not take arguments. Arguments can be passed by typing
+        them after the command name, just like with `free-type` commands. For example, assume that command name
+        "mycommand" has the file "myfile.py" assigned to it. Assuming it was created using "argparse", you could call
+        the help banner by typing "mycommand - -help". A file assigned to a parser-type command does not need to be in
+        the same project directory, it can be anywhere on a system. If the file is located somewhere other than the
+        project directory, make sure to add the full or relative path to the name of the file when creating the command.
         :param command_name: The `name` of the command.
         :param command_help: A short `descriptor` about what the command does.
         :param command_group: The `group` the command belongs to. Can be left as None if it does not belong to any
                               group.
-        :param command_file: The `full or relative path` of the file assigned to the command.
+        :param command_file: The name and (if needed) the `full or relative path` of the file assigned to the command.
         :return: None
         """
         if command_group is None:
@@ -474,11 +481,11 @@ class MagnetSting:
 
     def add_command_group(self, group_name: str = None, group_help: str = None) -> None:
         """
-        Create a command group. A command group is, as the name suggests, a group of commands. Groups can be used to
+        Create a `command group`. A command group is, as the name suggests, a group of commands. Groups can be used to
         organize commands and to keep the main help banner from becoming too long and overwhelming. Any command can be
         assigned to a command group and commands within a group can also be aliased. Commands assigned to a group do not
         show up in the main help banner, rather, only the command group is shown. To see all commands assigned to a
-        group, enter the group name and a  help banner containing only the commands in the group will be shown. The
+        group, enter the group name and a help banner containing only the commands in the group will be shown. The
         syntax to call a command in a command group is: <command group name> <command name>
         <args (if free or parser type)>.
         :param group_name: The `name` of the group.
