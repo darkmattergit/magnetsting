@@ -7,6 +7,8 @@ import subprocess
 import readline
 import json
 
+# TODO: change command type names: single=single free=args parser=file, switch order of free and single methods
+
 
 class MagnetSting:
     """
@@ -358,6 +360,41 @@ class MagnetSting:
             else:
                 print("[!] Invalid alias command\n")
 
+    def add_command_single(self, command_name: str = None, command_help: str = None, command_group: str = None,
+                           command_function: object = None, additional_data: tuple = None) -> None:
+        """
+        Create a `single-type` command. A single-type command consists only of a command name that when called,
+        executes the function assigned to it. Anything typed after the command name is not passed to the function
+        assigned to the command. Functions used in single-type commands **MUST** have the following parameter:
+        `additional_data: tuple`.
+        :param command_name: The `name` of the command.
+        :param command_help: A short `descriptor` about what the command does.
+        :param command_group: The `group` the command belongs to. Can be left as None if it does not belong to any
+                              group.
+        :param command_function: The `function` assigned to the command.
+        :param additional_data: `Additional data` that gets sent over to the command's function.
+        :return: None
+        """
+        if command_group is None:
+            self._commands_info[command_name] = {
+                "type": "single",
+                "function": command_function,
+                "help": command_help,
+                "additional": additional_data,
+            }
+
+        else:
+            if command_group in self._groups_dict:
+                self._groups_dict[command_group][command_name] = {
+                    "type": "single",
+                    "function": command_function,
+                    "help": command_help,
+                    "additional": additional_data,
+                }
+
+            else:
+                raise NotImplementedError(f"Group '{command_group}' does not exist")
+
     def add_command_free(self, command_name: str = None, command_help: str = None, command_group: str = None,
                          command_function: object = None, additional_data: tuple = None) -> None:
         """
@@ -387,41 +424,6 @@ class MagnetSting:
             if command_group in self._groups_dict:
                 self._groups_dict[command_group][command_name] = {
                     "type": "free",
-                    "function": command_function,
-                    "help": command_help,
-                    "additional": additional_data,
-                }
-
-            else:
-                raise NotImplementedError(f"Group '{command_group}' does not exist")
-
-    def add_command_single(self, command_name: str = None, command_help: str = None, command_group: str = None,
-                           command_function: object = None, additional_data: tuple = None) -> None:
-        """
-        Create a `single-type` command. A single-type command consists only of a command name that when called,
-        executes the function assigned to it. Anything typed after the command name is not passed to the function
-        assigned to the command. Functions used in single-type commands **MUST** have the following parameter:
-        `additional_data: tuple`.
-        :param command_name: The `name` of the command.
-        :param command_help: A short `descriptor` about what the command does.
-        :param command_group: The `group` the command belongs to. Can be left as None if it does not belong to any
-                              group.
-        :param command_function: The `function` assigned to the command.
-        :param additional_data: `Additional data` that gets sent over to the command's function.
-        :return: None
-        """
-        if command_group is None:
-            self._commands_info[command_name] = {
-                "type": "single",
-                "function": command_function,
-                "help": command_help,
-                "additional": additional_data,
-            }
-
-        else:
-            if command_group in self._groups_dict:
-                self._groups_dict[command_group][command_name] = {
-                    "type": "single",
                     "function": command_function,
                     "help": command_help,
                     "additional": additional_data,
