@@ -7,43 +7,41 @@ import subprocess
 import readline
 import json
 
-# TODO: change command type names: single=single free=args parser=file, switch order of free and single methods
-
 
 class MagnetSting:
     """
     `MagnetSting` is a framework that simplifies the creation of command-line projects. It comes with many
     capabilities built into it, such as help banner creation, command suggestions, command aliasing and more.
-    The framework allows you to create three types of commands: `single`, `free` and `parser`.\n
+    The framework allows you to create three types of commands: `single`, `args` and `file`.\n
     - `single`-type commands are commands that consist only of the command name. Anything typed after the command name
       will not be passed onto the function assigned to the command.
-    - `free`-type commands allow for the use of arguments. Anything typed after the command name is passed to the
+    - `args`-type commands allow for the use of arguments. Anything typed after the command name is passed to the
       function assigned to the command. For example, if the command name is `"foo"`, then you can call it by adding an
       argument (in this case "bar") to the command: `">> foo bar"`. This would then pass `"bar"` to the function
       associated with the command `"foo"`.
-    - `parser`-type commands, rather than executing functions associated to command names like `single-` and `free-type`
+    - `file`-type commands, rather than executing functions associated to command names like `single-` and `args-type`
       commands, instead executes Python files associated with the command name. This command is more geared towards
       files that can take arguments in the command-line, such as those that use the "argparse" or "click" modules,
       but there is no restriction that would prohibit one from assigning a Python file that does not take arguments.
-      Arguments can be passed by typing them after the command name, just like with `free-type` commands. For example,
+      Arguments can be passed by typing them after the command name, just like with `args-type` commands. For example,
       assume that command name "mycommand" has the file "myfile.py" assigned to it. Assuming it was created using the
-      "argparse", you could call the help banner by typing "mycommand - -help". A file assigned to a parser-type command
+      "argparse", you could call the help banner by typing "mycommand - -help". A file assigned to a file-type command
       does not need to be in the same project directory, it can be anywhere on a system. If the file is located
       somewhere other than the project directory, make sure to add the full or relative path to it.
     - Additionally, commands can be grouped together using `command groups`. Command groups are, as the name suggests,
       a way to organize commands into a specific group. Commands assigned to a command group do not show up in the
       help banner, rather, the command group name does instead. To view all commands within a group, call the command
       group's name. The syntax to call a command within a command group is `<command group name> <command name>
-      <args (if free- or parser-type command)>`.
+      <args (if args- or file-type command)>`.
     **NOTE:**\n
-    Functions used by the `single`- and `free-type` commands **MUST** be created in a specific way inorder for
+    Functions used by the `single`- and `args-type` commands **MUST** be created in a specific way inorder for
     `MagnetSting` to execute them.\n
     - `single-type`: The functions for `single-type` commands **MUST** have the following parameter:
       `additional_data: tuple`. The function cannot have any other parameters. The `additional_data` parameter allows
       you to pass other data such as strings, ints, objects, etc. to the function through a tuple.
-    - `free-type`: The functions for `free-type` commands **MUST** have the following parameters:
+    - `args-type`: The functions for `args-type` commands **MUST** have the following parameters:
       `command_args: str` **AND** `additional_data: tuple`. The function cannot have any other parameters. The
-      `command_args` parameter is for the argument(s) used with the command (recall from the `free-type` example above,
+      `command_args` parameter is for the argument(s) used with the command (recall from the `args-type` example above,
       this would be "bar"), while the `additional_data` parameter allows you to pass other data such as strings, ints,
       objects, etc. to the function using a tuple.
     **NOTE:**\n
@@ -360,8 +358,8 @@ class MagnetSting:
             else:
                 print("[!] Invalid alias command\n")
 
-    def add_command_single(self, command_name: str = None, command_help: str = None, command_group: str = None,
-                           command_function: object = None, additional_data: tuple = None) -> None:
+    def add_command_type_single(self, command_name: str = None, command_help: str = None, command_group: str = None,
+                                command_function: object = None, additional_data: tuple = None) -> None:
         """
         Create a `single-type` command. A single-type command consists only of a command name that when called,
         executes the function assigned to it. Anything typed after the command name is not passed to the function
@@ -395,14 +393,14 @@ class MagnetSting:
             else:
                 raise NotImplementedError(f"Group '{command_group}' does not exist")
 
-    def add_command_free(self, command_name: str = None, command_help: str = None, command_group: str = None,
-                         command_function: object = None, additional_data: tuple = None) -> None:
+    def add_command_type_args(self, command_name: str = None, command_help: str = None, command_group: str = None,
+                              command_function: object = None, additional_data: tuple = None) -> None:
         """
-        Create a `free-type` command. A free-type command differs from a `single-type` command by being able to take
+        Create an `args-type` command. An args-type command differs from a `single-type` command by being able to take
         arguments after the command name. For example, if the command name is `foo`, then you can do: "foo bar baz",
         with "bar baz" being the argument(s). There are no limits on how many arguments there can be, they can be as
-        long and as many as you would like. If you do not provide an argument to a free-type command, a message will be
-        printed telling you that some form of an argument is required. Functions used in free-type commands **MUST**
+        long and as many as you would like. If you do not provide an argument to an args-type command, a message will be
+        printed telling you that some form of an argument is required. Functions used in args-type commands **MUST**
         have the following function parameters: `command_args: str` **AND** `additional_data: tuple`.
         :param command_name: The `name` of the command.
         :param command_help: A short `descriptor` about what the command does.
@@ -414,7 +412,7 @@ class MagnetSting:
         """
         if command_group is None:
             self._commands_info[command_name] = {
-                "type": "free",
+                "type": "args",
                 "function": command_function,
                 "help": command_help,
                 "additional": additional_data,
@@ -423,7 +421,7 @@ class MagnetSting:
         else:
             if command_group in self._groups_dict:
                 self._groups_dict[command_group][command_name] = {
-                    "type": "free",
+                    "type": "args",
                     "function": command_function,
                     "help": command_help,
                     "additional": additional_data,
@@ -432,17 +430,17 @@ class MagnetSting:
             else:
                 raise NotImplementedError(f"Group '{command_group}' does not exist")
 
-    def add_command_parser(self, command_name: str = None, command_help: str = None, command_group: str = None,
-                           command_file: str = None) -> None:
+    def add_command_type_file(self, command_name: str = None, command_help: str = None, command_group: str = None,
+                              command_file: str = None) -> None:
         """
-        Create a `parser-type` command. A parser-type command is different from the other commands. Rather than
-        executing functions associated to command names like `single-` and `free-type` commands, instead executes
+        Create a `file-type` command. A file-type command is different from the other commands. Rather than
+        executing functions associated to command names like `single-` and `args-type` commands, instead executes
         Python files associated with the command name. This command is more geared towards files that can take arguments
         in the command-line, such as those that use the "argparse" or "click" modules, but there is no restriction that
         would prohibit one from assigning a Python file that does not take arguments. Arguments can be passed by typing
-        them after the command name, just like with `free-type` commands. For example, assume that command name
+        them after the command name, just like with `args-type` commands. For example, assume that command name
         "mycommand" has the file "myfile.py" assigned to it. Assuming it was created using "argparse", you could call
-        the help banner by typing "mycommand - -help". A file assigned to a parser-type command does not need to be in
+        the help banner by typing "mycommand - -help". A file assigned to a file-type command does not need to be in
         the same project directory, it can be anywhere on a system. If the file is located somewhere other than the
         project directory, make sure to add the full or relative path to the name of the file when creating the command.
         :param command_name: The `name` of the command.
@@ -454,7 +452,7 @@ class MagnetSting:
         """
         if command_group is None:
             self._commands_info[command_name] = {
-                "type": "parser",
+                "type": "file",
                 "file": command_file,
                 "help": command_help,
             }
@@ -462,7 +460,7 @@ class MagnetSting:
         else:
             if command_group in self._groups_dict:
                 self._groups_dict[command_group][command_name] = {
-                    "type": "parser",
+                    "type": "file",
                     "file": command_file,
                     "help": command_help,
                 }
@@ -478,7 +476,7 @@ class MagnetSting:
         show up in the main help banner, rather, only the command group is shown. To see all commands assigned to a
         group, enter the group name and a help banner containing only the commands in the group will be shown. The
         syntax to call a command in a command group is: <command group name> <command name>
-        <args (if free or parser type)>.
+        <args (if args- or file-type)>.
         :param group_name: The `name` of the group.
         :param group_help: A short `description` of the group.
         :return: None
@@ -617,8 +615,8 @@ class MagnetSting:
                             full_command_list = f"{self._alias_dict[check_name]} {' '.join(split_command[1:])}".split()
                             command_dict[alias_list[0]] = self._commands_info[alias_list[0]]
 
-                    # === Free Commands ===
-                    if command_dict[full_command_list[0]]["type"] == "free":
+                    # === Args Commands ===
+                    if command_dict[full_command_list[0]]["type"] == "args":
                         if len(full_command_list) == 1 or full_command_list[1].isspace() or full_command_list[1] == "":
                             print("[!] Argument required\n")
 
@@ -633,8 +631,8 @@ class MagnetSting:
                         self._commands_info[full_command_list[0]]["function"](additional_data=self._commands_info
                                                                               [full_command_list[0]]["additional"])
 
-                    # === Parser Commands ===
-                    elif self._commands_info[full_command_list[0]]["type"] == "parser":
+                    # === File Commands ===
+                    elif self._commands_info[full_command_list[0]]["type"] == "file":
                         parser_args = " ".join(full_command_list[1:])
                         subprocess.run(f"python3 {command_dict[full_command_list[0]]['file']} {parser_args}",
                                        shell=True)
