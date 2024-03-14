@@ -17,7 +17,7 @@ class MagnetSting:
       will not be passed onto the function assigned to the command.
     - `args`-type commands allow for the use of arguments. Anything typed after the command name is passed to the
       function assigned to the command. For example, if the command name is `"foo"`, then you can call it by adding an
-      argument (in this case "bar") to the command: `">> foo bar"`. This would then pass `"bar"` to the function
+      argument (in this case "bar") to the command: `"foo bar"`. This would then pass `"bar"` to the function
       associated with the command `"foo"`.
     - `file`-type commands, rather than executing functions associated to command names like `single-` and `args-type`
       commands, instead executes Python files associated with the command name. This command is more geared towards
