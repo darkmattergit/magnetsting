@@ -345,15 +345,17 @@ class MagnetSting:
                     print(f"[+] Added alias '{alias_list[2]}'\n")
 
             # Remove a command alias
-            elif alias_list[1] == "remove" and len(alias_list) == 3:
-                try:
-                    del (self._alias_dict[alias_list[2]])
+            elif alias_list[1] == "remove" and len(alias_list) >= 3:
+                for to_del in alias_list[2:]:
+                    try:
+                        del (self._alias_dict[to_del])
 
-                except KeyError:
-                    print(f"[*] Alias '{alias_list[2]}' does not exist\n")
+                    except KeyError:
+                        print(f"[!] Alias '{to_del}' does not exist")
 
-                else:
-                    print(f"[-] Removed alias '{alias_list[2]}'\n")
+                    else:
+                        print(f"[-] Removed alias '{to_del}'")
+                print()
 
             else:
                 print("[!] Invalid alias command\n")
