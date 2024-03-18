@@ -333,7 +333,7 @@ class MagnetSting:
             # Add a command alias
             if alias_list[1] == "add" and len(alias_list) >= 4:
 
-                if alias_list[2] in self._commands_info:
+                if alias_list[2] in self._commands_info or alias_list[2] in self.break_keywords:
                     print(f"[!] Cannot create alias, '{alias_list[2]}' is already in use as a command name\n")
 
                 elif alias_list[3] not in self._commands_info:
