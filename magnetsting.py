@@ -302,7 +302,7 @@ class MagnetSting:
     def _alias_command(self, alias_list: list = None) -> None:
         """
         Method to create and edit, remove and view command aliases
-        :param alias_list: The contents of the JSON file that have been decoded into a Python dict
+        :param alias_list: The user input split into a list
         :return: None
         """
         if len(alias_list) < 2:
@@ -638,6 +638,10 @@ class MagnetSting:
                         parser_args = " ".join(full_command_list[1:])
                         subprocess.run(f"python3 {command_dict[full_command_list[0]]['file']} {parser_args}",
                                        shell=True)
+
+                    # === Aliased alias commands ===
+                    elif full_command_list[0] == "alias":
+                        self._alias_command(alias_list=full_command_list)
 
                 else:
                     if usr_input == "" or usr_input.isspace():
