@@ -306,7 +306,7 @@ class MagnetSting:
         :return: None
         """
         if len(alias_list) < 2:
-            print("[*] Use 'alias add <alias name> <command>' to add/edit aliases or 'alias remove <alias name>' to "
+            print("[*] Use 'alias add <alias name> <command>' to add/edit aliases or 'alias remove <alias names>' to "
                   "remove aliases")
             spacer = 0
             for aliases in self._alias_dict:
