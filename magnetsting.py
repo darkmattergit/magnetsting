@@ -358,7 +358,8 @@ class MagnetSting:
                 print()
 
             else:
-                print("[!] Invalid alias command\n")
+                print("[*] Use 'alias add <alias name> <command>' to add/edit aliases or 'alias remove <alias name(s)>'"
+                      " to remove aliases\n")
 
     def add_command_type_single(self, command_name: str = None, command_help: str = None, command_group: str = None,
                                 command_function: object = None, additional_data: tuple = None) -> None:
