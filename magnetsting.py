@@ -265,39 +265,48 @@ class MagnetSting:
             possible_commands_list = [commands for commands in self._groups_dict[command_group] if
                                       commands.startswith(command_name)]
 
-        # Get the length of the longest command name
-        block_spacers = 0
-        for commands in possible_commands_list:
-            if len(commands) > block_spacers:
-                block_spacers = len(commands)
+        # No commands found
+        if len(possible_commands_list) == 0 and command_group is None:
+            print("[!] No possible command(s) found\n")
+
+        # No commands found in specified command group
+        elif len(possible_commands_list) == 0 and command_group is not None:
+            print(f"[!] No possible command(s) found in group '{command_group}'\n")
+
+        else:
+            # Get the length of the longest command name
+            block_spacers = 0
+            for commands in possible_commands_list:
+                if len(commands) > block_spacers:
+                    block_spacers = len(commands)
+                else:
+                    pass
+
+            # Add extra spacing to the length of the longest command to be able to better see the commands
+            block_spacers += 12
+
+            # Add blank padding if the number of commands in the list is not a multiple of 4
+            if len(possible_commands_list) % 4 != 0:
+                for _ in range(4 - (len(possible_commands_list) % 4)):
+                    possible_commands_list.append("")
             else:
                 pass
 
-        # Add extra spacing to the length of the longest command to be able to better see the commands
-        block_spacers += 12
+            # Create a list that holds lists of 4 commands each
+            start_counter = 0
+            end_counter = 4
+            command_blocks = []
+            for _ in range(len(possible_commands_list) // 4):
+                command_blocks.append(possible_commands_list[start_counter:end_counter])
+                start_counter += 4
+                end_counter += 4
 
-        # Add blank padding if the number of commands in the list is not a multiple of 4
-        if len(possible_commands_list) % 4 != 0:
-            for _ in range(4 - (len(possible_commands_list) % 4)):
-                possible_commands_list.append("")
-        else:
-            pass
-
-        # Create a list that holds lists of 4 commands each
-        start_counter = 0
-        end_counter = 4
-        command_blocks = []
-        for _ in range(len(possible_commands_list) // 4):
-            command_blocks.append(possible_commands_list[start_counter:end_counter])
-            start_counter += 4
-            end_counter += 4
-
-        # Pretty print possible commands in rows of 4
-        print("possible command(s):")
-        for blocks in command_blocks:
-            print(f"{blocks[0] :{block_spacers}}{blocks[1] :{block_spacers}}{blocks[2] :{block_spacers}}"
-                  f"{blocks[3]}")
-        print()
+            # Pretty print possible commands in rows of 4
+            print("possible command(s):")
+            for blocks in command_blocks:
+                print(f"{blocks[0] :{block_spacers}}{blocks[1] :{block_spacers}}{blocks[2] :{block_spacers}}"
+                      f"{blocks[3]}")
+            print()
 
     def _alias_command(self, alias_list: list = None) -> None:
         """
