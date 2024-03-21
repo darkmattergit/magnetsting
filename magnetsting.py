@@ -24,10 +24,10 @@ class MagnetSting:
       files that can take arguments in the command-line, such as those that use the "argparse" or "click" modules,
       but there is no restriction that would prohibit one from assigning a Python file that does not take arguments.
       Arguments can be passed by typing them after the command name, just like with `args-type` commands. For example,
-      assume that command name "mycommand" has the file "myfile.py" assigned to it. Assuming it was created using the
-      "argparse" module, you could call the help banner by typing "mycommand - -help". A file assigned to a file-type
-      command does not need to be in the same project directory, it can be anywhere on a system. If the file is located
-      somewhere other than the project directory, make sure to add the full or relative path to it.
+      assume that the command name "mycommand" has the file "myfile.py" assigned to it. Assuming it was created using
+      the "argparse" module, you could call the help banner by typing "mycommand - -help". A file assigned to a
+      file-type command does not need to be in the same project directory, it can be anywhere on a system. If the file
+      is located somewhere other than the project directory, make sure to add the full or relative path to it.
     - Additionally, commands can be grouped together using `command groups`. Command groups are, as the name suggests,
       a way to organize commands into a specific group. Commands assigned to a command group do not show up in the
       help banner, rather, the command group name does instead. To view all commands within a group, call the command
