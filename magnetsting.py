@@ -639,12 +639,12 @@ class MagnetSting:
                                                                            [full_command_list[0]]["additional"])
 
                     # === Single Commands ===
-                    elif self._commands_info[full_command_list[0]]["type"] == "single":
-                        self._commands_info[full_command_list[0]]["function"](additional_data=self._commands_info
-                                                                              [full_command_list[0]]["additional"])
+                    elif command_dict[full_command_list[0]]["type"] == "single":
+                        command_dict[full_command_list[0]]["function"](additional_data=command_dict
+                                                                       [full_command_list[0]]["additional"])
 
                     # === File Commands ===
-                    elif self._commands_info[full_command_list[0]]["type"] == "file":
+                    elif command_dict[full_command_list[0]]["type"] == "file":
                         parser_args = " ".join(full_command_list[1:])
                         subprocess.run(f"python3 {command_dict[full_command_list[0]]['file']} {parser_args}",
                                        shell=True)
