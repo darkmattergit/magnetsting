@@ -386,7 +386,7 @@ class MagnetSting:
         :return: None
         """
         if command_group is None:
-            self._commands_info[command_name] = {
+            self._commands_info[command_name.strip()] = {
                 "type": "single",
                 "function": command_function,
                 "help": command_help,
@@ -394,8 +394,8 @@ class MagnetSting:
             }
 
         else:
-            if command_group in self._groups_dict:
-                self._groups_dict[command_group][command_name] = {
+            if command_group.strip() in self._groups_dict:
+                self._groups_dict[command_group.strip()][command_name.strip()] = {
                     "type": "single",
                     "function": command_function,
                     "help": command_help,
@@ -423,7 +423,7 @@ class MagnetSting:
         :return: None
         """
         if command_group is None:
-            self._commands_info[command_name] = {
+            self._commands_info[command_name.strip()] = {
                 "type": "args",
                 "function": command_function,
                 "help": command_help,
@@ -431,8 +431,8 @@ class MagnetSting:
             }
 
         else:
-            if command_group in self._groups_dict:
-                self._groups_dict[command_group][command_name] = {
+            if command_group.strip() in self._groups_dict:
+                self._groups_dict[command_group.strip()][command_name.strip()] = {
                     "type": "args",
                     "function": command_function,
                     "help": command_help,
@@ -463,15 +463,15 @@ class MagnetSting:
         :return: None
         """
         if command_group is None:
-            self._commands_info[command_name] = {
+            self._commands_info[command_name.strip()] = {
                 "type": "file",
                 "file": command_file,
                 "help": command_help,
             }
 
         else:
-            if command_group in self._groups_dict:
-                self._groups_dict[command_group][command_name] = {
+            if command_group.strip() in self._groups_dict:
+                self._groups_dict[command_group.strip()][command_name.strip()] = {
                     "type": "file",
                     "file": command_file,
                     "help": command_help,
@@ -494,9 +494,9 @@ class MagnetSting:
         :return: None
         """
         # Add group to groups dict
-        self._groups_dict[group_name] = {}
+        self._groups_dict[group_name.strip()] = {}
         # Add group info to commands dict
-        self._commands_info[group_name] = {
+        self._commands_info[group_name.strip()] = {
             "type": "group",
             "help": group_help,
         }
