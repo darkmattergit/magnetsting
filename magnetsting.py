@@ -618,14 +618,23 @@ class MagnetSting:
                     elif check_name in self._alias_dict:
                         alias_list = f"{self._alias_dict[check_name]} {' '.join(split_command[1:])}".split()
 
-                        # Check if name is a group name
-                        if self._commands_info[alias_list[0]]["type"] == "group":
-                            command_dict[alias_list[1]] = self._groups_dict[alias_list[0]][alias_list[1]]
-                            full_command_list = alias_list[1:]
+                        # Check if first element in alias_list actually exists as a command or command group
+                        if alias_list[0] in self._commands_info:
+
+                            # Check if name is a group name
+                            if self._commands_info[alias_list[0]]["type"] == "group":
+                                command_dict[alias_list[1]] = self._groups_dict[alias_list[0]][alias_list[1]]
+                                full_command_list = alias_list[1:]
+
+                            else:
+                                full_command_list = (f"{self._alias_dict[check_name]} "
+                                                     f"{' '.join(split_command[1:])}").split()
+                                command_dict[alias_list[0]] = self._commands_info[alias_list[0]]
 
                         else:
-                            full_command_list = f"{self._alias_dict[check_name]} {' '.join(split_command[1:])}".split()
-                            command_dict[alias_list[0]] = self._commands_info[alias_list[0]]
+                            print(f"[!] Could not execute alias '{check_name}', the command or command group "
+                                  f"'{alias_list[0]}' does not exist\n")
+                            continue
 
                     # === Args Commands ===
                     if command_dict[full_command_list[0]]["type"] == "args":
