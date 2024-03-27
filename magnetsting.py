@@ -532,9 +532,11 @@ class MagnetSting:
         if type(self.banner_data) is str:
             print(self.banner_data)
 
+            # Print help banner on start if True
             if self.help_on_start is True:
                 self._help_command()
 
+            # Do not print help banner on start if False
             else:
                 pass
 
@@ -543,9 +545,11 @@ class MagnetSting:
             for data in self.banner_data:
                 print(data)
 
+            # Print help banner on start if True
             if self.help_on_start is True:
                 self._help_command()
 
+            # Do not print help banner on start if False
             else:
                 pass
 
@@ -556,23 +560,31 @@ class MagnetSting:
                 self._alias_dict = json_alias
 
         except FileNotFoundError:
+            # Do nothing if file does not exist, it will be created when MagnetSting exits
             pass
 
         while True:
+            # Get user input, strip both leading and trailing whitespace
             usr_input = str(input(self.cmd_prompt)).strip()
+
+            # Create list by splitting user input string
             split_command = usr_input.split(" ")
 
+            # Check if first element is a break keyword
             if split_command[0] in self.break_keywords:
                 # Write aliases to json file
                 with open(self.alias_file, "w") as jw:
                     json.dump(self._alias_dict, jw)
 
+                # Show exit message and break out of loop, exiting MagnetSting
                 print(self.exit_message)
                 break
 
             # Print help banner containing specific commands
             elif len(split_command) > 1 and split_command[0] == "help":
                 self._specific_commands_help(command_name=split_command[1])
+
+            # === Begin built-in commands functionality ===
 
             # Print help banner
             elif split_command[0] == "help":
@@ -582,10 +594,13 @@ class MagnetSting:
             elif split_command[0] == "clear":
                 subprocess.run("clear", shell=True)
 
-            # Add command aliases
+            # Call self._alias_command method to handle alias operations
             elif split_command[0] == "alias":
                 self._alias_command(alias_list=split_command)
 
+            # === End built-in commands functionality ===
+
+            # Show commands in command group
             elif len(split_command) == 1 and split_command[0] in self._groups_dict:
                 self._help_command_group(group_name=split_command[0])
 
@@ -593,28 +608,39 @@ class MagnetSting:
                 # Get the name of the command
                 check_name = split_command[0]
 
+                # Check if command exists as a name, group name or alias
                 if check_name in self._commands_info or check_name in self._alias_dict or check_name in \
                         self._groups_dict:
                     # Initialize list to hold full command after determining if it is an alias or an actual command name
                     full_command_list = None
+
                     # Initialize dict to hold specific command info
                     command_dict = {}
 
                     # Check if command is a command name or a group name
                     if check_name in self._commands_info and self._commands_info[check_name]["type"] != "group":
+                        # First element is not a group name
                         full_command_list = split_command
+
+                        # Add command information from self._commands_info to command_dict
                         command_dict[check_name] = self._commands_info[check_name]
 
                     elif check_name in self._commands_info and self._commands_info[check_name]["type"] == "group":
                         try:
+                            # First element is a group name, create list including everything except for the first
+                            # element
                             full_command_list = split_command[1:]
+
+                            # Add command information from self._commands_info to command_dict
                             command_dict[split_command[1]] = self._groups_dict[check_name][split_command[1]]
 
+                        # Command does not exist in group, call self._possible_commands method to show possible commands
+                        # user may have meant and continue to start
                         except KeyError:
                             self._possible_commands(command_name=split_command[1], command_group=check_name)
                             continue
 
-                    # Check if command is an alias
+                    # If first element is not a command or command group name, check if it is an alias
                     elif check_name in self._alias_dict:
                         alias_list = f"{self._alias_dict[check_name]} {' '.join(split_command[1:])}".split()
 
@@ -631,6 +657,8 @@ class MagnetSting:
                                                      f"{' '.join(split_command[1:])}").split()
                                 command_dict[alias_list[0]] = self._commands_info[alias_list[0]]
 
+                        # First element of aliased command does not exist as a command or command group, display message
+                        # and continue to start
                         else:
                             print(f"[!] Could not execute alias '{check_name}', the command or command group "
                                   f"'{alias_list[0]}' does not exist\n")
@@ -638,23 +666,34 @@ class MagnetSting:
 
                     # === Args Commands ===
                     if command_dict[full_command_list[0]]["type"] == "args":
+                        # Check if there is at least one argument supplied after command name, display message if
+                        # there is nothing
                         if len(full_command_list) == 1 or full_command_list[1].isspace() or full_command_list[1] == "":
                             print("[!] Argument required\n")
 
                         else:
+                            # Create list of everything after command name
                             get_arg = full_command_list[1:]
+
+                            # Call function assigned to command, passing on list of arguments and any additional data
+                            # specified with the command
                             command_dict[full_command_list[0]]["function"](command_args=get_arg,
                                                                            additional_data=command_dict
                                                                            [full_command_list[0]]["additional"])
 
                     # === Single Commands ===
                     elif command_dict[full_command_list[0]]["type"] == "single":
+                        # Call the function assigned to command, passing on any additional data specified with the
+                        # command
                         command_dict[full_command_list[0]]["function"](additional_data=command_dict
                                                                        [full_command_list[0]]["additional"])
 
                     # === File Commands ===
                     elif command_dict[full_command_list[0]]["type"] == "file":
+                        # Create string from the list sans the first element
                         parser_args = " ".join(full_command_list[1:])
+
+                        # Execute file with (or without) arguments typed after command name
                         subprocess.run(f"python3 {command_dict[full_command_list[0]]['file']} {parser_args}",
                                        shell=True)
 
@@ -663,7 +702,12 @@ class MagnetSting:
                         self._alias_command(alias_list=full_command_list)
 
                 else:
+                    # If nothing was typed, do nothing
                     if usr_input == "" or usr_input.isspace():
                         pass
+
+                    # If something was typed but nothing matched the first element, call self._possible_commands method
+                    # to show possible commands the user may have meant, does not include commands in command groups or
+                    # aliases
                     else:
                         self._possible_commands(command_name=check_name)
