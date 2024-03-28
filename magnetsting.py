@@ -348,6 +348,10 @@ class MagnetSting:
                 elif alias_list[3] not in self._commands_info:
                     print(f"[!] Cannot create alias, the command '{alias_list[3]}' does not exist\n")
 
+                elif alias_list[3] in self._groups_dict and alias_list[4] not in self._groups_dict[alias_list[3]]:
+                    print(f"[!] Cannot create alias, '{alias_list[4]}' does not exist as a command in the group "
+                          f"'{alias_list[3]}'\n")
+
                 else:
                     command_str = " ".join(alias_list[3:])
                     self._alias_dict[alias_list[2]] = command_str
