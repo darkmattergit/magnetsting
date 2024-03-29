@@ -653,8 +653,18 @@ class MagnetSting:
 
                             # Check if name is a group name
                             if self._commands_info[alias_list[0]]["type"] == "group":
-                                command_dict[alias_list[1]] = self._groups_dict[alias_list[0]][alias_list[1]]
-                                full_command_list = alias_list[1:]
+
+                                # Check if command exists in group, if it does, add information to dict and full command
+                                # to list
+                                if alias_list[1] in self._groups_dict[alias_list[0]]:
+                                    command_dict[alias_list[1]] = self._groups_dict[alias_list[0]][alias_list[1]]
+                                    full_command_list = alias_list[1:]
+
+                                # Command does not exist in group, display message and continue to start
+                                else:
+                                    print(f"[!] Cannot execute alias '{check_name}', the command '{alias_list[1]}' "
+                                          f"does not exist in the group '{alias_list[0]}'\n")
+                                    continue
 
                             else:
                                 full_command_list = (f"{self._alias_dict[check_name]} "
