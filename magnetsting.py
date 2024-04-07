@@ -51,7 +51,7 @@ class MagnetSting:
     def __init__(self, exit_description: str = "exit MAGNETSTING",
                  banner: tuple | str = ("=" * 35, "MAGNETSTING", "Data here", "=" * 35), cmd_prompt: str = ">> ",
                  exit_message: str = "[*] Exiting", break_keywords: tuple = ("q", "quit", "exit"),
-                 alias_file: str = ".alias.json", verbose: bool = False, help_on_start: bool = True):
+                 alias_file: str = ".alias.json", verbose: bool = True, help_on_start: bool = True):
         """
         Initialize instance of MagnetSting.
         :param exit_description: The description of the exit command.
