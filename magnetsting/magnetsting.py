@@ -678,8 +678,15 @@ class MagnetSting:
                                   f"'{alias_list[0]}' does not exist\n")
                             continue
 
+                    # === Single Commands ===
+                    if command_dict[full_command_list[0]]["type"] == "single":
+                        # Call the function assigned to command, passing on any additional data specified with the
+                        # command
+                        command_dict[full_command_list[0]]["function"](additional_data=command_dict
+                                                                       [full_command_list[0]]["additional"])
+
                     # === Args Commands ===
-                    if command_dict[full_command_list[0]]["type"] == "args":
+                    elif command_dict[full_command_list[0]]["type"] == "args":
                         # Check if there is at least one argument supplied after command name, display message if
                         # there is nothing
                         if len(full_command_list) == 1 or full_command_list[1].isspace() or full_command_list[1] == "":
@@ -694,13 +701,6 @@ class MagnetSting:
                             command_dict[full_command_list[0]]["function"](command_args=get_arg,
                                                                            additional_data=command_dict
                                                                            [full_command_list[0]]["additional"])
-
-                    # === Single Commands ===
-                    elif command_dict[full_command_list[0]]["type"] == "single":
-                        # Call the function assigned to command, passing on any additional data specified with the
-                        # command
-                        command_dict[full_command_list[0]]["function"](additional_data=command_dict
-                                                                       [full_command_list[0]]["additional"])
 
                     # === File Commands ===
                     elif command_dict[full_command_list[0]]["type"] == "file":
