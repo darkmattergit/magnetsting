@@ -3,6 +3,7 @@
 v1.0.7\n
 Create command-line projects with ease.\n
 `Copyright (C) 2024 darkmattergit`\n
+-----------------------------------\n
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
