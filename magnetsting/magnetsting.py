@@ -54,7 +54,7 @@ class MagnetSting:
       `additional_data: tuple`. The function cannot have any other parameters. The `additional_data` parameter allows
       you to pass other data such as strings, ints, objects, etc. to the function through a tuple.
     - `args-type`: The functions for `args-type` commands **MUST** have the following parameters:
-      `command_args: str` **AND** `additional_data: tuple`. The function cannot have any other parameters. The
+      `command_args: list` **AND** `additional_data: tuple`. The function cannot have any other parameters. The
       `command_args` parameter is for the argument(s) used with the command (recall from the `args-type` example above,
       this would be "bar"), while the `additional_data` parameter allows you to pass other data such as strings, ints,
       objects, etc. to the function using a tuple.
@@ -431,7 +431,7 @@ class MagnetSting:
         with "bar baz" being the argument(s). There are no limits on how many arguments there can be, they can be as
         long and as many as you would like. If you do not provide an argument to an args-type command, a message will be
         printed telling you that some form of an argument is required. Functions used in args-type commands **MUST**
-        have the following function parameters: `command_args: str` **AND** `additional_data: tuple`.
+        have the following function parameters: `command_args: list` **AND** `additional_data: tuple`.
         :param command_name: The `name` of the command.
         :param command_help: A short `descriptor` about what the command does.
         :param command_group: The `group` the command belongs to. Can be left as None if it does not belong to any
