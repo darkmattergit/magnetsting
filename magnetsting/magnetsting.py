@@ -1,6 +1,6 @@
 """
 **MAGNETSTING**\n
-v1.0.7\n
+v1.0.8\n
 Create command-line projects with ease.\n
 `Copyright (C) 2024 darkmattergit`\n
 -----------------------------------\n
