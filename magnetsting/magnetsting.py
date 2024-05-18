@@ -708,6 +708,7 @@ class MagnetSting:
                         # command
                         command_dict[full_command_list[0]]["function"](additional_data=command_dict
                                                                        [full_command_list[0]]["additional"])
+                        print()
 
                     # === Args Commands ===
                     elif command_dict[full_command_list[0]]["type"] == "args":
@@ -725,6 +726,7 @@ class MagnetSting:
                             command_dict[full_command_list[0]]["function"](command_args=get_arg,
                                                                            additional_data=command_dict
                                                                            [full_command_list[0]]["additional"])
+                            print()
 
                     # === File Commands ===
                     elif command_dict[full_command_list[0]]["type"] == "file":
@@ -738,6 +740,8 @@ class MagnetSting:
                         else:
                             subprocess.run(f"python3 {command_dict[full_command_list[0]]['file']} {parser_args}",
                                            shell=True)
+
+                        print()
 
                     # === Aliased alias commands ===
                     elif full_command_list[0] == "alias":
