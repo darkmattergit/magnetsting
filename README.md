@@ -23,7 +23,7 @@ symbols. What a command name cannot contain however is a space due to the way th
 <!-- Single-type Commands -->
 ### Single-type Command
 Single-type commands consist of only a command name that, when called, executes the function assigned to it. Anything 
-typed after the command name is not passed on to the function and has no affect on the command.
+typed after the command name is not passed on to the function and has no effect on the command.
 
 Create a single-type command:
 ```python
@@ -241,5 +241,5 @@ MagnetSting is licensed under the GNU GPLv3 license. The full license can be fou
 <!-- Contributing -->
 ## Contributing
 Interested in contributing to MagnetSting? Check out the `CONTRIBUTING.md` file, it holds all the information you need to
-know to contrbiute to this project.
+know to contribute to this project.
 
