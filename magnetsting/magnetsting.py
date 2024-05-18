@@ -18,8 +18,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import subprocess
-import readline
 import json
+import os
+
+# Handle exception raised on Windows-based machines
+try:
+    import readline
+except ImportError:
+    pass
 
 
 class MagnetSting:
@@ -87,6 +93,7 @@ class MagnetSting:
         self._commands_info = {}
         self._groups_dict = {}
         self._alias_dict = {}
+        self._os_name = os.name
         self.exit_description = exit_description
         self.banner_data = banner
         self.cmd_prompt = cmd_prompt
@@ -610,7 +617,10 @@ class MagnetSting:
 
             # Clear the command line
             elif split_command[0] == "clear":
-                subprocess.run("clear", shell=True)
+                if self._os_name == "nt":
+                    subprocess.run("cls", shell=True)
+                else:
+                    subprocess.run("clear", shell=True)
 
             # Call self._alias_command method to handle alias operations
             elif split_command[0] == "alias":
@@ -722,8 +732,12 @@ class MagnetSting:
                         parser_args = " ".join(full_command_list[1:])
 
                         # Execute file with (or without) arguments typed after command name
-                        subprocess.run(f"python3 {command_dict[full_command_list[0]]['file']} {parser_args}",
-                                       shell=True)
+                        if self._os_name == "nt":
+                            subprocess.run(f"py3 {command_dict[full_command_list[0]]['file']} {parser_args}",
+                                           shell=True)
+                        else:
+                            subprocess.run(f"python3 {command_dict[full_command_list[0]]['file']} {parser_args}",
+                                           shell=True)
 
                     # === Aliased alias commands ===
                     elif full_command_list[0] == "alias":
