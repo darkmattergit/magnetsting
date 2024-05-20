@@ -182,6 +182,10 @@ The `help` command is used to show the main help banner, but it can also be used
 For example, if you call `help co`, a help banner consisting of all the commands and command groups that start with
 `co` will be shown. Commands within command groups and aliases are not shown however. 
 
+Moreover, help for a specific command can be achieved by typing `help <command name>`. You don't need to enter the entire command 
+name, rather, just enough of it for MagnetSting to understand which one you want. This will display a more in-depth description of 
+the command provided via the `long_help` parameter found in the command and command group creation methods.
+
 An additional form of help is the "possible commands" functionality. If you enter a command that does not exist, MagnetSting will
 go through all of the commands and command group names and create a list of all of the ones that start with the first value in the
 command (the command string is split into a list when it is parsed). MagnetSting will then pretty-print the possible commands in a 
