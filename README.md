@@ -3,12 +3,7 @@ _Create command-line projects with ease._
 
 MagnetSting is a framework written in Python that simplifies the creation of command-line projects. It comes with various 
 capabilities built into it, such as help banner creation, command aliasing, shell-like behaviour and more. It is built using 
-modules only from the standard library and can run on Linux-based machines without any additional dependencies. 
-
-<!-- Note about compatibility -->
-> [!NOTE]
-> Currently, MagnetSting can only operate on Linux-based machines. However, work is being done to make it compatible with 
-> Windows-based machines as well.
+modules only from the standard library and can run on any operating system without any additional dependencies. 
 
 <!-- Installation -->
 ## Installation
