@@ -20,6 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import subprocess
 import json
 import os
+import textwrap
 
 # Handle exception raised on Windows-based machines
 try:
@@ -159,7 +160,8 @@ class MagnetSting:
 
     def _specific_commands_help(self, command_name: str = None) -> None:
         """
-        Print a help banner containing specific commands.
+        Print a help banner containing specific commands, or, if only one command is found, print its specific
+        information as well as the longer help description.
         :param command_name: The name or partial name of the command(s) to look for.
         :return: None
         """
@@ -208,6 +210,13 @@ class MagnetSting:
                 print(f"  {'-------':{command_spacer}} -----------")
                 for command_help in command_help_dict:
                     print(f"  {command_help:{command_spacer}} {self._commands_info[command_help]['help']}")
+                    if len(command_help_dict) == 1:
+                        print()
+                        print()
+                        print("  Additional Help")
+                        print("  ---------------")
+                        print(textwrap.fill(text=self._commands_info[command_help]["long_help"], initial_indent="  ",
+                                            subsequent_indent="  ", width=125))
                 print()
 
             else:
@@ -218,6 +227,13 @@ class MagnetSting:
                 for commands in command_help_dict:
                     print(f"  {commands:{command_spacer}} {self._commands_info[commands]['help']:{type_spacer}} "
                           f"{self._commands_info[commands]['type']}")
+                    if len(command_help_dict) == 1:
+                        print()
+                        print()
+                        print("  Additional Help")
+                        print("  ---------------")
+                        print(textwrap.fill(text=self._commands_info[commands]["long_help"], initial_indent="  ",
+                                            subsequent_indent="  ", width=125))
                 print()
 
     def _help_command_group(self, group_name: str = None) -> None:
@@ -395,8 +411,9 @@ class MagnetSting:
                 print("[*] Use 'alias add <alias name> <command>' to add/edit aliases or 'alias remove <alias name(s)>'"
                       " to remove aliases\n")
 
-    def add_command_type_single(self, command_name: str = None, command_help: str = None, command_group: str = None,
-                                command_function: object = None, additional_data: tuple = None) -> None:
+    def add_command_type_single(self, command_name: str = None, command_help: str = None, long_help: str = None,
+                                command_group: str = None, command_function: object = None,
+                                additional_data: tuple = None) -> None:
         """
         Create a `single-type` command. A single-type command consists only of a command name that when called,
         executes the function assigned to it. Anything typed after the command name is not passed to the function
@@ -404,6 +421,7 @@ class MagnetSting:
         `additional_data: tuple`.
         :param command_name: The `name` of the command.
         :param command_help: A short `descriptor` about what the command does.
+        :param long_help: A longer and more in-depth description about the command.
         :param command_group: The `group` the command belongs to. Can be left as None if it does not belong to any
                               group.
         :param command_function: The `function` assigned to the command.
@@ -415,6 +433,7 @@ class MagnetSting:
                 "type": "single",
                 "function": command_function,
                 "help": command_help,
+                "long_help": long_help,
                 "additional": additional_data,
             }
 
@@ -424,14 +443,16 @@ class MagnetSting:
                     "type": "single",
                     "function": command_function,
                     "help": command_help,
+                    "long_help": long_help,
                     "additional": additional_data,
                 }
 
             else:
                 raise NotImplementedError(f"Group '{command_group}' does not exist")
 
-    def add_command_type_args(self, command_name: str = None, command_help: str = None, command_group: str = None,
-                              command_function: object = None, additional_data: tuple = None) -> None:
+    def add_command_type_args(self, command_name: str = None, command_help: str = None, long_help:str = None,
+                              command_group: str = None, command_function: object = None,
+                              additional_data: tuple = None) -> None:
         """
         Create an `args-type` command. An args-type command differs from a `single-type` command by being able to take
         arguments after the command name. For example, if the command name is `foo`, then you can do: "foo bar baz",
@@ -441,6 +462,7 @@ class MagnetSting:
         have the following function parameters: `command_args: list` **AND** `additional_data: tuple`.
         :param command_name: The `name` of the command.
         :param command_help: A short `descriptor` about what the command does.
+        :param long_help: A longer and more in-depth description about the command.
         :param command_group: The `group` the command belongs to. Can be left as None if it does not belong to any
                               group.
         :param command_function: The `function` assigned to the command.
@@ -452,6 +474,7 @@ class MagnetSting:
                 "type": "args",
                 "function": command_function,
                 "help": command_help,
+                "long_help": long_help,
                 "additional": additional_data,
             }
 
@@ -461,14 +484,15 @@ class MagnetSting:
                     "type": "args",
                     "function": command_function,
                     "help": command_help,
+                    "long_help": long_help,
                     "additional": additional_data,
                 }
 
             else:
                 raise NotImplementedError(f"Group '{command_group}' does not exist")
 
-    def add_command_type_file(self, command_name: str = None, command_help: str = None, command_group: str = None,
-                              command_file: str = None) -> None:
+    def add_command_type_file(self, command_name: str = None, command_help: str = None, long_help: str = None,
+                              command_group: str = None, command_file: str = None) -> None:
         """
         Create a `file-type` command. A file-type command is different from the other commands. Rather than
         executing functions associated to command names like `single-` and `args-type` commands, instead executes
@@ -482,6 +506,7 @@ class MagnetSting:
         project directory, make sure to add the full or relative path to the name of the file when creating the command.
         :param command_name: The `name` of the command.
         :param command_help: A short `descriptor` about what the command does.
+        :param long_help: A longer and more in-depth description about the command.
         :param command_group: The `group` the command belongs to. Can be left as None if it does not belong to any
                               group.
         :param command_file: The name and (if needed) the `full or relative path` of the file assigned to the command.
@@ -492,6 +517,7 @@ class MagnetSting:
                 "type": "file",
                 "file": command_file,
                 "help": command_help,
+                "long_help": long_help,
             }
 
         else:
@@ -500,12 +526,13 @@ class MagnetSting:
                     "type": "file",
                     "file": command_file,
                     "help": command_help,
+                    "long_help": long_help,
                 }
 
             else:
                 raise NotImplementedError(f"Group '{command_group}' does not exist")
 
-    def add_command_group(self, group_name: str = None, group_help: str = None) -> None:
+    def add_command_group(self, group_name: str = None, group_help: str = None, long_help: str = None) -> None:
         """
         Create a `command group`. A command group is, as the name suggests, a group of commands. Groups can be used to
         organize commands and to keep the main help banner from becoming too long and overwhelming. Any command can be
@@ -516,6 +543,7 @@ class MagnetSting:
         <args (if args- or file-type)>.
         :param group_name: The `name` of the group.
         :param group_help: A short `description` of the group.
+        :param long_help: A longer and more in-depth description about the group.
         :return: None
         """
         # Add group to groups dict
@@ -524,6 +552,7 @@ class MagnetSting:
         self._commands_info[group_name.strip()] = {
             "type": "group",
             "help": group_help,
+            "long_help": long_help,
         }
 
     def magnetsting_mainloop(self) -> None:
@@ -532,25 +561,37 @@ class MagnetSting:
         groups have been created.
         :return: None
         """
+
         # Add built-in commands to commands dict
         self._commands_info["alias"] = {
             "type": "built-in",
             "help": "add, remove and view aliases",
+            "long_help": f"Add, remove and view aliases. Rather than have to type a lengthy command and its arguments "
+                         f"over and over again, a short alias of the command can be created. All types of commands, "
+                         f"including alias commands, can be aliased. In your current configuration, all aliases are "
+                         f"written to the file '{self.alias_file}'. To create an alias, use 'alias add <alias name> "
+                         f"<command>'. To remove one or more aliases, use 'alias remove <alias name(s)>'. To view "
+                         f"all aliases, type 'alias' with no arguments.",
         }
 
         self._commands_info["clear"] = {
             "type": "built-in",
             "help": "clear the screen",
+            "long_help": "Clear the screen.",
         }
 
         self._commands_info["help"] = {
             "type": "built-in",
             "help": "print this help banner",
+            "long_help": "Displays the main help banner and can be used to display additional help for specific "
+                         "commands.",
         }
 
         self._commands_info[self.break_keywords[0]] = {
             "type": "built-in",
             "help": self.exit_description,
+            "long_help": f"Keywords used to exit. The keywords in your current configuration are "
+                         f"'{', '.join(self.break_keywords)}'.",
         }
 
         # Print custom banner
