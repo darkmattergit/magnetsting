@@ -776,7 +776,7 @@ class MagnetSting:
 
                         # Execute file with (or without) arguments typed after command name
                         if self._os_name == "nt":
-                            subprocess.run(f"py3 {command_dict[full_command_list[0]]['file']} {parser_args}",
+                            subprocess.run(f"py {command_dict[full_command_list[0]]['file']} {parser_args}",
                                            shell=True)
                         else:
                             subprocess.run(f"python3 {command_dict[full_command_list[0]]['file']} {parser_args}",
