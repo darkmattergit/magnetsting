@@ -629,6 +629,11 @@ class MagnetSting:
             # Do nothing if file does not exist, it will be created when MagnetSting exits
             pass
 
+        except json.decoder.JSONDecodeError:
+            # Inform user that the aliases could not be loaded because of JSON decoding error
+            print(f"[!] ERROR, could not properly decode JSON format when attempting to load aliases, check file "
+                  f"'{self.alias_file}'\n")
+
         while True:
             # Get user input, strip both leading and trailing whitespace
             usr_input = str(input(self.cmd_prompt)).strip()
