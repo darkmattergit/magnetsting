@@ -392,6 +392,11 @@ class MagnetSting:
                 else:
                     command_str = " ".join(alias_list[3:])
                     self._alias_dict[alias_list[2]] = command_str
+
+                    # Write aliases to json file
+                    with open(self.alias_file, "w") as jw:
+                        json.dump(self._alias_dict, jw)
+
                     print(f"[+] Added alias '{alias_list[2]}'\n")
 
             # Remove a command alias
@@ -406,6 +411,10 @@ class MagnetSting:
                     else:
                         print(f"[-] Removed alias '{to_del}'")
                 print()
+
+                # Write aliases to json file
+                with open(self.alias_file, "w") as jw:
+                    json.dump(self._alias_dict, jw)
 
             else:
                 print("[*] Use 'alias add <alias name> <command>' to add/edit aliases or 'alias remove <alias name(s)>'"
@@ -643,10 +652,6 @@ class MagnetSting:
 
             # Check if first element is a break keyword
             if split_command[0] in self.break_keywords:
-                # Write aliases to json file
-                with open(self.alias_file, "w") as jw:
-                    json.dump(self._alias_dict, jw)
-
                 # Show exit message and break out of loop, exiting MagnetSting
                 print(self.exit_message)
                 break
