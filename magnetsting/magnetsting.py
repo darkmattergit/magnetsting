@@ -450,7 +450,7 @@ class MagnetSting:
             else:
                 raise NotImplementedError(f"Group '{command_group}' does not exist")
 
-    def add_command_type_args(self, command_name: str = None, command_help: str = None, long_help:str = None,
+    def add_command_type_args(self, command_name: str = None, command_help: str = None, long_help: str = None,
                               command_group: str = None, command_function: object = None,
                               additional_data: tuple = None) -> None:
         """
