@@ -385,7 +385,8 @@ class MagnetSting:
                 elif alias_list[3] not in self._commands_info:
                     print(f"[!] Cannot create alias, the command '{alias_list[3]}' does not exist\n")
 
-                elif alias_list[3] in self._groups_dict and alias_list[4] not in self._groups_dict[alias_list[3]]:
+                elif (len(alias_list) > 4 and alias_list[3] in self._groups_dict and alias_list[4] not in
+                      self._groups_dict[alias_list[3]]):
                     print(f"[!] Cannot create alias, '{alias_list[4]}' does not exist as a command in the group "
                           f"'{alias_list[3]}'\n")
 
@@ -724,7 +725,7 @@ class MagnetSting:
                         alias_list = f"{self._alias_dict[check_name]} {' '.join(split_command[1:])}".split()
 
                         # Check if first element in alias_list actually exists as a command or command group
-                        if alias_list[0] in self._commands_info:
+                        if len(alias_list) > 1 and alias_list[0] in self._commands_info:
 
                             # Check if name is a group name
                             if self._commands_info[alias_list[0]]["type"] == "group":
@@ -745,6 +746,10 @@ class MagnetSting:
                                 full_command_list = (f"{self._alias_dict[check_name]} "
                                                      f"{' '.join(split_command[1:])}").split()
                                 command_dict[alias_list[0]] = self._commands_info[alias_list[0]]
+
+                        elif len(alias_list) == 1 and alias_list[0] in self._commands_info:
+                            full_command_list = alias_list
+                            command_dict[alias_list[0]] = self._commands_info[alias_list[0]]
 
                         # First element of aliased command does not exist as a command or command group, display message
                         # and continue to start
@@ -797,6 +802,10 @@ class MagnetSting:
                     # === Aliased alias commands ===
                     elif full_command_list[0] == "alias":
                         self._alias_command(alias_list=full_command_list)
+
+                    # == Aliased command group names ===
+                    elif command_dict[full_command_list[0]]["type"] == "group":
+                        self._help_command_group(group_name=full_command_list[0])
 
                 else:
                     # If nothing was typed, do nothing
