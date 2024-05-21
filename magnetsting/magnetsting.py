@@ -72,7 +72,8 @@ class MagnetSting:
     def __init__(self, exit_description: str = "exit MAGNETSTING",
                  banner: tuple | str = ("=" * 35, "MAGNETSTING", "Data here", "=" * 35), cmd_prompt: str = ">> ",
                  exit_message: str = "[*] Exiting", break_keywords: tuple = ("q", "quit", "exit"),
-                 alias_file: str = ".alias.json", verbose: bool = True, help_on_start: bool = True):
+                 alias_file: str = ".alias.json", verbose: bool = True, help_on_start: bool = True,
+                 text_wrap_value: int = 125):
         """
         Initialize instance of MagnetSting.
         :param exit_description: The description of the exit command.
@@ -88,6 +89,8 @@ class MagnetSting:
         :param help_on_start: Show the help banner on start or not. Setting it to `True` will show the help banner on
                               start while setting it to `False` will not. Even when set to `False`, the help banner
                               and help functionality can still be called using the "help" command.
+        :param text_wrap_value: The `width` to wrap the text of the `long_help` parameter found in the command and
+                                command group creation methods.
         """
 
         # Initialize dicts for commands, command groups and command aliases
@@ -103,6 +106,7 @@ class MagnetSting:
         self.alias_file = alias_file
         self.verbose = verbose
         self.help_on_start = help_on_start
+        self.text_wrap_value = text_wrap_value
 
         # Check if file is a JSON file
         if self.alias_file[-5:] != ".json":
@@ -216,7 +220,7 @@ class MagnetSting:
                         print("  Additional Help")
                         print("  ---------------")
                         print(textwrap.fill(text=self._commands_info[command_help]["long_help"], initial_indent="  ",
-                                            subsequent_indent="  ", width=125))
+                                            subsequent_indent="  ", width=self.text_wrap_value))
                 print()
 
             else:
@@ -233,7 +237,7 @@ class MagnetSting:
                         print("  Additional Help")
                         print("  ---------------")
                         print(textwrap.fill(text=self._commands_info[commands]["long_help"], initial_indent="  ",
-                                            subsequent_indent="  ", width=125))
+                                            subsequent_indent="  ", width=self.text_wrap_value))
                 print()
 
     def _help_command_group(self, group_name: str = None) -> None:
