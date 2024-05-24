@@ -108,12 +108,6 @@ class MagnetSting:
         self.help_on_start = help_on_start
         self.text_wrap_value = text_wrap_value
 
-        # Check if file is a JSON file
-        if self.alias_file[-5:] != ".json":
-            raise ValueError("File is not a JSON file")
-        else:
-            pass
-
     def _help_command(self) -> None:
         """
         Print the help banner.
