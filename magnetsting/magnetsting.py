@@ -219,8 +219,12 @@ class MagnetSting:
                         print()
                         print("  Additional Help")
                         print("  ---------------")
-                        print(textwrap.fill(text=self._commands_info[command_help]["long_help"], initial_indent="  ",
-                                            subsequent_indent="  ", width=self.text_wrap_value))
+                        try:
+                            print(textwrap.fill(text=self._commands_info[command_help]["long_help"],
+                                                initial_indent="  ", subsequent_indent="  ",
+                                                width=self.text_wrap_value))
+                        except AttributeError:
+                            print("  None")
                 print()
 
             else:
@@ -236,8 +240,11 @@ class MagnetSting:
                         print()
                         print("  Additional Help")
                         print("  ---------------")
-                        print(textwrap.fill(text=self._commands_info[commands]["long_help"], initial_indent="  ",
-                                            subsequent_indent="  ", width=self.text_wrap_value))
+                        try:
+                            print(textwrap.fill(text=self._commands_info[commands]["long_help"], initial_indent="  ",
+                                                subsequent_indent="  ", width=self.text_wrap_value))
+                        except AttributeError:
+                            print("  None")
                 print()
 
     def _help_command_group(self, group_name: str = None) -> None:
