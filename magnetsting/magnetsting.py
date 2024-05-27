@@ -641,7 +641,7 @@ class MagnetSting:
                 self._alias_dict = json_alias
 
         except FileNotFoundError:
-            # Do nothing if file does not exist, it will be created when MagnetSting exits
+            # Do nothing if file does not exist, it will be created when the first alias is created
             pass
 
         except json.decoder.JSONDecodeError:
