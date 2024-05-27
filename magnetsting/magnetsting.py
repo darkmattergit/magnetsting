@@ -406,7 +406,7 @@ class MagnetSting:
                     print(f"[+] Added alias '{alias_list[2]}'\n")
 
             # Remove a command alias
-            elif alias_list[1] == "remove" and len(alias_list) >= 3:
+            elif alias_list[1] == "remove" and len(alias_list) >= 3 and alias_list[2] != "*":
                 for to_del in alias_list[2:]:
                     try:
                         del (self._alias_dict[to_del])
@@ -416,6 +416,19 @@ class MagnetSting:
 
                     else:
                         print(f"[-] Removed alias '{to_del}'")
+                print()
+
+                # Write aliases to json file
+                with open(self.alias_file, "w") as jw:
+                    json.dump(self._alias_dict, jw)
+
+            # Remove every command alias
+            elif alias_list[1] == "remove" and alias_list[2] == "*":
+                alias_key = [keys for keys in self._alias_dict]
+                for to_del in alias_key:
+                    del (self._alias_dict[to_del])
+                    print(f"[-] Removed alias '{to_del}'")
+
                 print()
 
                 # Write aliases to json file
