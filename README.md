@@ -163,6 +163,9 @@ The syntax to create/edit an alias is:
 The syntax to remove one or more aliases is:
 `alias remove <alias name(s)>`
 
+The syntax to remove every single alias at once is:
+`alias remove *`
+
 To view a list of all aliases, call the `alias` command with no arguments. This will show both the alias name as well as the
 entire command that is assigned to it.
 
