@@ -425,9 +425,19 @@ class MagnetSting:
             # Remove every command alias
             elif alias_list[1] == "remove" and alias_list[2] == "*":
                 alias_key = [keys for keys in self._alias_dict]
-                for to_del in alias_key:
-                    del (self._alias_dict[to_del])
-                    print(f"[-] Removed alias '{to_del}'")
+
+                print("\n=== WARNING ===")
+                print(f"[!] This will remove all {len(alias_key)} aliases, are you sure you want to continue? [y/N]")
+                # Confirm that user really wants to remove all aliases
+                confirm_removal = str(input(self.cmd_prompt)).lower().strip()
+
+                if confirm_removal == "y" or confirm_removal == "yes":
+                    for to_del in alias_key:
+                        del (self._alias_dict[to_del])
+                        print(f"[-] Removed alias '{to_del}'")
+
+                else:
+                    print("[*] No aliases were removed")
 
                 print()
 
