@@ -660,8 +660,7 @@ class MagnetSting:
         try:
             # Open json file and load aliases into dict
             with open(self.alias_file, "r") as jr:
-                json_alias = json.load(jr)
-                self._alias_dict = json_alias
+                self._alias_dict = json.load(jr)
 
         except FileNotFoundError:
             # Do nothing if file does not exist, it will be created when the first alias is created
