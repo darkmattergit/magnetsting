@@ -156,22 +156,29 @@ class MagnetSting:
                       f"{self._commands_info[commands]['type']}")
             print()
 
-    def _specific_commands_help(self, command_name: str = None) -> None:
+    def _specific_commands_help(self, command_name: str = None, group_name: str = None) -> None:
         """
         Print a help banner containing specific commands, or, if only one command is found, print its specific
         information as well as the longer help description.
+        :param group_name: The name of the group to look in.
         :param command_name: The name or partial name of the command(s) to look for.
         :return: None
         """
+        # Determine which dict to search for command(s)
+        if group_name is None:
+            dict_to_search = self._commands_info
+        else:
+            dict_to_search = self._groups_dict[group_name]
+
         # Initialize dict to hold command names and their descriptions
         command_help_dict = {}
         # Initialize ints for calculating spacing
         command_spacer = 0
         type_spacer = 0
 
-        for commands in self._commands_info:
+        for commands in dict_to_search:
             if commands.startswith(command_name):
-                command_help_dict[commands] = self._commands_info[commands]["help"]
+                command_help_dict[commands] = dict_to_search[commands]["help"]
 
                 # Calculate base spacing between commands names and descriptions
                 if len(commands) > command_spacer:
@@ -181,8 +188,8 @@ class MagnetSting:
                     pass
 
                 # Calculate base spacing between command descriptions and types
-                if len(self._commands_info[commands]['help']) > type_spacer:
-                    type_spacer = len(self._commands_info[commands]['help'])
+                if len(dict_to_search[commands]['help']) > type_spacer:
+                    type_spacer = len(dict_to_search[commands]['help'])
 
                 else:
                     pass
@@ -207,14 +214,14 @@ class MagnetSting:
                 print(f"  {'Command':{command_spacer}} Description")
                 print(f"  {'-------':{command_spacer}} -----------")
                 for command_help in command_help_dict:
-                    print(f"  {command_help:{command_spacer}} {self._commands_info[command_help]['help']}")
+                    print(f"  {command_help:{command_spacer}} {dict_to_search[command_help]['help']}")
                     if len(command_help_dict) == 1:
                         print()
                         print()
                         print("  Additional Help")
                         print("  ---------------")
                         try:
-                            print(textwrap.fill(text=self._commands_info[command_help]["long_help"],
+                            print(textwrap.fill(text=dict_to_search[command_help]["long_help"],
                                                 initial_indent="  ", subsequent_indent="  ",
                                                 width=self.text_wrap_value))
                         except AttributeError:
@@ -227,15 +234,15 @@ class MagnetSting:
                 print(f"  {'-------':{command_spacer}} {'-----------':{type_spacer}} {'----'}")
 
                 for commands in command_help_dict:
-                    print(f"  {commands:{command_spacer}} {self._commands_info[commands]['help']:{type_spacer}} "
-                          f"{self._commands_info[commands]['type']}")
+                    print(f"  {commands:{command_spacer}} {dict_to_search[commands]['help']:{type_spacer}} "
+                          f"{dict_to_search[commands]['type']}")
                     if len(command_help_dict) == 1:
                         print()
                         print()
                         print("  Additional Help")
                         print("  ---------------")
                         try:
-                            print(textwrap.fill(text=self._commands_info[commands]["long_help"], initial_indent="  ",
+                            print(textwrap.fill(text=dict_to_search[commands]["long_help"], initial_indent="  ",
                                                 subsequent_indent="  ", width=self.text_wrap_value))
                         except AttributeError:
                             print("  None")
@@ -683,6 +690,9 @@ class MagnetSting:
                 # Show exit message and break out of loop, exiting MagnetSting
                 print(self.exit_message)
                 break
+
+            elif len(split_command) > 2 and split_command[0] == "help" and split_command[1] in self._groups_dict:
+                self._specific_commands_help(command_name=split_command[2], group_name=split_command[1])
 
             # Print help banner containing specific commands
             elif len(split_command) > 1 and split_command[0] == "help":
