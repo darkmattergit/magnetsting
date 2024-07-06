@@ -456,6 +456,27 @@ class MagnetSting:
                 print("[*] Use 'alias add <alias name> <command>' to add/edit aliases or 'alias remove <alias name(s)>'"
                       " to remove aliases\n")
 
+    def _special_alias_builtins(self, command_list: list = None) -> None:
+        """
+        Method to handle aliased `help` and `clear` command.
+        :param command_list: User input split into a list.
+        :return: None
+        """
+        if len(command_list) > 2 and command_list[0] == "help" and command_list[1] in self._groups_dict:
+            self._specific_commands_help(command_name=command_list[2], group_name=command_list[1])
+
+        elif len(command_list) > 1 and command_list[0] == "help":
+            self._specific_commands_help(command_name=command_list[1])
+
+        elif len(command_list) == 1 and command_list[0] == "help":
+            self._help_command()
+
+        elif command_list[0] == "clear":
+            if self._os_name == "nt":
+                subprocess.run("cls", shell=True)
+            else:
+                subprocess.run("clear", shell=True)
+
     def add_command_type_single(self, command_name: str = None, command_help: str = None, long_help: str = None,
                                 command_group: str = None, command_function: object = None,
                                 additional_data: tuple = None) -> None:
@@ -843,6 +864,10 @@ class MagnetSting:
                     # == Aliased command group names ===
                     elif command_dict[full_command_list[0]]["type"] == "group":
                         self._help_command_group(group_name=full_command_list[0])
+
+                    # === Special aliased built-in commands ===
+                    elif command_dict[full_command_list[0]]["type"] == "built-in":
+                        self._special_alias_builtins(command_list=full_command_list)
 
                 else:
                     # If nothing was typed, do nothing
