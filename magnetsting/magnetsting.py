@@ -359,8 +359,8 @@ class MagnetSting:
 
     def _alias_command(self, alias_list: list = None) -> None:
         """
-        Method to create and edit, remove and view command aliases
-        :param alias_list: The user input split into a list
+        Method to create, edit, remove and view command aliases.
+        :param alias_list: The user input split into a list.
         :return: None
         """
         if len(alias_list) < 2:
