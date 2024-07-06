@@ -443,14 +443,14 @@ class MagnetSting:
                         del (self._alias_dict[to_del])
                         print(f"[-] Removed alias '{to_del}'")
 
+                    # Write empty dict to json file
+                    with open(self.alias_file, "w") as jw:
+                        json.dump(self._alias_dict, jw)
+
                 else:
                     print("[*] No aliases were removed")
 
                 print()
-
-                # Write aliases to json file
-                with open(self.alias_file, "w") as jw:
-                    json.dump(self._alias_dict, jw)
 
             else:
                 print("[*] Use 'alias add <alias name> <command>' to add/edit aliases or 'alias remove <alias name(s)>'"
