@@ -29,6 +29,16 @@ except ImportError:
     pass
 
 
+class GroupNotExistError(Exception):
+    """
+    Exception class that is raised when attempting to assign a command to a group that does not exist.
+    """
+    def __init__(self, group_name: str = None):
+        # self.message = "foo bar baz"
+        self.group_name = group_name
+        super().__init__(f"Cannot assign command to group '{self.group_name}' as it does not exist")
+
+
 class MagnetSting:
     """
     `MagnetSting` is a framework that simplifies the creation of command-line projects. It comes with many
@@ -514,7 +524,7 @@ class MagnetSting:
                 }
 
             else:
-                raise NotImplementedError(f"Group '{command_group}' does not exist")
+                raise GroupNotExistError(group_name=command_group)
 
     def add_command_type_args(self, command_name: str = None, command_help: str = None, long_help: str = None,
                               command_group: str = None, command_function: object = None,
@@ -555,7 +565,7 @@ class MagnetSting:
                 }
 
             else:
-                raise NotImplementedError(f"Group '{command_group}' does not exist")
+                raise GroupNotExistError(group_name=command_group)
 
     def add_command_type_file(self, command_name: str = None, command_help: str = None, long_help: str = None,
                               command_group: str = None, command_file: str = None) -> None:
@@ -596,7 +606,7 @@ class MagnetSting:
                 }
 
             else:
-                raise NotImplementedError(f"Group '{command_group}' does not exist")
+                raise GroupNotExistError(group_name=command_group)
 
     def add_command_group(self, group_name: str = None, group_help: str = None, long_help: str = None) -> None:
         """
