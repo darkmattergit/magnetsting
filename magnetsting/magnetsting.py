@@ -404,6 +404,9 @@ class MagnetSting:
                 if alias_list[2] in self._commands_info or alias_list[2] in self.break_keywords:
                     print(f"[!] Cannot create alias, '{alias_list[2]}' is already in use as a command name\n")
 
+                elif alias_list[2] == "*":
+                    print("[!] Cannot use '*' as an alias, reserved keyword\n")
+
                 elif alias_list[3] not in self._commands_info:
                     print(f"[!] Cannot create alias, the command '{alias_list[3]}' does not exist\n")
 
