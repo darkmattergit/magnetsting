@@ -44,7 +44,6 @@ class GroupNotExistError(Exception):
     Exception class that is raised when attempting to assign a command to a group that does not exist.
     """
     def __init__(self, group_name: str = None):
-        # self.message = "foo bar baz"
         self.group_name = group_name
         super().__init__(f"Cannot assign command to group '{self.group_name}' as it does not exist")
 
