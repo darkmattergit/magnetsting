@@ -166,6 +166,12 @@ The syntax to remove one or more aliases is:
 The syntax to remove every single alias at once is:
 `alias remove *`
 
+<!--Note about * -->
+> [!NOTE]
+> `*` is a reserved keyword for aliases and as a result, an alias cannot
+> be named just `*` However, this restriction does apply to names that
+> contain other characters in addition to `*` (ex. `*foo`).
+
 To view a list of all aliases, call the `alias` command with no arguments. This will show both the alias name as well as the
 entire command that is assigned to it.
 
