@@ -28,6 +28,16 @@ try:
 except ImportError:
     pass
 
+_default_banner = r"""  
+  ____    ____      __       ____    __    __    _____    ______    _____    ______    _____    __    __     ____
+  |   \  /   |     /  \     /  __\  |   \ |  |  |  ___|  |__  __|  /  __/   |__  __|  |_   _|  |   \ |  |   /  __\
+  |    \/    |    / [] \   |  /___  |    \|  |  |     |    |  |    |     |    |  |      | |    |    \|  |  |  /___ 
+  |  |\  /|  |   /  __  \  |  \| |  |  |\    |  |  ___|    |  |    |___  |    |  |     _| |_   |  |\    |  |  \| | 
+  |__| \/ |__|  /__/  \__\  \____|  |__| \___|  |_____|    |__|     /____/    |__|    |_____|  |__| \___|   \____| 
+
+  Version 1.0.9
+  ~~~ Create command-line projects with ease ~~~"""
+
 
 class GroupNotExistError(Exception):
     """
@@ -80,7 +90,7 @@ class MagnetSting:
     banner. The same applies for commands in command groups.
     """
     def __init__(self, exit_description: str = "exit MAGNETSTING",
-                 banner: tuple | str = ("=" * 35, "MAGNETSTING", "Data here", "=" * 35), cmd_prompt: str = ">> ",
+                 banner: tuple | str = _default_banner, cmd_prompt: str = ">> ",
                  exit_message: str = "[*] Exiting", break_keywords: tuple = ("q", "quit", "exit"),
                  alias_file: str = ".alias.json", verbose: bool = True, help_on_start: bool = True,
                  text_wrap_value: int = 125):
