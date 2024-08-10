@@ -671,8 +671,12 @@ class MagnetSting:
         self._commands_info["help"] = {
             "type": "built-in",
             "help": "print this help banner",
-            "long_help": "Displays the main help banner and can be used to display additional help for specific "
-                         "commands.",
+            "long_help": "Displays the main help banner and can be used to search for specific commands as well as "
+                         "provide additional help for specific commands and groups. For example, typing 'help co' "
+                         "would display a help banner containing all commands and groups starting with 'co'. If only "
+                         "one command or group was found, it will display in-depth information of that command/group. "
+                         "The functionality also works for commands in command groups as well (ex. 'help <group name> "
+                         "<command name>').",
         }
 
         self._commands_info[self.break_keywords[0]] = {
