@@ -166,19 +166,16 @@ The syntax to remove one or more aliases is:
 The syntax to remove every single alias at once is:
 `alias remove *`
 
-<!--Note about * -->
-> [!NOTE]
-> `*` is a reserved keyword for aliases and as a result, an alias cannot
-> be named just `*` However, this restriction does apply to names that
-> contain other characters in addition to `*` (ex. `*foo`).
-
 To view a list of all aliases, call the `alias` command with no arguments. This will show both the alias name as well as the
 entire command that is assigned to it.
 
 <!-- Note about alias names -->
 > [!NOTE]
 > Just like with command names, aliases can contain letters, numbers and symbols but
-> not spaces. The reason is the same; it is because of how MagnetSting parses commands.
+> not spaces. There is one symbol however that cannot be used alone: `*`. The is because
+> if you tried to call `alias remove *`, you would not only remove that one alias, but every
+> alias. For that reason, `*` is a reserved keyword. This restriction however does 
+> not apply to aliases that contain other characters in addition to `*` (ex. `*foo` or even `**`).
 
 <!-- Command Help -->
 ## Command Help
