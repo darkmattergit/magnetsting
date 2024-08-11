@@ -659,7 +659,9 @@ class MagnetSting:
                          f"including alias commands, can be aliased. In your current configuration, all aliases are "
                          f"written to the file '{self.alias_file}'. To create an alias, use 'alias add <alias name> "
                          f"<command>'. To remove one or more aliases, use 'alias remove <alias name(s)>'. To view "
-                         f"all aliases, type 'alias' with no arguments.",
+                         f"all aliases, type 'alias' with no arguments. NOTE: the '*' character by itself cannot be "
+                         f"used as an alias name as it is a reserved keyword. Using 'alias remove *' will remove all "
+                         f"aliases at once.",
         }
 
         self._commands_info["clear"] = {
