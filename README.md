@@ -108,8 +108,8 @@ Call a file-type command:
 Command groups are, as the name suggests, groups that commands can be assigned to. It offers a way to organize
 commands together and to keep the main help banner from becoming too long and overwhelming. Any command assigned to
 a command group will not show up in the main help banner, rather, the command group name will show instead. A command
-group must be created **prior** to adding any commands to it. Otherwise, an exception will be raised. The syntax to call a 
-command in a command group is the following: `<command group name> <command name> <args (if args- or file-type)>`.
+group must be created **prior** to adding any commands to it. Otherwise, a `GroupNotExistError` will be raised. The syntax to 
+call a command in a command group is the following: `<command group name> <command name> <args (if args- or file-type)>`.
 To view all the commands in a group, just call the command group's name. If you do not want to assign a command to a 
 command group, just leave the `command_group` parameter as "None" (the default value). Just like command names, command group
 names can contain letters, numbers and symbols but not spaces.
