@@ -101,7 +101,7 @@ mast.magnetsting_mainloop()
 ```
 
 Call a file-type command:
-`myparsercommand --help` 
+`myfilecommand --help` 
 
 <!-- Command Groups -->
 ## Command Groups
