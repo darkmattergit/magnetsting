@@ -469,6 +469,8 @@ class MagnetSting:
                     with open(self.alias_file, "w") as jw:
                         json.dump(self._alias_dict, jw)
 
+                    print(f"[*] Successfully removed all {len(alias_key)} aliases")
+
                 else:
                     print("[*] No aliases were removed")
 
